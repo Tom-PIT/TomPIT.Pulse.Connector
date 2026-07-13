@@ -33,3 +33,8 @@ plugins:
 
 nav:
   - Home: index.md
+  - Getting started:
+      - Overview: getting-started/index.md
+      - Architecture: getting-started/architecture.md
+      - Integration responsibilities: getting-started/responsibilities.md
+      - Implementation roadmap: getting-started/implementation-roadmap.md
