@@ -107,11 +107,12 @@ Send production plans and execution records.
 Send measurements, downtime, waste, and other production events.
 Validate the transferred data and entity relationships.
 Test a complete production scenario before go-live.
-Next steps
+
+## Next steps
 
 Continue with:
 
-[Integration architecture](architecture.md)
-[Implementation roadmap](implementation-roadmap.md)
-[PULSE data model](../data-model/index.md)
-[A typical production day](../scenarios/typical-production-day.md)
+- [Integration architecture](architecture.md)
+- [Implementation roadmap](implementation-roadmap.md)
+- [PULSE data model](../data-model/index.md)
+- [A typical production day](../scenarios/typical-production-day.md)
