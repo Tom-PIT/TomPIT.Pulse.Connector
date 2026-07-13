@@ -1,808 +1,94 @@
-# Proposed documentation structure
+# Pulse integration documentation structure
 
-This is a proposed structure for the PULSE integration documentation. It is intended to be comprehensive, but the first public version may contain only a subset of the sections.
+This document defines the initial public structure for the Pulse integration documentation.
+
+The first version should be concise and task-oriented. It should help an integrator complete a small successful integration before introducing the full Pulse data model or advanced implementation details.
 
 For information about the project’s purpose and target audience, see [README_INTERNAL.md](README_INTERNAL.md).
 
-# Long-term documentation plan
+## Documentation approach
 
-The sections below describe the long-term content scope. Several topics may initially be combined into broader pages and split into dedicated pages only when enough confirmed content is available.
-
-## 1. Introduction
-
-The introduction should explain what PULSE is, what an integration provides, and how to use the documentation.
-
-Possible pages:
+The initial documentation should guide the reader through this path:
 
 ```text
-Introduction
-├── What is PULSE?
-├── What does an integration provide?
-├── Who is this documentation for?
-├── Integration responsibilities
-└── Documentation conventions
+Understand the integration
+→ Prepare access
+→ Authenticate
+→ Send the first data
+→ Validate the result
+→ Build the complete integration
 ```
 
-### Main topics
-
-* PULSE as a production-intelligence platform
-* the role of customer data
-* supported types of source systems
-* responsibilities of PULSE and the customer
-* documentation terminology and conventions
-
-## 2. Integration overview
-
-This section should provide a high-level understanding of how information moves from customer systems into PULSE.
-
-Possible pages:
-
-```text
-Integration overview
-├── How data flows into PULSE
-├── Integration architecture
-├── Source systems
-├── Raw data and calculated data
-├── Supported integration patterns
-└── Recommended implementation sequence
-```
-
-### Main topics
-
-* customer systems as owners of source data,
-* PULSE as the owner of calculations and analyses,
-* communication through the PULSE backend API,
-* initial synchronization and ongoing synchronization,
-* real-time and scheduled integration patterns,
-* separation between raw records and calculated results.
-
-A typical high-level flow may be represented as:
-
-```text
-ERP / MES / SCADA / IoT
-→ Integration service
-→ PULSE REST API
-→ PULSE raw data layer
-→ PULSE analyses and recommendations
-```
-
-## 3. Understanding the PULSE data model
-
-This section should explain the main PULSE entities and their relationships independently of the API.
-
-Possible pages:
-
-```text
-PULSE data model
-├── Data-model overview
-├── Entity relationships
-├── Master data
-├── Production structure
-├── Planned and actual data
-├── Measurements
-├── Traceability
-└── Entity identifiers
-```
-
-### Main topics
-
-* plants,
-* production lines,
-* equipment,
-* products,
-* materials,
-* batches,
-* stages,
-* production plans,
-* actual usage,
-* produced quantities,
-* downtime,
-* delays,
-* waste,
-* lots,
-* measurements.
-
-The central production structure currently appears to be:
-
-```text
-Plant
-└── Production line
-    └── Batch
-        ├── Stage
-        ├── Plan
-        ├── Actual execution
-        ├── Produced quantity
-        ├── Shift
-        ├── Waste
-        └── Production-related usage
-```
-
-The documentation should also explain the likely mapping between common customer terminology and PULSE terminology.
-
-For example:
-
-```text
-Customer work order
-→ PULSE batch
-
-Customer work-order operation
-→ PULSE stage
-```
-
-This mapping must be confirmed against the API and domain knowledge.
-
-## 4. Preparing the integration
-
-This section should guide the customer through the analysis work that must happen before implementation begins.
-
-Possible pages:
-
-```text
-Preparing the integration
-├── Identify source systems
-├── Identify available data
-├── Define system ownership
-├── Define identifiers
-├── Define units and currencies
-├── Define timestamps and time zones
-├── Define synchronization frequency
-└── Integration readiness checklist
-```
-
-### Main topics
-
-* which source system owns each record,
-* whether data originates in ERP, MES, SCADA, IoT, or another system,
-* which source identifiers will be retained,
-* how entities can be related across multiple systems,
-* which units are used,
-* which time zone is used,
-* how often each type of data is available,
-* whether historical data will be imported.
-
-## 5. Master-data integration
-
-This section should describe relatively stable reference data that must generally exist before production transactions are sent.
-
-Possible pages:
-
-```text
-Master-data integration
-├── Plants
-├── Production lines
-├── Equipment
-├── Products
-├── Materials
-├── Measure units
-├── Labour
-├── Shifts
-├── Customers
-├── Suppliers
-├── Downtime classifications
-└── Waste classifications
-```
-
-### Main topics
-
-For every master-data entity, the documentation should explain:
-
-* what the entity represents,
-* where it usually originates,
-* how it is identified,
-* which other entities reference it,
-* when it should be synchronized,
-* how changes should be handled,
-* whether inactive records should remain available.
-
-The master-data dependency structure should eventually be documented clearly.
-
-For example:
-
-```text
-Plant
-→ Production line
-→ Equipment
-
-Product
-→ Batch
-
-Material
-→ Material plan / Material usage
-
-Supplier
-→ Lot
-→ Material usage
-```
-
-## 6. Production integration
-
-This section should explain how planned and actual production activity is represented.
-
-Possible pages:
-
-```text
-Production integration
-├── Production batches
-├── Production stages
-├── Batch plans
-├── Stage plans
-├── Batch execution
-├── Stage execution
-├── Produced quantities
-├── Material consumption
-├── Equipment usage
-├── Labour usage
-├── Energy usage
-├── Additional expenses
-├── Downtime
-├── Delays
-├── Waste
-└── Shift allocation
-```
-
-### Main topics
-
-* creating production context,
-* planned versus actual dates,
-* planned versus actual quantities,
-* planned versus actual resource usage,
-* work-order lifecycle,
-* operation lifecycle,
-* partial production reporting,
-* order completion,
-* corrections after completion.
-
-The planned and actual model should be presented as a core PULSE concept.
-
-For example:
-
-```text
-Batch
-├── Batch plan
-└── Batch usage
-
-Stage
-├── Stage plan
-└── Stage usage
-```
-
-The same pattern may apply to:
-
-```text
-Material plan
-↔ Material usage
-
-Equipment plan
-↔ Equipment usage
-
-Labour plan
-↔ Labour usage
-
-Energy-source plan
-↔ Energy-source usage
-
-Expense plan
-↔ Expense usage
-```
-
-## 7. Sensor and measurement integration
-
-This section should describe how PULSE receives sensor, machine, process, and environmental measurements.
-
-Possible pages:
-
-```text
-Sensor and measurement integration
-├── Measurement model
-├── Measurement types
-├── Dimensions and entity references
-├── Connecting measurements to equipment
-├── Connecting measurements to production
-├── Sampling frequency
-├── Aggregated and raw measurements
-├── Limits and expected values
-└── Sensor-data examples
-```
-
-### Main topics
-
-* measurement timestamp,
-* measurement value,
-* measurement type,
-* measurement unit,
-* minimum and maximum values,
-* expected values,
-* relationship to equipment or production,
-* raw readings versus aggregated readings,
-* acceptable sampling intervals,
-* high-frequency data.
-
-The relationship between a measurement and production context must be clarified.
-
-Important questions include:
-
-* which PULSE entities may be used as measurement dimensions,
-* how the measurement references the related entity,
-* whether measurements are associated directly with a batch or stage,
-* whether PULSE derives production context using equipment and timestamps.
-
-## 8. Traceability integration
-
-This section should explain how materials, lots, suppliers, batches, and customers are connected.
-
-Possible pages:
-
-```text
-Traceability integration
-├── Lots
-├── Supplier lots
-├── Material-lot consumption
-├── Customer traceability
-├── Linking lots to batches
-└── Traceability example
-```
-
-### Main topics
-
-* supplier lot identifiers,
-* internal lot identifiers,
-* material consumption by lot,
-* supplier-to-production traceability,
-* production-to-customer traceability,
-* tracing quality or waste patterns back to source lots.
-
-A useful relationship example is:
-
-```text
-Supplier
-→ Lot
-→ Material usage
-→ Production stage
-→ Batch
-→ Production result
-→ Customer
-```
-
-## 9. End-to-end integration scenarios
-
-This should be one of the most important and accessible sections of the documentation.
-
-Instead of explaining entities only in isolation, it should show how a real production process is translated into PULSE data.
-
-Possible pages:
-
-```text
-Integration scenarios
-├── A typical production day
-├── From work order to completed production
-├── Recording labour and machine time
-├── Capturing a machine stoppage
-├── Recording waste and rejected output
-├── Sending sensor measurements
-├── Correcting production data
-└── Multi-system integration example
-```
-
-### Typical production-day scenario
-
-The primary scenario may follow this sequence:
-
-```text
-1. A production order is created.
-2. The order is scheduled.
-3. Production operations are created.
-4. An operator starts an operation.
-5. A machine begins operating.
-6. Materials are consumed.
-7. Sensors send measurements.
-8. A machine stops unexpectedly.
-9. Production resumes.
-10. Good and rejected quantities are reported.
-11. The order is completed.
-12. PULSE evaluates the complete production context.
-```
-
-Each step should explain four perspectives:
-
-| Perspective   | Description                      |
-| ------------- | -------------------------------- |
-| Production    | What happened in the factory     |
-| Source system | Which system recorded the event  |
-| PULSE model   | Which PULSE entity represents it |
-| API           | Which API operation sends it     |
-
-Example:
-
-| Production event       | Source system   | PULSE entity           | API          |
-| ---------------------- | --------------- | ---------------------- | ------------ |
-| Work order created     | ERP             | Batch                  | To be linked |
-| Operation created      | ERP or MES      | Stage                  | To be linked |
-| Machine started        | MES or SCADA    | Equipment usage period | To be linked |
-| Operator recorded work | MES             | Labour usage period    | To be linked |
-| Temperature captured   | SCADA or sensor | Measurement            | To be linked |
-| Machine stopped        | MES or SCADA    | Downtime               | To be linked |
-| Material consumed      | ERP or MES      | Material usage         | To be linked |
-| Quantity completed     | ERP or MES      | Produced               | To be linked |
-
-This scenario should become the narrative backbone of the documentation.
-
-## 10. Mapping customer data to PULSE
-
-This section should explain how to analyse a customer’s source systems and create a formal mapping.
-
-Possible pages:
-
-```text
-Data mapping
-├── Mapping methodology
-├── ERP-to-PULSE mapping
-├── MES-to-PULSE mapping
-├── SCADA-to-PULSE mapping
-├── IoT-to-PULSE mapping
-├── Typical source-field mappings
-├── Mapping template
-└── Mapping examples
-```
-
-### Main topics
-
-* identifying source entities,
-* identifying source fields,
-* defining PULSE target entities,
-* transformation rules,
-* identifier mappings,
-* unit conversion,
-* status conversion,
-* enumeration mapping,
-* missing source data,
-* default values,
-* derived values.
-
-Example mapping:
-
-| Customer concept     | Typical source               | PULSE concept              |
-| -------------------- | ---------------------------- | -------------------------- |
-| Work order           | ERP production order         | Batch                      |
-| Work-order operation | ERP routing or MES operation | Stage                      |
-| Machine              | Asset register or MES        | Equipment                  |
-| Operator time        | MES terminal                 | Labour usage               |
-| Machine operation    | MES or SCADA                 | Equipment usage            |
-| Sensor reading       | SCADA or IoT platform        | Measurement                |
-| Unplanned stop       | MES or SCADA                 | Downtime                   |
-| Scrap quantity       | ERP or MES                   | Waste or produced quantity |
-| Material issue       | ERP or MES                   | Material usage             |
-
-A reusable mapping worksheet should be included in this section.
-
-## 11. API usage
-
-This section should connect the conceptual model and integration workflows to the actual API.
-
-Possible pages:
-
-```text
-API
-├── API overview
-├── Authentication
-├── Base URLs and environments
-├── Sending master data
-├── Sending transactional data
-├── Reading analyses
-├── Request and response conventions
-├── Pagination
-├── Validation
-├── Error responses
-├── Retries
-├── Idempotency
-└── API reference
-```
-
-### Main topics
-
-* Bearer-token authentication,
-* available environments,
-* content types,
-* request structure,
-* response structure,
-* HTTP status codes,
-* validation errors,
-* retry behaviour,
-* idempotent requests,
-* batch requests,
-* rate limits,
-* reading PULSE results.
-
-The API reference may link to generated Swagger documentation, but the integration guide should provide contextual examples around the endpoints.
-
-## 12. Data synchronization
-
-This section should explain how data is sent initially and kept synchronized over time.
-
-Possible pages:
-
-```text
-Data synchronization
-├── Initial data load
-├── Incremental synchronization
-├── Real-time integration
-├── Scheduled integration
-├── Record ordering
-├── Updates and corrections
-├── Duplicate prevention
-├── Deleted and inactive records
-└── Recovery after interruption
-```
-
-### Main topics
-
-* synchronization order,
-* dependency handling,
-* historical imports,
-* changed-record detection,
-* correction of previously sent records,
-* repeated requests,
-* delayed data,
-* recovery after network or system failure,
-* inactive reference records,
-* synchronization checkpoints.
-
-A recommended sequence may eventually look like:
-
-```text
-1. Synchronize reference data.
-2. Synchronize production structures.
-3. Synchronize production plans.
-4. Synchronize actual production activity.
-5. Synchronize measurements and events.
-6. Validate relationships and completeness.
-```
-
-The exact sequence must be confirmed against the API.
-
-## 13. Data quality
-
-This section should explain why complete and consistent data is required for meaningful PULSE results.
-
-Possible pages:
-
-```text
-Data quality
-├── Why data quality matters
-├── Required production context
-├── Identifier consistency
-├── Timestamp quality
-├── Unit consistency
-├── Missing data
-├── Overlapping periods
-├── Impossible values
-├── Validation checklist
-└── Recommended quality indicators
-```
-
-### Main topics
-
-* missing relationships,
-* inconsistent identifiers,
-* missing production context,
-* invalid timestamps,
-* incorrect time zones,
-* duplicated records,
-* overlapping periods,
-* inconsistent units,
-* impossible quantities,
-* incomplete downtime records,
-* missing production output.
-
-The documentation should distinguish between:
-
-* technically valid data,
-* structurally complete data,
-* and data that is sufficiently meaningful for analysis.
-
-## 14. Testing and validation
-
-This section should explain how an integration is verified before go-live.
-
-Possible pages:
-
-```text
-Testing and validation
-├── Integration-test strategy
-├── Test environment
-├── Minimum test dataset
-├── Master-data validation
-├── Production-flow validation
-├── Sensor-data validation
-├── Correction testing
-├── Failure and retry testing
-└── Acceptance checklist
-```
-
-### Main topics
-
-* minimum viable dataset,
-* test production order,
-* test master data,
-* complete production lifecycle,
-* downtime test,
-* waste test,
-* sensor-measurement test,
-* correction test,
-* retry and duplicate test,
-* final acceptance.
-
-## 15. Troubleshooting
-
-This section should provide practical guidance for common implementation problems.
-
-Possible pages:
-
-```text
-Troubleshooting
-├── Authentication errors
-├── Validation errors
-├── Missing references
-├── Duplicate records
-├── Incorrect units
-├── Incorrect timestamps
-├── Incomplete production context
-├── Sensor-data issues
-└── Support information
-```
-
-The troubleshooting pages should include:
-
-* symptoms,
-* likely causes,
-* resolution steps,
-* related API errors,
-* and links to the relevant conceptual documentation.
-
-## 16. Reference
-
-The reference section should contain detailed material that is useful during implementation but does not need to interrupt the main learning flow.
-
-Possible pages:
-
-```text
-Reference
-├── Glossary
-├── Entity reference
-├── Relationship reference
-├── Field reference
-├── Enumerations
-├── API reference
-├── Example payloads
-├── Mapping worksheets
-└── Changelog
-```
-
-# Proposed initial public navigation
-
-The full structure is intended as a long-term content plan. The initial public navigation should remain smaller and easier to understand.
+The documentation should:
+
+- explain only the concepts required for the current task,
+- place practical instructions before detailed theory,
+- use one complete operational example,
+- link business activities to Pulse entities and API operations,
+- keep detailed field and endpoint information in the API reference,
+- and move advanced topics into dedicated pages only when enough confirmed information is available.
+
+## Initial public navigation
 
 ```yaml
 nav:
   - Home: index.md
 
-  - Getting started:
+  - Get started:
       - Integration overview: getting-started/index.md
-      - Architecture: getting-started/architecture.md
-      - Integration responsibilities: getting-started/responsibilities.md
-      - Implementation roadmap: getting-started/implementation-roadmap.md
+      - Authenticate: getting-started/authentication.md
+      - Send your first data: getting-started/first-request.md
+      - Validate the result: getting-started/validation.md
 
-  - PULSE data model:
-      - Overview: data-model/index.md
-      - Entity relationships: data-model/entity-relationships.md
-      - Master data: data-model/master-data.md
-      - Production model: data-model/production.md
-      - Planned and actual data: data-model/plan-and-actual.md
-      - Measurements: data-model/measurements.md
-      - Traceability: data-model/traceability.md
+  - Integration workflow:
+      - Map your data: integration/index.md
+      - Synchronize master data: integration/master-data.md
+      - Send operational activity: integration/operational-data.md
+      - Send measurements: integration/measurements.md
+      - Handle updates and errors: integration/updates-and-errors.md
 
-  - Integration guide:
-      - Prepare the integration: integration/preparation.md
-      - Master data: integration/master-data.md
-      - Production data: integration/production.md
-      - Sensor data: integration/sensor-data.md
-      - Traceability data: integration/traceability.md
-      - Data synchronization: integration/synchronization.md
+  - Example:
+      - Typical operational day: scenarios/typical-operational-day.md
 
-  - Integration scenarios:
-      - Typical production day: scenarios/typical-production-day.md
-      - Work order lifecycle: scenarios/work-order-lifecycle.md
-      - Machine downtime: scenarios/machine-downtime.md
-      - Sensor capture: scenarios/sensor-capture.md
-      - Waste and quality: scenarios/waste-and-quality.md
+  - Data model:
+      - Core concepts: data-model/index.md
+      - Entity relationships: data-model/relationships.md
 
-  - Mapping:
-      - Mapping customer systems: mapping/index.md
-      - ERP mapping: mapping/erp.md
-      - MES mapping: mapping/mes.md
-      - SCADA and IoT mapping: mapping/scada-iot.md
-      - Mapping template: mapping/template.md
+  - API reference: api/index.md
 
-  - API:
-      - API overview: api/index.md
-      - Authentication: api/authentication.md
-      - Requests and responses: api/conventions.md
-      - Error handling: api/errors.md
-      - API reference: api/reference.md
-
-  - Implementation:
-      - Data quality: implementation/data-quality.md
-      - Testing: implementation/testing.md
-      - Troubleshooting: implementation/troubleshooting.md
-      - Go-live checklist: implementation/go-live-checklist.md
-
-  - Reference:
-      - Glossary: reference/glossary.md
-      - Entity reference: reference/entities.md
-      - Relationship reference: reference/relationships.md
-      - Example payloads: reference/examples.md
+  - Troubleshooting: troubleshooting.md
 ```
 
-# Proposed initial repository structure
+## Initial repository structure
 
 ```text
 docs/
 ├── index.md
 │
 ├── getting-started/
-│   ├── overview.md
-│   ├── architecture.md
-│   ├── responsibilities.md
-│   └── implementation-roadmap.md
+│   ├── index.md
+│   ├── authentication.md
+│   ├── first-request.md
+│   └── validation.md
+│
+├── integration/
+│   ├── index.md
+│   ├── master-data.md
+│   ├── operational-data.md
+│   ├── measurements.md
+│   └── updates-and-errors.md
+│
+├── scenarios/
+│   └── typical-operational-day.md
 │
 ├── data-model/
 │   ├── index.md
-│   ├── entity-relationships.md
-│   ├── master-data.md
-│   ├── production.md
-│   ├── plan-and-actual.md
-│   ├── measurements.md
-│   └── traceability.md
-│
-├── integration/
-│   ├── preparation.md
-│   ├── master-data.md
-│   ├── production.md
-│   ├── sensor-data.md
-│   ├── traceability.md
-│   └── synchronization.md
-│
-├── scenarios/
-│   ├── typical-production-day.md
-│   ├── work-order-lifecycle.md
-│   ├── machine-downtime.md
-│   ├── sensor-capture.md
-│   └── waste-and-quality.md
-│
-├── mapping/
-│   ├── index.md
-│   ├── erp.md
-│   ├── mes.md
-│   ├── scada-iot.md
-│   └── template.md
+│   └── relationships.md
 │
 ├── api/
-│   ├── index.md
-│   ├── authentication.md
-│   ├── conventions.md
-│   ├── errors.md
-│   └── reference.md
+│   └── index.md
 │
-├── implementation/
-│   ├── data-quality.md
-│   ├── testing.md
-│   ├── troubleshooting.md
-│   └── go-live-checklist.md
-│
-├── reference/
-│   ├── glossary.md
-│   ├── entities.md
-│   ├── relationships.md
-│   └── examples.md
+├── troubleshooting.md
 │
 └── assets/
     ├── diagrams/
@@ -810,30 +96,288 @@ docs/
     └── examples/
 ```
 
-# Minimum viable documentation
+## Page purpose
 
-The first public version should not attempt to cover every planned section.
+### Home
 
-A useful initial version could contain:
+The home page should briefly explain:
 
-1. Integration overview
-2. Integration architecture
-3. PULSE data-model overview
-4. Entity relationships
-5. A typical production day
-6. Mapping customer data to PULSE
-7. Authentication
-8. Initial API examples
-9. Data-quality checklist
-10. Glossary
+- what Pulse is,
+- what the integration does,
+- who the documentation is for,
+- and where a new integrator should begin.
 
-This would provide a complete basic path:
+It should not contain detailed data-model or API information.
+
+### Get started
+
+This section should help a developer make the first successful API request.
+
+#### Integration overview
+
+Explains:
+
+- how customer data reaches Pulse,
+- typical source systems,
+- the minimum integration requirements,
+- the responsibilities of the customer, integrator, and Pulse,
+- and the high-level implementation sequence.
+
+The requirements remain inside this page unless they later become detailed enough to require a separate article.
+
+#### Authenticate
+
+Explains:
+
+- how credentials are obtained,
+- how authentication is added to a request,
+- which environments are available,
+- and how to verify that authentication works.
+
+#### Send your first data
+
+Provides the smallest complete request that can be sent safely.
+
+The page should include:
+
+- the purpose of the request,
+- the endpoint,
+- required headers,
+- a minimal payload,
+- an example response,
+- and common mistakes.
+
+The exact example will be selected after the Pulse Swagger definition is reviewed.
+
+#### Validate the result
+
+Explains how to confirm that:
+
+- the request was accepted,
+- the record was stored or processed,
+- referenced entities were resolved,
+- and the submitted data is usable by Pulse.
+
+### Integration workflow
+
+This section explains how to move from the first successful request to a complete integration.
+
+#### Map your data
+
+Explains how to:
+
+- identify source systems,
+- identify authoritative records,
+- map customer concepts to Pulse entities,
+- define identifiers,
+- map units, timestamps, statuses, and enumerations,
+- and document unresolved mappings.
+
+A Pulse batch must not be described only as a production order. It is a broader unit of business activity and may be used in production, supply, logistics, or another operational context.
+
+#### Synchronize master data
+
+Explains which reference records generally need to exist before operational records are sent.
+
+Examples may include:
+
+- organizational structures,
+- plants and locations,
+- equipment,
+- products and materials,
+- customers and suppliers,
+- shifts,
+- measurement types,
+- downtime classifications,
+- and waste classifications.
+
+The final list and synchronization order must be confirmed against the API.
+
+#### Send operational activity
+
+Explains how to send business activity and execution records.
+
+Depending on the supported Pulse model, this may include:
+
+- batches,
+- stages,
+- plans,
+- actual activity,
+- labour and equipment usage,
+- material and energy usage,
+- quantities and results,
+- downtime,
+- delays,
+- waste,
+- and expenses.
+
+Production should be used as the primary example, but the documentation should not imply that Pulse is limited to production.
+
+#### Send measurements
+
+Explains how to send sensor, machine, process, and environmental measurements.
+
+The page should cover:
+
+- measurement type,
+- value and unit,
+- timestamp,
+- related Pulse entity,
+- sampling or aggregation rules,
+- and how measurements receive operational context.
+
+#### Handle updates and errors
+
+Explains:
+
+- updates and corrections,
+- repeated requests,
+- duplicate prevention,
+- retries,
+- validation failures,
+- missing references,
+- inactive or deleted records,
+- and recovery after interrupted synchronization.
+
+### Example
+
+#### Typical operational day
+
+This page should provide one complete end-to-end scenario.
+
+Production may be used as the first example because it is well represented in the current URS, but the scenario should explain that the same core concepts may apply to other operational domains.
+
+Each step should show:
+
+| Perspective | Description |
+| --- | --- |
+| Business activity | What happened in the company |
+| Source system | Which system recorded it |
+| Pulse model | Which Pulse entity represents it |
+| API | Which operation sends it |
+
+A possible production-oriented sequence is:
 
 ```text
- Understand PULSE
- → Understand the data model
- → Understand the production scenario
- → Map the customer system
- → Send data through the API
- → Validate the integration
+1. A business or production activity is created.
+2. The activity is planned.
+3. Its stages or steps are defined.
+4. Execution begins.
+5. Labour, equipment, materials, and measurements are recorded.
+6. A delay or downtime event occurs.
+7. Execution resumes.
+8. Results, quantities, waste, or costs are recorded.
+9. The activity is completed.
+10. Pulse evaluates the complete context.
 ```
+
+### Data model
+
+#### Core concepts
+
+Provides only the concepts required to understand the integration workflow.
+
+Initial concepts may include:
+
+- batch,
+- stage,
+- plan and actual activity,
+- master data,
+- usage records,
+- measurements,
+- downtime and delays,
+- waste,
+- traceability,
+- and entity identifiers.
+
+Detailed entity-by-entity descriptions should not be added unless they are needed outside the API reference.
+
+#### Entity relationships
+
+Shows how the main Pulse entities are connected.
+
+The page should focus on relationships that affect:
+
+- synchronization order,
+- required references,
+- data mapping,
+- and validation.
+
+### API reference
+
+The API reference should contain or link to:
+
+- Swagger or OpenAPI documentation,
+- endpoints,
+- request parameters,
+- schemas,
+- required fields,
+- example requests and responses,
+- authentication requirements,
+- status codes,
+- and validation errors.
+
+Conceptual guidance should remain in the task-oriented pages rather than being duplicated in the API reference.
+
+### Troubleshooting
+
+This page should provide short, practical solutions for common integration problems, including:
+
+- authentication failures,
+- invalid requests,
+- missing references,
+- duplicate records,
+- incorrect identifiers,
+- incorrect timestamps or units,
+- incomplete operational context,
+- measurement problems,
+- and retry failures.
+
+## Minimum viable documentation
+
+The first useful public version should contain:
+
+1. Integration overview
+2. Authentication
+3. First API request
+4. Result validation
+5. Data mapping
+6. Master-data synchronization
+7. Operational activity
+8. Measurement submission
+9. One complete operational example
+10. Core data-model concepts
+11. Entity relationships
+12. API reference
+13. Troubleshooting
+
+This provides the following reader journey:
+
+```text
+Understand Pulse
+→ Meet the requirements
+→ Authenticate
+→ Send one request
+→ Confirm that it worked
+→ Map the customer system
+→ Build the complete integration
+```
+
+## Future expansion
+
+The documentation may later add dedicated pages for:
+
+- additional operational scenarios,
+- advanced synchronization patterns,
+- detailed traceability,
+- high-frequency measurements,
+- testing and go-live checklists,
+- mapping templates,
+- complete entity reference,
+- field reference,
+- enumerations,
+- SDK examples,
+- webhooks or event notifications,
+- and changelogs.
+
+These pages should be added only when they provide clear implementation value and enough confirmed information is available.

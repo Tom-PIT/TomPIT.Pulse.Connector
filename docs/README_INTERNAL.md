@@ -1,37 +1,36 @@
-# PULSE Integration Documentation – Internal Information
+# Pulse Integration Documentation – Internal Information
 
 ## Purpose of this repository
 
-This repository will contain the public technical documentation for integrating external customer systems with **PULSE**.
+This repository contains the public technical documentation for integrating external customer systems with **Pulse**.
 
-PULSE receives operational and production data from customer systems and uses that data to generate analyses, signals, and recommendations.
+Pulse receives operational data from customer systems and uses it to generate analyses, signals, and recommendations.
 
-The purpose of the documentation is therefore not only to describe API endpoints. It must explain how real production processes and source-system records are translated into the PULSE data model.
-
+The documentation must therefore do more than describe API endpoints. It should explain how customer records map to the Pulse data model, how related records are connected, and how integrators can send valid data with as little friction as possible.
 
 > [!NOTE]
-> For more information on project structure, see [Project Structure](ProjectStructure.md).
+> For the current navigation and repository layout, see [Project Structure](ProjectStructure.md).
 
 The documentation should help integrators understand:
 
-* which data PULSE needs,
-* where that data typically originates,
-* how source-system records map to PULSE entities,
-* how different records are related,
-* in which order data should be synchronized,
-* how data should be sent through the API,
-* how updates and corrections should be handled,
-* and how data quality affects the value produced by PULSE.
+* what data Pulse needs,
+* where that data usually originates,
+* how customer records map to Pulse entities,
+* how related records are connected,
+* how to authenticate and send data,
+* how to validate the result,
+* how updates and corrections are handled,
+* and how data quality affects Pulse results.
 
-The main documentation flow should be:
+The intended reader journey is:
 
 ```text
-Customer production process
-→ Source systems
-→ Data mapping
-→ PULSE API
-→ PULSE data model
-→ Analysis and recommendations
+Understand the integration
+→ Meet the requirements
+→ Authenticate
+→ Send the first data
+→ Validate the result
+→ Build the complete integration
 ```
 
 ## Target audience
@@ -45,173 +44,189 @@ The documentation is intended primarily for:
 * solution architects,
 * software developers,
 * implementation consultants,
-* internal PULSE developers,
+* internal Pulse developers,
 * and internal domain experts.
 
-Different readers will need different levels of detail.
+The first public version should be task-oriented and concise. It should help a developer complete one small successful integration before introducing advanced concepts or the full data model.
 
-An integration architect may first need to understand the overall production and data model, while a developer will eventually need exact API endpoints, payloads, validation rules, and error-handling instructions.
+## Documentation layers
 
-For this reason, the documentation should be divided into three main layers:
+The documentation should be divided into three practical layers.
 
-### Conceptual documentation
+### Getting started
 
-Explains what the data represents and how the entities are related.
+Helps the developer complete the first successful API interaction.
 
 Examples:
 
-* what a batch represents,
-* what a production stage represents,
-* what the difference is between planned and actual data,
-* how machines, labour, materials, output, waste, and downtime are connected.
+* integration overview,
+* requirements,
+* authentication,
+* first request,
+* result validation.
 
 ### Integration guidance
 
-Explains what the customer or integrator needs to implement.
+Explains how to build the real integration.
 
 Examples:
 
-* how to identify source systems,
-* how to map identifiers,
-* how to synchronize master data,
-* how to send production transactions,
-* how to handle delayed or corrected records.
+* mapping customer data,
+* synchronizing master data,
+* sending operational activity,
+* sending measurements,
+* handling updates and errors.
 
 ### API reference
 
-Explains the exact technical implementation.
+Explains the exact technical contract.
 
 Examples:
 
 * endpoints,
-* authentication,
-* request payloads,
-* response payloads,
+* authentication requirements,
+* request and response schemas,
 * required fields,
+* status codes,
 * validation rules,
-* error responses.
+* example payloads.
 
-Swagger documentation will primarily support the API-reference layer. The remaining documentation must explain the business context and integration process around the API.
+Swagger documentation will primarily support the API-reference layer. The task-oriented documentation must explain when and why to use the API operations.
 
 # Minimum viable documentation
 
-The first public version should not attempt to cover every planned section.
+The first public version should contain only the pages needed to guide a developer through a working integration.
 
-A useful initial version could contain:
+A useful initial version should include:
 
 1. Integration overview
-2. Integration architecture
-3. PULSE data-model overview
-4. Entity relationships
-5. A typical production day
-6. Mapping customer data to PULSE
-7. Authentication
-8. Initial API examples
-9. Data-quality checklist
-10. Glossary
+2. Authentication
+3. First API request
+4. Result validation
+5. Data mapping
+6. Master-data synchronization
+7. Operational activity
+8. Measurement submission
+9. One complete operational example
+10. Core data-model concepts
+11. Entity relationships
+12. API reference
+13. Troubleshooting
 
-This would provide a complete basic path:
+This provides the following basic path:
 
- ```text
- Understand PULSE
- → Understand the data model
- → Understand the production scenario
- → Map the customer system
- → Send data through the API
- → Validate the integration
- ```
+```text
+Understand Pulse
+→ Authenticate
+→ Send one request
+→ Confirm that it worked
+→ Map the customer system
+→ Build the complete integration
+```
+
+Detailed entity pages, advanced synchronization patterns, extensive testing theory, and full field references should be added only when they provide clear implementation value.
 
 # Content-development approach
 
-The documentation should be developed in the following order.
-
-## Phase 1: Understand the model
+## Phase 1: Confirm the core model
 
 * review the URS,
-* identify all relevant PULSE entities,
-* document their relationships,
-* identify unresolved terminology,
-* confirm unclear relationships with domain experts.
+* identify the entities required for a minimal integration,
+* confirm the meaning of Batch and Stage,
+* document the relationships required for synchronization,
+* identify unresolved terminology.
 
-## Phase 2: Define the production story
+## Phase 2: Define the first working scenario
 
-* describe a realistic production day,
-* identify the systems that create each record,
-* map each event to a PULSE entity,
-* identify missing information,
-* confirm the intended PULSE interpretation.
+* select one small, safe API example,
+* define the required source data,
+* map the example to Pulse entities,
+* document the expected request and response,
+* define how the result is validated.
 
-## Phase 3: Connect the story to the API
+## Phase 3: Connect the workflow to the API
 
 * review Swagger documentation,
-* identify relevant endpoints,
-* connect each production event to an API operation,
+* identify the relevant endpoints,
 * create example requests and responses,
-* document required synchronization order.
+* document authentication,
+* document required synchronization order,
+* document update and correction behaviour.
 
-## Phase 4: Add implementation guidance
+## Phase 4: Add integration guidance
 
-* authentication,
-* synchronization,
+* customer-data mapping,
 * identifiers,
-* timestamps,
+* timestamps and time zones,
 * units,
-* corrections,
+* master-data synchronization,
+* operational activity,
+* measurements,
+* updates,
 * retries,
 * validation,
-* data quality,
-* testing.
+* troubleshooting.
 
 ## Phase 5: Publish and expand
 
-* create the public GitHub repository,
-* configure MkDocs Material,
-* configure GitHub Pages,
+* maintain the MkDocs site,
 * publish the minimum viable documentation,
-* expand individual entity and API pages over time.
+* add more examples only when confirmed,
+* expand the API and data-model sections as implementation details become available.
 
-# Open questions
+# First-stage open questions
 
-The following points require confirmation before the related documentation can be finalized:
+The following questions should be answered first because they directly affect the initial documentation and API examples:
 
-* Does a customer work order always map to a PULSE batch?
-* Does a work-order operation always map to a PULSE stage?
-* Who generates PULSE entity identifiers?
-* Are customer identifiers preserved directly?
-* How are records updated or corrected?
-* Is the API based on create, update, or upsert operations?
-* How are duplicate requests detected?
-* Is record deletion supported?
-* How are inactive master-data records handled?
-* In which order must entities be synchronized?
-* Which timestamp format and time-zone rules apply?
-* Which units and currencies are supported?
-* Which values are allowed for measurement dimensions?
-* How are measurements linked to current production?
-* Does labour represent individual employees, roles, teams, or all three?
-* How should rejected production, scrap, rework, and waste be distinguished?
-* How should downtime, delays, and maintenance events be distinguished?
-* Which analyses and recommendations can customers retrieve through the API?
-* Which parts of the Swagger reference will be embedded, linked, or documented manually?
+1. **What does a Pulse batch represent?**  
+   We know it is not limited to production, but we need a clear definition and valid examples.
 
- These questions should be tracked and answered through API review and discussions with the relevant domain experts.
+2. **What does a Pulse stage represent?**  
+   Is it always a step within a batch, and can it be used outside production?
+
+3. **Which entities are required for the smallest valid integration?**  
+   This determines what the first request should contain.
+
+4. **How are customer records identified in Pulse?**  
+   Does the customer send its own identifier, does Pulse generate one, or are both stored?
+
+5. **In which order must data be sent?**  
+   For example, must master data exist before batches, stages, measurements, or usage records?
+
+6. **How are records created and later corrected?**  
+   We need to know whether the API uses create, update, patch, or upsert behaviour.
+
+7. **Which timestamp and time-zone rules apply?**  
+   This is essential for activity, measurements, downtime, and usage periods.
+
+8. **How are measurements linked to business activity?**  
+   Are they linked directly to equipment, a batch, a stage, or inferred from timestamps?
+
+9. **How should good output, rejected output, scrap, rework, and waste be represented?**  
+   These concepts must not be mixed.
+
+10. **Which analyses or recommendations can customers retrieve through the API?**  
+    This clarifies the output side of the integration and the value that can be demonstrated.
+
+Additional questions should be added only when they become necessary during Swagger review or content development.
 
 # Internal documentation principles
 
 The public documentation should:
 
-* explain concepts before presenting endpoints,
-* use realistic production examples,
-* keep terminology consistent with the PULSE data model,
-* identify common customer terminology where it differs,
-* clearly separate planned and actual data,
-* clearly separate master data and transactional data,
-* show relationships visually whenever useful,
-* include source-to-PULSE mapping tables,
-* include complete end-to-end examples,
-* link API operations to production events,
+* be direct and task-oriented,
+* help the reader complete a successful request early,
+* explain only the concepts required for the current task,
+* keep terminology consistent with the Pulse data model,
+* avoid treating Batch as a production-only concept,
+* use production as an example without implying that Pulse is limited to production,
+* clearly separate master data and operational data,
+* clearly separate planned and actual data where relevant,
+* use source-to-Pulse mapping tables,
+* include one complete end-to-end example,
+* link API operations to business activities,
 * distinguish confirmed behaviour from assumptions,
 * avoid exposing internal-only implementation details,
-* and remain understandable to integrators who are not familiar with PULSE.
+* and remain understandable to integrators who are not familiar with Pulse.
 
-The internal README and [Project Structure](ProjectStructure.md) should be updated as the structure evolves and as open questions are resolved.
+The internal README and [Project Structure](ProjectStructure.md) should be updated as the structure evolves and open questions are resolved.
