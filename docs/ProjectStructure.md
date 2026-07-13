@@ -4,6 +4,10 @@ This is a proposed structure for the PULSE integration documentation. It is inte
 
 For information about the project’s purpose and target audience, see [README_INTERNAL.md](README_INTERNAL.md).
 
+# Long-term documentation plan
+
+The sections below describe the long-term content scope. Several topics may initially be combined into broader pages and split into dedicated pages only when enough confirmed content is available.
+
 ## 1. Introduction
 
 The introduction should explain what PULSE is, what an integration provides, and how to use the documentation.
@@ -682,7 +686,7 @@ nav:
   - Home: index.md
 
   - Getting started:
-      - Integration overview: getting-started/overview.md
+      - Integration overview: getting-started/index.md
       - Architecture: getting-started/architecture.md
       - Integration responsibilities: getting-started/responsibilities.md
       - Implementation roadmap: getting-started/implementation-roadmap.md
@@ -738,7 +742,7 @@ nav:
       - Example payloads: reference/examples.md
 ```
 
-# Proposed repository structure
+# Proposed initial repository structure
 
 ```text
 docs/

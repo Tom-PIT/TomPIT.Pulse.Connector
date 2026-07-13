@@ -49,7 +49,7 @@ This documentation is intended for:
 
 Begin with the following sections:
 
-* [Integration overview](getting-started/overview.md)
+* [Integration overview](getting-started/index.md)
 * [Integration architecture](getting-started/architecture.md)
 * [PULSE data model](data-model/index.md)
 * [A typical production day](scenarios/typical-production-day.md)
