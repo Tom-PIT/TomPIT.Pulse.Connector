@@ -205,7 +205,7 @@ The following questions should be answered first because they directly affect th
 9. **How should good output, rejected output, scrap, rework, and waste be represented?**  
    These concepts must not be mixed.
 
-10. **Which analyses or recommendations can customers retrieve through the API?**  
+10. **Are Pulse recommendations only presented to users, or can Pulse also trigger actions in connected customer systems?**  
     This clarifies the output side of the integration and the value that can be demonstrated.
 
 Additional questions should be added only when they become necessary during Swagger review or content development.
