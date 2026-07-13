@@ -6,12 +6,14 @@ site_dir: site
 
 theme:
   name: material
+  logo: assets/pulse-logo.svg
+  favicon: assets/favicon.png
   language: en
 
   features:
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.sections
+   ## - navigation.tabs
+   ## - navigation.tabs.sticky
+   ## - navigation.sections
     - navigation.indexes
     - navigation.top
     - content.code.copy
