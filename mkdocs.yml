@@ -7,13 +7,31 @@ site_dir: site
 theme:
   name: material
   language: en
+
   features:
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.indexes
     - navigation.top
     - content.code.copy
     - search.suggest
     - search.highlight
+
+  palette:
+    - scheme: pulse
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+  font:
+    text: Inter
+    code: Roboto Mono
 
 markdown_extensions:
   - admonition
@@ -31,10 +49,32 @@ markdown_extensions:
 plugins:
   - search
 
+extra_css:
+  - stylesheets/extra.css
+
 nav:
   - Home: index.md
+
   - Getting started:
-      - Overview: getting-started/index.md
-      - Prerequisites: getting-started/prerequisites.md
-      - Validation: getting-started/validation.md
+      - Integration overview: getting-started/index.md
+      - Authentication: getting-started/authentication.md
       - First request: getting-started/first-request.md
+      - Validation: getting-started/validation.md
+
+  - Integration:
+      - Map your data: integration/index.md
+      - Master data: integration/master-data.md
+      - Operational data: integration/operational-data.md
+      - Measurements: integration/measurements.md
+      - Updates and errors: integration/updates-and-errors.md
+
+  - Scenarios:
+      - Typical production day: scenarios/typical-operational-day.md
+
+  - Data model:
+      - Overview: data-model/index.md
+      - Entity relationships: data-model/relationships.md
+
+  - API reference: api/index.md
+
+  - Troubleshooting: troubleshooting.md
