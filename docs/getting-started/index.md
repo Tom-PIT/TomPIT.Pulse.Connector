@@ -67,13 +67,12 @@ Start with a small, complete scenario:
 ## Next steps
 
 - [Authentication](authentication.md)
-- [Send your first request](send-your-first-request.md)
-- [Map your data](integration/index.md)
-- [Master data](integration/master-data.md)
-- [Operational data](integration/operational-data.md)
-- [Measurements](integration/measurements.md)
-- [API reference](api-reference.md)
-
+- [Send your first request](first-request.md)
+- [Map your data](../integration/index.md)
+- [Master data](../integration/master-data.md)
+- [Operational data](../integration/operational-data.md)
+- [Measurements](../integration/measurements.md)
+- [API reference](../api/index.md)
 
 
 
