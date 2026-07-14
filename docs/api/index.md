@@ -6,7 +6,7 @@ This page provides an index of the available API families and services. Use [Sca
 
 <div class="grid cards" markdown>
 
-- [Open the complete API reference in Scalar](#)
+- [**Open the complete API reference in Scalar**](#)
 
 </div>
 
