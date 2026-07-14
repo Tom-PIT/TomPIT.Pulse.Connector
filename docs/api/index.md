@@ -6,21 +6,6 @@ This page provides an index of the available API families and services. Use [Sca
 
 [Open the complete API reference in Scalar](#)
 
-## Using this reference
-
-Use this page to identify the relevant API family and service.
-
-Open the service in Scalar to inspect:
-
-- available operations,
-- request fields and data types,
-- query parameters,
-- allowed values,
-- response schemas,
-- and example requests where available.
-
-Use Scalar to inspect and test individual requests. Use integration code for continuous or high-volume data exchange.
-
 ## API families
 
 <div class="grid cards" markdown>
@@ -35,6 +20,21 @@ Use Scalar to inspect and test individual requests. Use integration code for con
 -   [**Frontend**](#frontend)
 
 </div>
+
+## Using this reference
+
+Use this page to identify the relevant API family and service.
+
+Open the service in Scalar to inspect:
+
+- available operations,
+- request fields and data types,
+- query parameters,
+- allowed values,
+- response schemas,
+- and example requests where available.
+
+Use Scalar to inspect and test individual requests. Use integration code for continuous or high-volume data exchange.
 
 ## API conventions
 
