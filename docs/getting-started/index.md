@@ -1,78 +1,80 @@
-# Integration overview
+# Getting started
 
-The Pulse API receives operational data from customer systems and maps it to the Pulse data model.
+The Pulse API is a REST API for submitting operational data and retrieving Pulse results.
 
-Pulse uses this data to connect business activities, identify patterns, evaluate their impact, and generate recommendations.
+The API uses resource-oriented endpoints, accepts JSON request bodies, returns JSON responses, and uses standard HTTP methods and status codes.
 
-```text
-Customer systems
-→ Data mapping
-→ Pulse API
-→ Pulse data model
-→ Analyses and recommendations
+Authentication is handled with bearer tokens.
+
+## API access
+
+To start an integration, you need:
+
+- the Pulse API base URL,
+- a valid bearer token,
+- the Pulse OpenAPI specification  (`openapi.json`),
+- access to the relevant source data in your organization.
+
+The OpenAPI specification describes the available endpoints, request fields, parameters, authentication requirements, and response schemas.
+
+You can import the specification into [Scalar](https://scalar.com/) to inspect and test individual API requests.
+
+Scalar is intended for API exploration and testing. Production data exchange should be implemented in an integration service, application, script, middleware process, or another automated workflow.
+
+## Authentication
+
+Send the bearer token in the `Authorization` header:
+
+```
+Authorization: Bearer <access-token>
 ```
 
-Typical source systems include ERP, MES, SCADA, IoT, maintenance, quality, logistics, and supply-chain applications.
+See [Authentication](authentication.md) for details.
 
-## Before you start
-
-You need:
-
-- access to the Pulse API,
-- valid authentication credentials,
-- a system or service that can send API requests,
-- access to the relevant customer data,
-- stable identifiers for related records,
-- and an initial mapping between customer data and Pulse entities.
-
-See:
-
-- [Authenticate](authentication.md)
-- [Map your data](../integration/index.md)
-- [Pulse data model](../data-model/index.md)
-- [API reference](../api/index.md)
-
-## Prepare your data
-
-Identify which customer systems contain the required operational data and which system is the authoritative source for each record.
-
-Then map customer concepts—such as business activities, operations, equipment, material usage, downtime, and measurements—to the corresponding Pulse entities.
-
-See [Integration](../integration/index.md) for details.
-
-## Responsibilities
-
-The customer or integrator is responsible for:
-
-- identifying source systems,
-- mapping customer records to Pulse,
-- maintaining consistent identifiers,
-- sending valid data,
-- and handling updates and corrections.
-
-Pulse is responsible for:
-
-- authenticating and validating requests,
-- storing submitted source data,
-- connecting related entities,
-- and generating analyses and recommendations.
-
-## Integration workflow
+## Data flow
 
 A typical integration follows this sequence:
 
-1. Identify the relevant source systems and data.
-2. [Map customer records to Pulse](../integration/index.md).
-3. [Synchronize the required master data](../integration/master-data.md).
-4. [Send operational activity](../integration/operational-data.md).
-5. [Send measurements](../integration/measurements.md).
-6. [Validate the result](validation.md).
-7. [Handle updates and errors](../integration/updates-and-errors.md).
+```
+Source data
+→ Data mapping
+→ Master data
+→ Operational data
+→ Measurements
+→ Validation
+```
+
+Reference records should normally be created before records that depend on them.
+
+For example:
+
+- Measure unit → Product
+
+- Plant → Production line → Batch → Stage
+
+## First integration
+
+Start with a small, complete scenario:
+
+1. Authenticate.
+2. Test a read-only request.
+3. Create the required master data.
+4. Submit one operational record.
+5. Store the returned Pulse identifiers.
+6. Validate the submitted data.
+7. Automate the same flow in integration code.
 
 ## Next steps
 
-- [Authenticate](authentication.md)
-- [Send your first data](first-request.md)
-- [Typical operational day](../scenarios/typical-operational-day.md)
-- [Pulse data model](../data-model/index.md)
-- [API reference](../api/index.md)
+- [Authentication](authentication.md)
+- [Send your first request](send-your-first-request.md)
+- [Map your data](integration/index.md)
+- [Master data](integration/master-data.md)
+- [Operational data](integration/operational-data.md)
+- [Measurements](integration/measurements.md)
+- [API reference](api-reference.md)
+
+
+
+
+
