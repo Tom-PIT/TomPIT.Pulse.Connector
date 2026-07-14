@@ -82,3 +82,35 @@
     object-fit: contain;
     display: block;
 }
+
+/* Consistent full-width tables */
+.md-typeset__table {
+    display: block;
+    width: 100%;
+}
+
+    .md-typeset__table table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    /* API reference column widths */
+    .md-typeset__table th:nth-child(1),
+    .md-typeset__table td:nth-child(1) {
+        width: 28%;
+    }
+
+    .md-typeset__table th:nth-child(2),
+    .md-typeset__table td:nth-child(2) {
+        width: 37%;
+    }
+
+    .md-typeset__table th:nth-child(3),
+    .md-typeset__table td:nth-child(3) {
+        width: 35%;
+    }
+
+    .md-typeset__table code {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
