@@ -35,13 +35,13 @@ See [Authentication](authentication.md) for details.
 
 A typical integration follows this sequence:
 
-```
-Source data
-→ Data mapping
-→ Master data
-→ Operational data
-→ Measurements
-→ Validation
+``` mermaid
+graph LR
+  A[Source data] --> B[Data mapping]
+  B --> C[Master data]
+  C --> D[Operational data]
+  D --> E[Measurements]
+  E --> F[Verify submitted data]
 ```
 
 Reference records should normally be created before records that depend on them.

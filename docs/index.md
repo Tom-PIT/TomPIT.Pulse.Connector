@@ -4,13 +4,12 @@ Pulse uses operational data from source systems to connect business activities, 
 
 This documentation explains how to map source data to the Pulse data model and send it through the Pulse API.
 
-``` mermaid
+``` mermaid 
 graph LR
-  A[Source systems]
-  --> B[Data mapping] 
-  --> C[Pulse API] 
-  --> D[Pulse data model]
-  --> E[Analyses and recommendations];
+  A[Source systems] --> B[Data mapping]
+  B --> C[Pulse API]
+  C --> D[Pulse data model]
+  D --> E[Analyses and recommendations]
 ```
 
 Pulse can receive data from ERP, MES, SCADA, IoT, maintenance, quality, logistics, supply-chain, and other operational systems.
