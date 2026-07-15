@@ -1,12 +1,12 @@
-# Master data and code lists
+# Master data
 
-Master data and code lists define the reference records used by operational data submitted to Pulse.
+Master data defines the reference records used by operational data submitted to Pulse.
 
 They include plants, production lines, products, materials, equipment, shifts, units of measure, suppliers, and classification records such as downtime types and waste types.
 
 Synchronize the required code lists before submitting operational records that reference them.
 
-## Available master data and code lists
+## Available master data
 
 ### Organization and production structure
 
@@ -69,22 +69,23 @@ Some master-data records refer to other master-data records.
 
 ```mermaid
 graph LR
-  A[Measure unit] --> B[Product]
-  A --> C[Material]
-  A --> D[Energy source]
-  E[Plant] --> F[Production line]
-  G[Downtime category] --> H[Downtime type]
-  A --> I[Ambient type]
+  A[Product] --> B[Measure unit]
+  C[Material] --> B[Measure unit]
+  D[Energy source] --> B[Measure unit]
+  I[Ambient type] --> B[Measure unit]
+  F[Production line] --> E[Plant]
+  H[Downtime type] --> G[Downtime category]
+  
 ```
 
 For example:
 
 - a production line references a plant;
-- a product references a unit of measure;
-- a material references a unit of measure;
-- an energy source references a unit of measure;
+- a product references a measure unit;
+- a material references a measure unit;
+- an energy source references a measure unit;
 - a downtime type references a downtime category;
-- an ambient type references a unit of measure.
+- an ambient type references a measure unit.
 
 Create or retrieve the referenced record before submitting the dependent record.
 
