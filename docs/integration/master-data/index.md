@@ -1,8 +1,8 @@
 # Master data
 
-Master data defines the reference records used by operational data submitted to Pulse.
+Master data defines the relatively stable business entities and code lists referenced by operational data submitted to Pulse.
 
-They include plants, production lines, products, materials, equipment, shifts, units of measure, suppliers, and classification records such as downtime types and waste types.
+It includes plants, production lines, products, materials, equipment, shifts, units of measure, suppliers, and classification records such as downtime types and waste types.
 
 Synchronize the required code lists before submitting operational records that reference them.
 
@@ -22,8 +22,8 @@ Synchronize the required code lists before submitting operational records that r
 | Resource | Purpose |
 | --- | --- |
 | **Product** | Represents an output or item produced during an activity. |
-| **Material** | Represents material consumed or referenced during an activity. |
-| **Measure unit** | Defines the unit used for quantities and measurements. |
+| [**Material**](material.md) | Represents material consumed or referenced during an activity. |
+| [**Measure unit**](measure-unit.md) | Defines the unit used for quantities and measurements. |
 | **Labour** | Represents a labour category or resource used during an activity. |
 | **Energy source** | Represents a type of energy consumed during an activity. |
 | **Expense** | Represents an additional type of cost. |
@@ -40,7 +40,7 @@ Synchronize the required code lists before submitting operational records that r
 | **Delay** | Defines a type of delay. |
 | **Ambient type** | Defines a measurement type, its unit, and expected value range. |
 
-See the [API reference](../api/index.md) for the available services and endpoint paths.
+See the [API reference](../../api/index.md) for the available services and endpoint paths.
 
 ## Identifiers
 
