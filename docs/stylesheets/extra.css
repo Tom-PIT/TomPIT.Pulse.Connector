@@ -37,11 +37,11 @@
     font-weight: 500;
 }
 
-    .md-tabs__link:hover,
-    .md-tabs__link--active {
-        color: #00f2ff;
-        opacity: 1;
-    }
+.md-tabs__link:hover,
+.md-tabs__link--active {
+    color: #00f2ff;
+    opacity: 1;
+}
 
 /* Links */
 .md-typeset a:hover {
@@ -55,8 +55,18 @@
 }
 
 /* Slightly softer content width and spacing */
+/* Wider documentation layout */
 .md-grid {
-    max-width: 1440px;
+    max-width: 1600px;
+}
+
+.md-content,
+.md-content__inner {
+    max-width: none;
+}
+
+.md-sidebar--secondary {
+    width: 11rem;
 }
 
 /* Style Home like a top-level section */
@@ -83,42 +93,11 @@
     display: block;
 }
 
-/* Consistent full-width tables */
+/* General table styling */
 .md-typeset__table {
     display: block;
     width: 100%;
-}
-
-    .md-typeset__table table {
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    /* API reference column widths */
-    .md-typeset__table th:nth-child(1),
-    .md-typeset__table td:nth-child(1) {
-        width: 28%;
-    }
-
-    .md-typeset__table th:nth-child(2),
-    .md-typeset__table td:nth-child(2) {
-        width: 37%;
-    }
-
-    .md-typeset__table th:nth-child(3),
-    .md-typeset__table td:nth-child(3) {
-        width: 35%;
-    }
-
-    .md-typeset__table code {
-        white-space: normal;
-        overflow-wrap: anywhere;
-    }
-
-/* Consistent full-width tables */
-.md-typeset__table {
-    display: block;
-    width: 100%;
+    overflow-x: auto;
 }
 
 .md-typeset__table table:not([class]) {
@@ -126,32 +105,64 @@
     width: 100%;
     min-width: 100%;
     font-size: inherit;
-    table-layout: fixed;
+    table-layout: auto;
 }
 
 .md-typeset__table th,
 .md-typeset__table td {
     font-size: inherit;
-}
-
-/* API reference column widths */
-.md-typeset__table th:nth-child(1),
-.md-typeset__table td:nth-child(1) {
-    width: 28%;
-}
-
-.md-typeset__table th:nth-child(2),
-.md-typeset__table td:nth-child(2) {
-    width: 28%;
-}
-
-.md-typeset__table th:nth-child(3),
-.md-typeset__table td:nth-child(3) {
-    width: 44%;
+    vertical-align: top;
 }
 
 .md-typeset__table code {
     font-size: 0.85em;
     white-space: normal;
     overflow-wrap: anywhere;
+}
+
+/* Three-column API service tables */
+.api-services-table table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.api-services-table th:nth-child(1),
+.api-services-table td:nth-child(1) {
+    width: 28%;
+}
+
+.api-services-table th:nth-child(2),
+.api-services-table td:nth-child(2) {
+    width: 28%;
+}
+
+.api-services-table th:nth-child(3),
+.api-services-table td:nth-child(3) {
+    width: 44%;
+}
+
+/* Four-column attribute tables */
+.attributes-table table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.attributes-table th:nth-child(1),
+.attributes-table td:nth-child(1) {
+    width: 22%;
+}
+
+.attributes-table th:nth-child(2),
+.attributes-table td:nth-child(2) {
+    width: 14%;
+}
+
+.attributes-table th:nth-child(3),
+.attributes-table td:nth-child(3) {
+    width: 46%;
+}
+
+.attributes-table th:nth-child(4),
+.attributes-table td:nth-child(4) {
+    width: 18%;
 }
