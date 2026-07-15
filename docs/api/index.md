@@ -19,7 +19,6 @@ This page provides an index of the available API families and services. Use [Sca
 -   [**Maintenance**](#maintenance)
 -   [**Answers**](#answers)
 
-
 </div>
 
 ## Using this reference
@@ -47,52 +46,52 @@ Most resources expose a consistent set of operations:
 | `update` | `PUT` | Update an existing record |
 | `patch` | `PATCH` | Update selected properties |
 | `delete` | `DELETE` | Delete a record |
-| `select` | `GET` | Retrieve one record by its Pulse ID |
+| `select` | `GET` | Retrieve one record by its Pulse `id` |
 | `query` | `GET` | Retrieve and filter multiple records |
 
-Insert operations commonly return the integer ID assigned to the new record. Store this ID and use it when submitting related records.
+Insert operations commonly return the integer `id` assigned to the new record. When a related request requires this identifier, retrieve the record by its `code` and use the returned `id`.
 
 ## Master data
 
-Create and maintain the reference data used by operational records.
+Create and maintain the stable business entities and code lists referenced by operational records.
 
 | Service | Description | Base path |
 | --- | --- | --- |
-| **Ambient Type**<br>`AmbientTypeService` | Define measurement types, units, and expected value ranges. | `/services/pulse/types/ambient-types` |
+| [**Ambient Type**](../integration/master-data/ambient-type.md)<br>`AmbientTypeService` | Define measurement types, units, and expected value ranges. | `/services/pulse/types/ambient-types` |
 | **Ambient Type Service Extensions**<br>`AmbientTypeServiceExtensions` | Create and maintain ambient type service extensions master data. | `/services/pulse/types/ambient-types/update-batch` |
 | **Customer**<br>`CustomerService` | Create and maintain customer master data. | `/services/pulse/types/customers` |
 | **Customer Extensions**<br>`CustomerExtensions` | Create and maintain customer extensions master data. | `/services/pulse/types/customers/update-batch` |
-| **Delay**<br>`DelayService` | Create and maintain delay master data. | `/services/pulse/types/delays` |
+| [**Delay**](../integration/master-data/delay.md)<br>`DelayService` | Define delay types used by operational delay records. | `/services/pulse/types/delays` |
 | **Delay Extensions**<br>`DelayExtensions` | Create and maintain delay extensions master data. | `/services/pulse/types/delays/update-batch` |
-| **Downtime Category**<br>`DowntimeCategoryService` | Define downtime category used to classify downtime. | `/services/pulse/types/downtime-categories` |
+| [**Downtime Category**](../integration/master-data/downtime-category.md)<br>`DowntimeCategoryService` | Define categories used to group downtime types. | `/services/pulse/types/downtime-categories` |
 | **Downtime Category Service Extensions**<br>`DowntimeCategoryServiceExtensions` | Define downtime category service extensions used to classify downtime. | `/services/pulse/types/downtime-categories/update-batch` |
-| **Downtime Cause**<br>`DowntimeCauseService` | Define downtime cause used to classify downtime. | `/services/pulse/types/downtime-causes` |
+| [**Downtime Cause**](../integration/master-data/downtime-cause.md)<br>`DowntimeCauseService` | Define causes associated with downtime. | `/services/pulse/types/downtime-causes` |
 | **Downtime Cause Service Extensions**<br>`DowntimeCauseServiceExtensions` | Define downtime cause service extensions used to classify downtime. | `/services/pulse/types/downtime-causes/update-batch` |
-| **Downtime Type**<br>`DowntimeTypeService` | Define downtime type used to classify downtime. | `/services/pulse/types/downtime-types` |
+| [**Downtime Type**](../integration/master-data/downtime-type.md)<br>`DowntimeTypeService` | Define planned or unplanned downtime types. | `/services/pulse/types/downtime-types` |
 | **Downtime Type Service Extensions**<br>`DowntimeTypeServiceExtensions` | Define downtime type service extensions used to classify downtime. | `/services/pulse/types/downtime-types/update-batch` |
-| **Energy Source**<br>`EnergySourceService` | Create and maintain energy source master data. | `/services/pulse/types/energy-sources` |
+| [**Energy Source**](../integration/master-data/energy-source.md)<br>`EnergySourceService` | Define energy sources and their default price per measure unit. | `/services/pulse/types/energy-sources` |
 | **Energy Source Extensions**<br>`EnergySourceExtensions` | Create and maintain energy source extensions master data. | `/services/pulse/types/energy-sources/update-batch` |
-| **Equipment**<br>`EquipmentService` | Create and maintain equipment master data. | `/services/pulse/types/equipment` |
+| [**Equipment**](../integration/master-data/equipment.md)<br>`EquipmentService` | Define equipment resources used during operational activities. | `/services/pulse/types/equipment` |
 | **Equipment Extensions**<br>`EquipmentExtensions` | Create and maintain equipment extensions master data. | `/services/pulse/types/equipment/update-batch` |
-| **Expense**<br>`ExpenseService` | Create and maintain expense master data. | `/services/pulse/types/expenses` |
+| [**Expense**](../integration/master-data/expense.md)<br>`ExpenseService` | Define additional cost types used by operational records. | `/services/pulse/types/expenses` |
 | **Expense Extensions**<br>`ExpenseExtensions` | Create and maintain expense extensions master data. | `/services/pulse/types/expenses/update-batch` |
-| **Labor**<br>`LaborService` | Create and maintain labor master data. | `/services/pulse/types/labor` |
-| **Material**<br>`MaterialService` | Create and maintain material master data. | `/services/pulse/types/materials` |
+| [**Labour**](../integration/master-data/labour.md)<br>`LabourService` | Define labour categories or resources used during activities. | `/services/pulse/types/labour` |
+| [**Material**](../integration/master-data/material.md)<br>`MaterialService` | Define raw materials, components, or supplies consumed during activities. | `/services/pulse/types/materials` |
 | **Material Extensions**<br>`MaterialExtensions` | Create and maintain material extensions master data. | `/services/pulse/types/materials/update-batch` |
-| **Measure Unit**<br>`MeasureUnitService` | Create and maintain measure unit master data. | `/services/pulse/types/measure-units` |
+| [**Measure Unit**](../integration/master-data/measure-unit.md)<br>`MeasureUnitService` | Define units used for quantities, measurements, and prices. | `/services/pulse/types/measure-units` |
 | **Measure Unit Service Extensions**<br>`MeasureUnitServiceExtensions` | Create and maintain measure unit service extensions master data. | `/services/pulse/types/measure-units/update-batch` |
 | **Person Extensions**<br>`PersonExtensions` | Create and maintain person extensions master data. | `/services/pulse/types/labor/update-batch` |
-| **Plant**<br>`PlantService` | Manage planned plant data. | `/services/pulse/types/plants` |
+| [**Plant**](../integration/master-data/plant.md)<br>`PlantService` | Create and maintain operating locations referenced by production lines. | `/services/pulse/types/plants` |
 | **Plant Service Extensions**<br>`PlantServiceExtensions` | Manage planned plant service extensions data. | `/services/pulse/types/plants/update-batch` |
-| **Product**<br>`ProductService` | Create and maintain product master data. | `/services/pulse/types/products` |
+| [**Product**](../integration/master-data/product.md)<br>`ProductService` | Define finished products or other outputs tracked in Pulse. | `/services/pulse/types/products` |
 | **Product Extensions**<br>`ProductExtensions` | Create and maintain product extensions master data. | `/services/pulse/types/products/update-batch` |
-| **Production Line**<br>`ProductionLineService` | Create and maintain production line master data. | `/services/pulse/types/production-lines` |
+| [**Production Line**](../integration/master-data/production-line.md)<br>`ProductionLineService` | Create and maintain production lines associated with plants. | `/services/pulse/types/production-lines` |
 | **Production Line Extensions**<br>`ProductionLineExtensions` | Create and maintain production line extensions master data. | `/services/pulse/types/production-lines/update-batch` |
-| **Shift**<br>`ShiftService` | Create and maintain shift master data. | `/services/pulse/types/shifts` |
+| [**Shift**](../integration/master-data/shift.md)<br>`ShiftService` | Define work shifts referenced by operational records. | `/services/pulse/types/shifts` |
 | **Shift Service Extensions**<br>`ShiftServiceExtensions` | Create and maintain shift service extensions master data. | `/services/pulse/types/shifts/update-batch` |
-| **Supplier**<br>`SupplierService` | Create and maintain supplier master data. | `/services/pulse/types/suppliers` |
+| [**Supplier**](../integration/master-data/supplier.md)<br>`SupplierService` | Create and maintain suppliers referenced by material or energy usage. | `/services/pulse/types/suppliers` |
 | **Supplier Extensions**<br>`SupplierExtensions` | Create and maintain supplier extensions master data. | `/services/pulse/types/suppliers/update-batch` |
-| **Waste Type**<br>`WasteTypeService` | Define waste type used to classify waste. | `/services/pulse/types/waste-types` |
+| [**Waste Type**](../integration/master-data/waste-type.md)<br>`WasteTypeService` | Define classifications used for waste records. | `/services/pulse/types/waste-types` |
 | **Waste Type Service Extensions**<br>`WasteTypeServiceExtensions` | Define waste type service extensions used to classify waste. | `/services/pulse/types/waste-types/update-batch` |
 
 ## Manufacturing

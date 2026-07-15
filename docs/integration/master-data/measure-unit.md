@@ -6,19 +6,23 @@ Represents a unit used to express quantities and measured values consistently th
 
 ```json
 {
-  "Id": 6,
-  "Code": "kg",
-  "Name": "Kilogram"
+  "id": 6,
+  "code": "kg",
+  "name": "Kilogram"
 }
 ```
 
 ## Attributes
 
+<div class="attributes-table" markdown>
+
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `Id` | integer | Unique identifier assigned by Pulse. | `6` |
-| `Code` | string | Unique business code within the entity type, used for external identification and integrations. | `"kg"` |
-| `Name` | string | Human-readable name of the measure unit. | `"Kilogram"` |
+| `id` | integer | Unique identifier assigned by Pulse. | `6` |
+| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"kg"` |
+| `name` | string | Human-readable name of the measure unit. | `"Kilogram"` |
+
+</div>
 
 ## API service
 

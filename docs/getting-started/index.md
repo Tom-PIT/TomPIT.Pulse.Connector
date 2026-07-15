@@ -10,10 +10,10 @@ Authentication is handled with bearer tokens.
 
 To start an integration, you need:
 
-- the Pulse API base URL,
-- a valid bearer token,
-- the Pulse OpenAPI specification  (`openapi.json`),
-- access to the relevant source data in your organization.
+- The Pulse API base URL
+- A valid bearer token
+- The Pulse OpenAPI specification (`openapi.json`)
+- Access to the relevant source data in your organization
 
 The OpenAPI specification describes the available endpoints, request fields, parameters, authentication requirements, and response schemas.
 
@@ -44,12 +44,11 @@ graph LR
   E --> F[Verify submitted data]
 ```
 
-Reference records should normally be created before records that depend on them.
+[Master-data records](../integration/master-data/index.md) should normally be created before records that depend on them.
 
 For example:
 
 - Measure unit → Product
-
 - Plant → Production line → Batch → Stage
 
 ## First integration
@@ -60,7 +59,7 @@ Start with a small, complete scenario:
 2. Test a read-only request.
 3. Create the required master data.
 4. Submit one operational record.
-5. Store the returned Pulse identifiers.
+5. Retrieve related records by their `code` when a Pulse `id` is required.
 6. Validate the submitted data.
 7. Automate the same flow in integration code.
 
@@ -73,7 +72,3 @@ Start with a small, complete scenario:
 - [Operational data](../integration/operational-data/index.md)
 - [Measurements](../integration/measurements.md)
 - [API reference](../api/index.md)
-
-
-
-

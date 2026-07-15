@@ -6,21 +6,25 @@ Represents a raw material, component, or supply used during an operational proce
 
 ```json
 {
-  "Id": 42,
-  "Code": "STEEL-SHEET",
-  "Name": "Steel sheet",
-  "MeasureUnit": 21
+  "id": 42,
+  "code": "STEEL-SHEET",
+  "name": "Steel sheet",
+  "measureUnit": 21
 }
 ```
 
 ## Attributes
 
+<div class="attributes-table" markdown>
+
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `Id` | integer | Unique identifier assigned by Pulse. | `42` |
-| `Code` | string | Unique business code within the entity type, used for external identification and integrations. | `"STEEL-SHEET"` |
-| `Name` | string | Human-readable name of the material. | `"Steel sheet"` |
-| [`MeasureUnit`](measure-unit.md) | integer | Pulse `Id` of the measure unit in which material quantities are expressed. | `21` |
+| `id` | integer | Unique identifier assigned by Pulse. | `42` |
+| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"STEEL-SHEET"` |
+| `name` | string | Human-readable name of the material. | `"Steel sheet"` |
+| [`measureUnit`](measure-unit.md) | integer | Pulse `id` of the measure unit in which material quantities are expressed. | `21` |
+
+</div>
 
 ## API service
 
