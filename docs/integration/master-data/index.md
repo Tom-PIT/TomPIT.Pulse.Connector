@@ -48,7 +48,7 @@ Master-data and code-list records generally use the following identifiers:
 
 | Field | Assigned by | Purpose |
 | --- | --- | --- |
-| `Code` | Source system | Identifies the corresponding record in the source system. |
+| `Code` | Source system | Identifies the record in external systems and is used to retrieve it from Pulse. |
 | `Id` | Pulse | Identifies the record in Pulse and is used when other records reference it. |
 
 Fields such as `Plant`, `MeasureUnit`, and `Category` contain the Pulse `Id` of a related record. They define relationships between records rather than additional identifiers for the current record.
@@ -61,7 +61,7 @@ For example:
 
 When an insert operation succeeds, Pulse commonly returns the numeric `Id` assigned to the new record.
 
-Store the relationship between the source-system `Code` and the Pulse `Id`. Use the Pulse `Id` when submitting records that reference this product.
+When another request requires the Pulse `Id`, retrieve the corresponding record by its `Code` and use the returned `Id`.
 
 ## Dependencies
 
@@ -80,12 +80,12 @@ graph LR
 
 For example:
 
-- a production line references a plant;
-- a product references a measure unit;
-- a material references a measure unit;
-- an energy source references a measure unit;
-- a downtime type references a downtime category;
-- an ambient type references a measure unit.
+- A production line references a plant.
+- A product references a measure unit.
+- A material references a measure unit.
+- An energy source references a measure unit.
+- A downtime type references a downtime category.
+- An ambient type references a measure unit.
 
 Create or retrieve the referenced record before submitting the dependent record.
 
@@ -97,7 +97,6 @@ Suppose your source system contains:
 | --- | --- |
 | Product code | `PRODUCT-001` |
 | Name | `Product 001` |
-| Price | `4.00` |
 | Unit | `piece` |
 
 Before submitting the product, obtain the Pulse `Id` of the corresponding `piece` unit.
@@ -108,8 +107,7 @@ The request body then uses that Pulse identifier:
 {
   "MeasureUnit": 1,
   "Code": "PRODUCT-001",
-  "Name": "Product 001",
-  "Price": 4.00
+  "Name": "Product 001"
 }
 ```
 
@@ -119,13 +117,22 @@ A successful insert returns the Pulse identifier for the newly created record:
 21
 ```
 
-Store the mapping:
+When another request needs to reference this product, retrieve the product by its `Code`.
 
-```text
-PRODUCT-001 → 21
+Pulse returns the corresponding record, including its `Id`:
+
+```json
+{
+  "Id": 21,
+  "Code": "PRODUCT-001",
+  "Name": "Product 001",
+  "MeasureUnit": 1,
+  "Price": 4.00
+}
 ```
 
-Use `21` whenever another Pulse record must reference this product.
+Use the returned `Id` in the related request.
+
 
 ## Synchronization approach
 
@@ -134,8 +141,8 @@ A master-data synchronization typically performs these steps:
 1. Read the relevant records from the source system.
 2. Transform each record into the Pulse request format.
 3. Submit the corresponding record to Pulse.
-4. Read the returned Pulse identifier.
-5. Store the relationship between the source record and the Pulse record.
+4. Verify that the record was submitted successfully.
+5. Retrieve Pulse identifiers by `Code` when related records require them.
 6. Log failures for retry or correction.
 
 Use [Scalar](https://scalar.com/) to inspect endpoint schemas and test individual requests. Implement recurring or bulk synchronization in your integration application or service.
