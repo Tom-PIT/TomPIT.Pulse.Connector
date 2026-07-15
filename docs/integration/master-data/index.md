@@ -21,7 +21,7 @@ Synchronize the required code lists before submitting operational records that r
 
 | Resource | Purpose |
 | --- | --- |
-| **Product** | Represents an output or item produced during an activity. |
+| [**Product**](product.md) | Represents an output or item produced during an activity. |
 | [**Material**](material.md) | Represents material consumed or referenced during an activity. |
 | [**Measure unit**](measure-unit.md) | Defines the unit used for quantities and measurements. |
 | **Labour** | Represents a labour category or resource used during an activity. |
