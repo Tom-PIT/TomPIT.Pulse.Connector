@@ -6,21 +6,25 @@ Represents a finished product or other output tracked in Pulse.
 
 ```json
 {
-  "Id": 42,
-  "Code": "CHAIR-OAK",
-  "Name": "Oak wood chair",
-  "MeasureUnit": 21
+  "id": 42,
+  "code": "CHAIR-OAK",
+  "name": "Oak wood chair",
+  "measureUnit": 21
 }
 ```
 
 ## Attributes
 
+<div class="attributes-table" markdown>
+
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `Id` | integer | Unique identifier assigned by Pulse. | `42` |
-| `Code` | string | Unique business code within the entity type, used for external identification and integrations. | `"CHAIR-OAK"` |
-| `Name` | string | Human-readable name of the product. | `"Oak wood chair"` |
-| [`MeasureUnit`](measure-unit.md) | integer | Pulse `Id` of the measure unit used for the product. | `21` |
+| `id` | integer | Unique identifier assigned by Pulse. | `42` |
+| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"CHAIR-OAK"` |
+| `name` | string | Human-readable name of the product. | `"Oak wood chair"` |
+| [`measureUnit`](measure-unit.md) | integer | Pulse `id` of the measure unit used for the product. | `21` |
+
+</div>
 
 ## API service
 

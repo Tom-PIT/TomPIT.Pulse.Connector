@@ -1,0 +1,42 @@
+# Supplier
+
+Represents a supplier associated with material or energy usage in Pulse.
+
+## The Supplier object
+
+```json
+{
+  "id": 36,
+  "code": "SUP-001",
+  "name": "Example supplier"
+}
+```
+
+## Attributes
+
+<div class="attributes-table" markdown>
+
+| Field | Type | Description | Example |
+| --- | --- | --- | --- |
+| `id` | integer | Unique identifier assigned by Pulse. | `36` |
+| `code` | string | Business code used to identify the supplier in external systems and integrations. | `"SUP-001"` |
+| `name` | string | Human-readable name of the supplier. | `"Example supplier"` |
+
+</div>
+
+## API service
+
+| Service | Base path |
+| --- | --- |
+| `SupplierService` | `/services/pulse/types/suppliers` |
+
+See the [API reference](../../api/index.md) for supported operations and complete request schemas.
+
+## Used by
+
+Suppliers can be referenced by:
+
+- Material usage records
+- Energy source usage records
+- Waste material usage records
+- Waste energy source usage records

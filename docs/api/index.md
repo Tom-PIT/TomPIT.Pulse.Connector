@@ -47,10 +47,10 @@ Most resources expose a consistent set of operations:
 | `update` | `PUT` | Update an existing record |
 | `patch` | `PATCH` | Update selected properties |
 | `delete` | `DELETE` | Delete a record |
-| `select` | `GET` | Retrieve one record by its Pulse ID |
+| `select` | `GET` | Retrieve one record by its Pulse `id` |
 | `query` | `GET` | Retrieve and filter multiple records |
 
-Insert operations commonly return the integer ID assigned to the new record. Store this ID and use it when submitting related records.
+Insert operations commonly return the integer `id` assigned to the new record. When a related request requires this identifier, retrieve the record by its `code` and use the returned `id`.
 
 ## Master data
 
