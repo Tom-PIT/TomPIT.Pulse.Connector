@@ -1,6 +1,8 @@
-# Pulse Integration Documentation
+# Pulse integration documentation
 
 Pulse uses operational data from source systems to connect business activities, identify patterns, evaluate their impact, and generate recommendations.
+
+Pulse is not limited to manufacturing. It can be used in production, retail, wholesale, logistics, services, and other operational environments where data is exchanged between systems and business activities need to be analyzed.
 
 This documentation explains how to map source data to the Pulse data model and send it through the Pulse API.
 
@@ -9,10 +11,10 @@ graph LR
   A[Source systems] --> B[Data mapping]
   B --> C[Pulse API]
   C --> D[Pulse data model]
-  D --> E[Analyses and recommendations]
+  D --> E[Answers]
 ```
 
-Pulse can receive data from ERP, MES, SCADA, IoT, maintenance, quality, logistics, supply-chain, and other operational systems.
+Pulse can receive data from ERP, MES, SCADA, IoT, and other operational systems.
 
 ## Start here
 
