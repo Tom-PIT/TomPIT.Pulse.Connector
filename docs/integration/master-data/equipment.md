@@ -35,3 +35,14 @@ Represents a machine, asset, or other equipment resource tracked in Pulse.
 | `EquipmentService` | `/services/pulse/types/equipment` |
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
+
+## Used by
+
+Equipment records are referenced by:
+
+- [Equipment plans](../manufacturing/equipment-plan.md)
+- [Equipment usage records](../manufacturing/equipment-usage.md)
+- [Downtime records](../manufacturing/downtime.md)
+- [Maintenance records](../maintenance/maintenance.md)
+- [Maintenance equipment plans](../maintenance/equipment-plan.md)
+- [Maintenance equipment usage records](../maintenance/equipment-usage.md)

@@ -33,3 +33,7 @@ Defines a classification for waste in Pulse.
 | `WasteTypeService` | `/services/pulse/types/waste-types` |
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
+
+## Used by
+
+Waste types are referenced by [Waste records](../manufacturing/waste.md).

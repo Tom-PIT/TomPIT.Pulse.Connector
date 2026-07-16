@@ -40,5 +40,5 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 Labor records are referenced by:
 
-- [Labor plans](labor-plan.md)
-- [Labor usage records](labor-usage.md)
+- [Labor plans](../manufacturing/labor-plan.md)
+- [Labor usage records](../manufacturing/labor-usage.md)

@@ -31,3 +31,7 @@ Defines a cause associated with downtime in Pulse.
 | `DowntimeCauseService` | `/services/pulse/types/downtime-causes` |
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
+
+## Used by
+
+Downtime causes are referenced by [Downtime records](../manufacturing/downtime.md).

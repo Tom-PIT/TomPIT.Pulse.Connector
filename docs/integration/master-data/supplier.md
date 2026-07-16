@@ -38,7 +38,7 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 Suppliers can be referenced by:
 
-- Material usage records
-- Energy source usage records
-- Waste material usage records
-- Waste energy source usage records
+- [Material usage records](../manufacturing/material-usage.md)
+- [Energy source usage records](../manufacturing/energy-source-usage.md)
+- [Waste material usage records](../manufacturing/waste-material-usage.md)
+- [Waste energy source usage records](../manufacturing/waste-energy-source-usage.md)

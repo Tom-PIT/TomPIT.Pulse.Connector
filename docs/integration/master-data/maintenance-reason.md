@@ -25,3 +25,9 @@ Maintenance reasons help distinguish why maintenance was performed, for example 
 | `name` | string | Human-readable name of the maintenance reason. | `"Preventive maintenance"` |
 
 </div>
+
+<!-- TODO: Add the API service name and base path when Maintenance reason is implemented. -->
+## Used by
+
+Maintenance reasons are referenced by [Maintenance records](../maintenance/maintenance.md).
+
