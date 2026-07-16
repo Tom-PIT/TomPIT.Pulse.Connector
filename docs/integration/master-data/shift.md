@@ -34,4 +34,4 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Used by
 
-Shifts are referenced by [Batch shift records](../operational-data/batch-shift-record.md).
+Shifts are referenced by [Batch shift records](../manufacturing/batch-shift.md).

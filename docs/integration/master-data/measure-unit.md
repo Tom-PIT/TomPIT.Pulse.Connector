@@ -39,3 +39,4 @@ Measure units are referenced by:
 - [Products](product.md)
 - [Materials](material.md)
 - [Energy sources](energy-source.md)
+- [Ambient types](ambient-type.md)

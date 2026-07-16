@@ -4,7 +4,7 @@ Master data defines the relatively stable business entities and code lists refer
 
 It includes plants, production lines, products, materials, equipment, shifts, units of measure, suppliers, and classification records such as downtime types and waste types.
 
-Synchronize the required code lists before submitting operational records that reference them.
+Synchronize the required master data before submitting operational records that reference them.
 
 ## Available master data
 
@@ -24,16 +24,18 @@ Synchronize the required code lists before submitting operational records that r
 | [**Measure unit**](measure-unit.md) | Defines the unit used for quantities and measurements. |
 | [**Product**](product.md) | Represents an output or item produced during an activity. |
 | [**Material**](material.md) | Represents material consumed or referenced during an activity. |
-| [**Labour**](labour.md) | Represents a labour category or resource used during an activity. |
+| [**Labor**](labor.md) | Represents a labor category or resource used during an activity. |
 | [**Energy source**](energy-source.md) | Represents a type of energy consumed during an activity. |
 | [**Expense**](expense.md) | Represents an additional type of cost. |
 | [**Supplier**](supplier.md) | Represents the supplier associated with material or energy usage. |
+| [**Customer**](customer.md) | Represents a customer associated with a product or service. |
 
 ### Classification data
 
 | Resource | Purpose |
 | --- | --- |
 | [**Downtime category**](downtime-category.md) | Groups related downtime types. |
+| [**Maintenance reason**](maintenance-reason.md) | Defines a reason for maintenance activities. |
 | [**Downtime type**](downtime-type.md) | Defines a planned or unplanned type of downtime. |
 | [**Downtime cause**](downtime-cause.md) | Defines the cause associated with downtime. |
 | [**Waste type**](waste-type.md) | Defines a classification for waste. |
@@ -136,6 +138,9 @@ Pulse returns the corresponding record, including its `id`:
 ```
 
 Use the returned `id` in the related request.
+
+> [!NOTE]
+> The example shows the minimum commonly required fields. Optional fields such as `price` and `description` can also be included when available in the source system.
 
 
 ## Synchronization approach
