@@ -32,6 +32,6 @@ Defines a cause associated with downtime in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
+## Referenced by
 
-Downtime causes are referenced by [Downtime records](../manufacturing/downtime.md).
+- [Downtime records](../manufacturing/downtime.md)

@@ -26,8 +26,14 @@ Maintenance reasons help distinguish why maintenance was performed, for example 
 
 </div>
 
-<!-- TODO: Add the API service name and base path when Maintenance reason is implemented. -->
-## Used by
+## API service
 
-Maintenance reasons are referenced by [Maintenance records](../maintenance/maintenance.md).
+| Service | Base path |
+| --- | --- |
+| `MaintenanceReasonService` | `/services/pulse/types/maintenance-reasons` |
 
+See the [API reference](../../api/index.md) for supported operations and complete request schemas.
+
+## Referenced by
+
+- [Maintenance records](../maintenance/maintenance.md)

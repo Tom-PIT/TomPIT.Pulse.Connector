@@ -36,9 +36,7 @@ Represents a labor category or resource used during an activity in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
-
-Labor records are referenced by:
+## Referenced by
 
 - [Labor plans](../manufacturing/labor-plan.md)
 - [Labor usage records](../manufacturing/labor-usage.md)

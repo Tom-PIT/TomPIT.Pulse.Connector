@@ -34,9 +34,7 @@ Represents a supplier associated with material or energy usage in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
-
-Suppliers can be referenced by:
+## Referenced by
 
 - [Material usage records](../manufacturing/material-usage.md)
 - [Energy source usage records](../manufacturing/energy-source-usage.md)

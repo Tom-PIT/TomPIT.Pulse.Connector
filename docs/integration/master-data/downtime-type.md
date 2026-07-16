@@ -38,4 +38,4 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-Downtime types reference a [downtime category](downtime-category.md). Create or retrieve the category before submitting the downtime type.
+A downtime type references a [downtime category](downtime-category.md). Create or retrieve the category before submitting the downtime type.

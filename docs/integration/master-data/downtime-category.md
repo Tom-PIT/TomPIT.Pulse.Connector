@@ -32,8 +32,6 @@ Represents a category used to group related downtime types in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
-
-Downtime categories are referenced by:
+## Referenced by
 
 - [Downtime types](downtime-type.md)

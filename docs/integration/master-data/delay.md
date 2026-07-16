@@ -32,6 +32,6 @@ Defines a type of delay in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
+## Referenced by
 
-Delays are referenced by [Stage delay records](../manufacturing/stage-delay.md).
+- [Stage delay records](../manufacturing/stage-delay.md)

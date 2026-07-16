@@ -44,8 +44,8 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-Ambient types may reference a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting an ambient type that uses one.
+An ambient type may reference a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting an ambient type that uses one.
 
-## Used by
+## Referenced by
 
-Ambient types are referenced by [Ambient value records](../manufacturing/ambient-value.md).
+- [Ambient value records](../manufacturing/ambient-value.md)

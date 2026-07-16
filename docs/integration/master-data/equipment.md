@@ -36,9 +36,7 @@ Represents a machine, asset, or other equipment resource tracked in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
-
-Equipment records are referenced by:
+## Referenced by
 
 - [Equipment plans](../manufacturing/equipment-plan.md)
 - [Equipment usage records](../manufacturing/equipment-usage.md)
