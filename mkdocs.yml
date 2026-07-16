@@ -75,10 +75,12 @@ nav:
         - Measure unit: integration/master-data/measure-unit.md
         - Plant: integration/master-data/plant.md
         - Downtime category: integration/master-data/downtime-category.md
+        - Maintenance reason: integration/master-data/maintenance-reason.md
         - Material: integration/master-data/material.md
         - Product: integration/master-data/product.md
         - Production line: integration/master-data/production-line.md
         - Equipment: integration/master-data/equipment.md
+        - Customer: integration/master-data/customer.md
         - Shift: integration/master-data/shift.md
         - Labour: integration/master-data/labour.md
         - Energy source: integration/master-data/energy-source.md
@@ -89,9 +91,32 @@ nav:
         - Waste type: integration/master-data/waste-type.md
         - Delay: integration/master-data/delay.md
         - Ambient type: integration/master-data/ambient-type.md
+    - Manufacturing:
+        - Overview: integration/manufacturing/index.md
+        - Ambient value: integration/manufacturing/ambient-value.md
+        - Batch: integration/manufacturing/batch.md
+        - Batch shift: integration/manufacturing/batch-shift.md
+        - Downtime: integration/manufacturing/downtime.md
+        - Energy source plan: integration/manufacturing/energy-source-plan.md
+        - Energy source usage: integration/manufacturing/energy-source-usage.md
+        - Equipment plan: integration/manufacturing/equipment-plan.md
+        - Equipment usage: integration/manufacturing/equipment-usage.md
+        - Labor plan: integration/manufacturing/labor-plan.md
+        - Labor usage: integration/manufacturing/labor-usage.md
+        - Material plan: integration/manufacturing/material-plan.md
+        - Material usage: integration/manufacturing/material-usage.md
+        - Stage delay: integration/manufacturing/stage-delay.md
+        - Waste energy source usage: integration/manufacturing/waste-energy-source-usage.md
+        - Waste material usage: integration/manufacturing/waste-material-usage.md
+        - Waste records: integration/manufacturing/waste-records.md
+
+    - Maintenance:
+        - Overview: integration/maintenance/index.md
+        - Maintenance: integration/maintenance/maintenance.md
+        - Equipment plan: integration/maintenance/equipment-plan.md
+        - Equipment usage: integration/maintenance/equipment-usage.md
+        
          
-      - Map your data: integration/index.md
-      - Operational data: integration/operational-data.md
       - Measurements: integration/measurements.md
       - Updates and errors: integration/updates-and-errors.md
 
