@@ -36,4 +36,6 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-A production line references a [plant](plant.md). Create or retrieve the plant before submitting the production line.
+- [Plant](plant.md)
+
+Create or retrieve the plant before submitting the production line.

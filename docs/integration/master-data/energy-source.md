@@ -40,7 +40,9 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-An energy source references a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting the energy source.
+- [Measure unit](measure-unit.md) 
+
+Create or retrieve the measure unit before submitting the energy source.
 
 ## Referenced by
 

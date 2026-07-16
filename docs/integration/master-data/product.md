@@ -40,7 +40,9 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-A product references a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting the product.
+- [Measure unit](measure-unit.md)
+
+Create or retrieve the measure unit before submitting the product.
 
 ## Referenced by
 

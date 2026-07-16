@@ -40,7 +40,9 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-A material references a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting the material.
+- [Measure unit](measure-unit.md)
+
+Create or retrieve the measure unit before submitting the material.
 
 ## Referenced by
 

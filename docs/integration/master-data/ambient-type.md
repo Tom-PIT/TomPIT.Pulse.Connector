@@ -44,7 +44,9 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-An ambient type may reference a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting an ambient type that uses one.
+- [Measure unit](measure-unit.md)
+
+Create or retrieve the measure unit before submitting an ambient type that uses one.
 
 ## Referenced by
 
