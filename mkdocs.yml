@@ -115,10 +115,9 @@ nav:
         - Maintenance: integration/maintenance/maintenance.md
         - Equipment plan: integration/maintenance/equipment-plan.md
         - Equipment usage: integration/maintenance/equipment-usage.md
-        
-         
-      - Measurements: integration/measurements.md
-      - Updates and errors: integration/updates-and-errors.md
+   
+    - Measurements: integration/measurements.md
+    - Updates and errors: integration/updates-and-errors.md
 
   - Scenarios:
       - Typical production day: scenarios/typical-operational-day.md
