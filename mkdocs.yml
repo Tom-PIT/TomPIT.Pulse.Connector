@@ -69,12 +69,26 @@ nav:
       - Validation: getting-started/validation.md
 
   - Integration:
-      - Overview: integration/index.md
-      - Master data:
-         - Overview: integration/master-data/index.md
-         - Measure unit: integration/master-data/measure-unit.md
-         - Material: integration/master-data/material.md
-         - Product: integration/master-data/product.md
+    - Overview: integration/index.md
+    - Master data:
+        - Overview: integration/master-data/index.md
+        - Measure unit: integration/master-data/measure-unit.md
+        - Plant: integration/master-data/plant.md
+        - Downtime category: integration/master-data/downtime-category.md
+        - Material: integration/master-data/material.md
+        - Product: integration/master-data/product.md
+        - Production line: integration/master-data/production-line.md
+        - Equipment: integration/master-data/equipment.md
+        - Shift: integration/master-data/shift.md
+        - Labour: integration/master-data/labour.md
+        - Energy source: integration/master-data/energy-source.md
+        - Expense: integration/master-data/expense.md
+        - Supplier: integration/master-data/supplier.md
+        - Downtime type: integration/master-data/downtime-type.md
+        - Downtime cause: integration/master-data/downtime-cause.md
+        - Waste type: integration/master-data/waste-type.md
+        - Delay: integration/master-data/delay.md
+        - Ambient type: integration/master-data/ambient-type.md
          
       - Map your data: integration/index.md
       - Operational data: integration/operational-data.md
