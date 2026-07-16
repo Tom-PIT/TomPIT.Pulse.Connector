@@ -10,7 +10,8 @@ Represents a type of energy consumed during an activity in Pulse.
   "measureUnit": 8,
   "code": "ELECTRICITY",
   "name": "Electricity",
-  "price": 0.18
+  "price": 0.18,
+  "description": "Electricity used during production activities"
 }
 ```
 
@@ -24,7 +25,8 @@ Represents a type of energy consumed during an activity in Pulse.
 | [`measureUnit`](measure-unit.md) | integer | Pulse `id` of the measure unit used for the energy source. | `8` |
 | `code` | string | Business code used to identify the energy source in external systems and integrations. | `"ELECTRICITY"` |
 | `name` | string | Human-readable name of the energy source. | `"Electricity"` |
-| `price` | number or null | Default price per unit used as the baseline for energy-related calculations. | `0.18` |
+| `price` | number or null | Optional default price per measure unit. Pulse may use this value when a related record does not provide its own price. | `0.18` |
+| `description` | string or null | Optional description of the energy source and its role in the process. | `"Electricity used during production activities"` |
 
 </div>
 
@@ -44,6 +46,6 @@ Energy sources reference a [measure unit](measure-unit.md). Create or retrieve t
 
 Energy sources are referenced by:
 
-- Energy source plans
-- Energy source usage records
-- Waste energy source usage records
+- [Energy source plans](../manufacturing/energy-source-plan.md)
+- [Energy source usage records](../manufacturing/energy-source-usage.md)
+- [Waste energy source usage records](../manufacturing/waste-energy-source-usage.md)

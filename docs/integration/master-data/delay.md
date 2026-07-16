@@ -34,4 +34,4 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Used by
 
-Delays are referenced by [Stage delay records](../operational-data/stage-delay-record.md).
+Delays are referenced by [Stage delay records](../manufacturing/stage-delay.md).

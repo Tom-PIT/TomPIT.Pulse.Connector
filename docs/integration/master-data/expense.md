@@ -9,7 +9,8 @@ Represents an additional type of cost tracked in Pulse.
   "id": 27,
   "code": "TRANSPORT",
   "name": "Transport cost",
-  "price": 45.00
+  "price": 45.00,
+  "description": "Additional transport-related cost"
 }
 ```
 
@@ -22,7 +23,8 @@ Represents an additional type of cost tracked in Pulse.
 | `id` | integer | Unique identifier assigned by Pulse. | `27` |
 | `code` | string | Business code used to identify the expense in external systems and integrations. | `"TRANSPORT"` |
 | `name` | string | Human-readable name of the expense. | `"Transport cost"` |
-| `price` | number or null | Default price per unit used as the baseline for expense-related calculations. | `45.00` |
+| `price` | number or null | Optional default price. Pulse may use this value when a related operational record does not provide its own price. | `45.00` |
+| `description` | string or null | Optional description of the expense and when it is used. | `"Additional transport-related cost"` |
 
 </div>
 
@@ -38,6 +40,6 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 Expenses are referenced by:
 
-- Expense plans
-- Expense usage records
-- Waste expense usage records
+- [Expense plans](../manufacturing/expense-plan.md)
+- [Expense usage records](../manufacturing/expense-usage.md)
+- [Waste expense usage records](../manufacturing/waste-expense-usage.md)

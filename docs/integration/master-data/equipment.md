@@ -9,7 +9,8 @@ Represents a machine, asset, or other equipment resource tracked in Pulse.
   "id": 31,
   "code": "CNC-01",
   "name": "CNC milling machine",
-  "price": 85.00
+  "price": 85.00,
+  "description": "CNC machine used for precision milling operations"
 }
 ```
 
@@ -22,7 +23,8 @@ Represents a machine, asset, or other equipment resource tracked in Pulse.
 | `id` | integer | Unique identifier assigned by Pulse. | `31` |
 | `code` | string | Business code used to identify the equipment in external systems and integrations. | `"CNC-01"` |
 | `name` | string | Human-readable name of the equipment. | `"CNC milling machine"` |
-| `price` | number or null | Default hourly price used as the baseline for labour-related calculations. | `85.00` |
+| `price` | number or null | Optional default hourly price. Pulse may use this value when a related operational record does not provide its own price. | `85.00` |
+| `description` | string or null | Optional description of the equipment and its role in the process. | `"CNC machine used for precision milling operations"` |
 
 </div>
 

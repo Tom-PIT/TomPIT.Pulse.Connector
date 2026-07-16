@@ -48,4 +48,4 @@ Ambient types may reference a [measure unit](measure-unit.md). Create or retriev
 
 ## Used by
 
-Ambient types are referenced by [Ambient value records](../operational-data/ambient-value-record.md).
+Ambient types are referenced by [Ambient value records](../manufacturing/ambient-value.md).

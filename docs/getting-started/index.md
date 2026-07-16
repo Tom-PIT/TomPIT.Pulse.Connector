@@ -69,6 +69,6 @@ Start with a small, complete scenario:
 - [Send your first request](first-request.md)
 - [Map your data](../integration/index.md)
 - [Master data](../integration/master-data/index.md)
-- [Operational data](../integration/operational-data/index.md)
+- [Operational data](../integration/manufacturing/index.md)
 - [Measurements](../integration/measurements.md)
 - [API reference](../api/index.md)

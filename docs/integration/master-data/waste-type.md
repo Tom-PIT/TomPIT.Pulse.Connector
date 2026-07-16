@@ -8,7 +8,8 @@ Defines a classification for waste in Pulse.
 {
   "id": 16,
   "code": "SCRAP",
-  "name": "Production scrap"
+  "name": "Production scrap",
+  "description": "Material rejected or discarded during production"
 }
 ```
 
@@ -21,6 +22,7 @@ Defines a classification for waste in Pulse.
 | `id` | integer | Unique identifier assigned by Pulse. | `16` |
 | `code` | string | Business code used to identify the waste type in external systems and integrations. | `"SCRAP"` |
 | `name` | string | Human-readable name of the waste type. | `"Production scrap"` |
+| `description` | string or null | Optional description of the waste classification. | `"Material rejected or discarded during production"` |
 
 </div>
 
