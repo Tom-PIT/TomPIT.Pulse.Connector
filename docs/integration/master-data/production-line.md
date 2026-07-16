@@ -9,8 +9,7 @@ Represents a production line associated with a plant in Pulse.
   "id": 24,
   "plant": 12,
   "code": "LINE-A1",
-  "name": "Assembly line 1",
-  "status": 1
+  "name": "Assembly line 1"
 }
 ```
 
@@ -23,8 +22,7 @@ Represents a production line associated with a plant in Pulse.
 | `id` | integer | Unique identifier assigned by Pulse. | `24` |
 | [`plant`](plant.md) | integer | Pulse `id` of the plant to which the production line belongs. | `12` |
 | `code` | string | Business code used to identify the production line in external systems and integrations. | `"LINE-A1"` |
-| `name` | string | Human-readable name of the production line. | `"Assembly line 1"` |
-| `status` | enum | Operational status of the production line. | `1` |
+| `name` | string | Human-readable name of the production line. |
 
 </div>
 
