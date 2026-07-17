@@ -50,27 +50,27 @@ Plans describe expected activity. Usage records describe actual activity.
 
 ### Resource plans
 
-| Resource | Master data reference |
-| --- | --- |
-| [**Material plan**](material-plan.md) | [Material](../master-data/material.md) |
-| [**Energy source plan**](energy-source-plan.md) | [Energy source](../master-data/energy-source.md) |
-| [**Equipment plan**](equipment-plan.md) | [Equipment](../master-data/equipment.md) |
-| [**Equipment plan period**](equipment-plan-period.md) | — |
-| [**Labor plan**](labor-plan.md) | [Labor](../master-data/labor.md) |
-| [**Labor plan period**](labor-plan-period.md) | — |
-| [**Expense plan**](expense-plan.md) | [Expense](../master-data/expense.md) |
+| Resource | Purpose | Master data reference |
+| --- | --- | --- |
+| [**Material plan**](material-plan.md) | Describes the planned quantity and price of material used during a stage. | [Material](../master-data/material.md) |
+| [**Energy source plan**](energy-source-plan.md) | Describes the planned quantity and price of an energy source used during a stage. | [Energy source](../master-data/energy-source.md) |
+| [**Equipment plan**](equipment-plan.md) | Describes the planned use and price of equipment during a stage. | [Equipment](../master-data/equipment.md) |
+| [**Equipment plan period**](equipment-plan-period.md) | Describes a specific interval during which equipment is planned for use. | — |
+| [**Labor plan**](labor-plan.md) | Describes the planned quantity and price of labor during a stage. | [Labor](../master-data/labor.md) |
+| [**Labor plan period**](labor-plan-period.md) | Describes a specific interval during which labor is planned for a stage. | — |
+| [**Expense plan**](expense-plan.md) | Describes an additional cost planned for a stage. | [Expense](../master-data/expense.md) |
 
 ### Resource usage
 
-| Resource | Master data reference |
-| --- | --- |
-| [**Material usage**](material-usage.md) | [Material](../master-data/material.md) |
-| [**Energy source usage**](energy-source-usage.md) | [Energy source](../master-data/energy-source.md) |
-| [**Equipment usage**](equipment-usage.md) | [Equipment](../master-data/equipment.md) |
-| [**Equipment usage period**](equipment-usage-period.md) | — |
-| [**Labor usage**](labor-usage.md) | [Labor](../master-data/labor.md) |
-| [**Labor usage period**](labor-usage-period.md) | — |
-| [**Expense usage**](expense-usage.md) | [Expense](../master-data/expense.md) |
+| Resource | Purpose | Master data reference |
+| --- | --- | --- |
+| [**Material usage**](material-usage.md) | Records the actual quantity and price of material used during a stage. | [Material](../master-data/material.md) |
+| [**Energy source usage**](energy-source-usage.md) | Records the actual quantity and price of an energy source used during a stage. | [Energy source](../master-data/energy-source.md) |
+| [**Equipment usage**](equipment-usage.md) | Records the actual use and price of equipment during a stage. | [Equipment](../master-data/equipment.md) |
+| [**Equipment usage period**](equipment-usage-period.md) | Records a specific interval during which equipment was actually used. | — |
+| [**Labor usage**](labor-usage.md) | Records the actual quantity and price of labor used during a stage. | [Labor](../master-data/labor.md) |
+| [**Labor usage period**](labor-usage-period.md) | Records a specific interval during which labor was actually performed. | — |
+| [**Expense usage**](expense-usage.md) | Records an additional cost incurred during a stage. | [Expense](../master-data/expense.md) |
 
 ### Downtime
 
