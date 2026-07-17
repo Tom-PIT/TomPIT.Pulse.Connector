@@ -11,7 +11,7 @@ A downtime record explains where and why operational time was lost. A maintenanc
   "id": 428,
   "downtime": 146,
   "maintenance": 314,
-  "percentage": 25
+  "percentage": 0.25
 }
 ```
 
@@ -24,9 +24,12 @@ A downtime record explains where and why operational time was lost. A maintenanc
 | `id` | integer | Unique identifier of the relationship between the downtime and maintenance records. | `428` |
 | [`downtime`](downtime.md) | integer | Pulse `id` of the downtime record associated with the maintenance activity. | `146` |
 | [`maintenance`](../maintenance/maintenance.md) | integer | Pulse `id` of the maintenance activity associated with the downtime. | `314` |
-| `percentage` | number | Percentage of the maintenance activity attributed to this downtime record. | `25` |
+| `percentage` | number | Share of the downtime attributed to the maintenance activity, expressed as a decimal fraction between `0` and `1`. | `0.25` |
 
 </div>
+
+> [!NOTE]
+> Submit percentages as decimal fractions. For example, submit **25%** as `0.25` and **100%** as `1`.
 
 ## Cost allocation
 
@@ -36,11 +39,11 @@ For example, a maintenance technician may resolve the immediate problem and also
 
 `percentage` defines how much of the maintenance activity is attributed to the specific downtime record:
 
-- `100` attributes the entire maintenance activity to the downtime.
-- `25` attributes one quarter of the maintenance activity to the downtime.
-- A value between `0` and `100` attributes the corresponding proportional share.
+- `1.00` attributes the entire maintenance activity to the downtime.
+- `0.25` attributes one quarter of the maintenance activity to the downtime.
+- A value between `0` and `1.00` attributes the corresponding proportional share.
 
-Pulse can use this percentage when assigning maintenance costs to the downtime. If a maintenance activity costs 300 EUR and `percentage` is `25`, the downtime is assigned 75 EUR of that maintenance cost.
+Pulse can use this percentage when assigning maintenance costs to the downtime. If a maintenance activity costs 300 EUR and `percentage` is `0.25`, the downtime is assigned 75 EUR of that maintenance cost.
 
 > [!NOTE]
 > Downtime maintenance does not replace the related downtime or maintenance records. It only defines the relationship between them and the share attributed to the downtime.

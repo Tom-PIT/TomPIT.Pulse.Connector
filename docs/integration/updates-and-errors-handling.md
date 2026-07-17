@@ -6,10 +6,10 @@ Use the operation that matches the intended change.
 
 | Operation | Use |
 | --- | --- |
-| Insert | Create a new record. |
-| Update | Replace the complete editable representation of an existing record. Include all required and editable attributes. |
-| Patch | Change only the specified attributes of an existing record. Unspecified attributes remain unchanged. |
-| Delete | Remove an existing record when deletion is supported and appropriate. |
+| **Insert** | Create a new record. |
+| **Update** | Replace the complete editable representation of an existing record. Include all required and editable attributes. |
+| **Patch** | Change only the specified attributes of an existing record. Unspecified attributes remain unchanged. |
+| **Delete** | Remove an existing record when deletion is supported and appropriate. |
 
 Use the [API reference](../../api/index.md) to confirm which operations are available for each service.
 
