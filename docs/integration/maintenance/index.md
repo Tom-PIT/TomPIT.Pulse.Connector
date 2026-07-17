@@ -11,17 +11,17 @@ graph TD
   A[Maintenance] --> B[Maintenance plan]
   A --> C[Maintenance usage]
 
-  B --> D[Material plan]
-  B --> E[Energy source plan]
-  B --> F[Equipment plan]
-  B --> G[Labor plan]
-  B --> H[Expense plan]
+  A --> D[Material plan]
+  A --> E[Energy source plan]
+  A --> F[Equipment plan]
+  A --> G[Labor plan]
+  A --> H[Expense plan]
 
-  C --> I[Material usage]
-  C --> J[Energy source usage]
-  C --> K[Equipment usage]
-  C --> L[Labor usage]
-  C --> M[Expense usage]
+  A --> I[Material usage]
+  A --> J[Energy source usage]
+  A --> K[Equipment usage]
+  A --> L[Labor usage]
+  A --> M[Expense usage]
 ```
 
 ## Available maintenance data
