@@ -11,7 +11,7 @@ Use the operation that matches the intended change.
 | **Patch** | Change only the specified attributes of an existing record. Unspecified attributes remain unchanged. |
 | **Delete** | Remove an existing record when deletion is supported and appropriate. |
 
-Use the [API reference](../../api/index.md) to confirm which operations are available for each service.
+Use the [API reference](../api/index.md) to confirm which operations are available for each service.
 
 ## Matching records by code
 

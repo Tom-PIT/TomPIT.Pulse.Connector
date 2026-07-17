@@ -74,7 +74,7 @@ Start with a small, complete scenario:
    - [Master data](../integration/master-data/index.md)
    - [Manufacturing data](../integration/manufacturing/index.md)
    - [Maintenance data](../integration/maintenance/index.md)
-- [Validation](../integration/validation.md)
+- [Validation](../getting-started/validation.md)
 - [Updates and error handling](../integration/updates-and-error-handling.md)
 - [Measurements](../integration/measurements.md)
 - [API reference](../api/index.md)

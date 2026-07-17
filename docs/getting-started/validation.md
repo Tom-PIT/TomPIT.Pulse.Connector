@@ -128,4 +128,4 @@ Before submitting a request:
 | Incorrect property name | Use the documented camelCase field name. |
 | Incorrect data type | Use the JSON type defined by the schema. |
 
-See [Updates and error handling](updates-and-error-handling.md) for guidance on correcting requests, retrying failures, and preventing duplicate records.
+See [Updates and error handling](../integration/updates-and-error-handling.md) for guidance on correcting requests, retrying failures, and preventing duplicate records.
