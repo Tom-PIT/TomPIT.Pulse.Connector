@@ -75,7 +75,7 @@ Create and maintain the stable business entities and code lists referenced by op
 | **Equipment Extensions**<br>`EquipmentExtensions` | Create and maintain equipment extensions master data. | `/services/pulse/types/equipment/update-batch` |
 | [**Expense**](../integration/master-data/expense.md)<br>`ExpenseService` | Define additional cost types used by operational records. | `/services/pulse/types/expenses` |
 | **Expense Extensions**<br>`ExpenseExtensions` | Create and maintain expense extensions master data. | `/services/pulse/types/expenses/update-batch` |
-| [**Labour**](../integration/master-data/labour.md)<br>`LabourService` | Define labour categories or resources used during activities. | `/services/pulse/types/labour` |
+| [**Labor**](../integration/master-data/labor.md)<br>`LaborService` | Define labor categories or resources used during activities. | `/services/pulse/types/labor` |
 | [**Material**](../integration/master-data/material.md)<br>`MaterialService` | Define raw materials, components, or supplies consumed during activities. | `/services/pulse/types/materials` |
 | **Material Extensions**<br>`MaterialExtensions` | Create and maintain material extensions master data. | `/services/pulse/types/materials/update-batch` |
 | [**Measure Unit**](../integration/master-data/measure-unit.md)<br>`MeasureUnitService` | Define units used for quantities, measurements, and prices. | `/services/pulse/types/measure-units` |

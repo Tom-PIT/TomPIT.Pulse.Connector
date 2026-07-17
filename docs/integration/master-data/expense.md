@@ -36,9 +36,7 @@ Represents an additional type of cost tracked in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
-
-Expenses are referenced by:
+## Referenced by
 
 - [Expense plans](../manufacturing/expense-plan.md)
 - [Expense usage records](../manufacturing/expense-usage.md)

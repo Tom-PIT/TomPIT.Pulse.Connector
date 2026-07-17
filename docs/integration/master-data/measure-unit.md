@@ -32,9 +32,7 @@ Represents a unit used to express quantities and measured values consistently th
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
-
-Measure units are referenced by:
+## Referenced by
 
 - [Products](product.md)
 - [Materials](material.md)

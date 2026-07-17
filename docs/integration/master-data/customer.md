@@ -32,6 +32,6 @@ Represents a customer associated with business or operational activities in Puls
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
+## Referenced by
 
-Customers can be referenced by [Batches](../manufacturing/batch.md).
+- [Batches](../manufacturing/batch.md)

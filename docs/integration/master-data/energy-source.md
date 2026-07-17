@@ -40,11 +40,11 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-Energy sources reference a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting the energy source.
+- [Measure unit](measure-unit.md) 
 
-## Used by
+Create or retrieve the measure unit before submitting the energy source.
 
-Energy sources are referenced by:
+## Referenced by
 
 - [Energy source plans](../manufacturing/energy-source-plan.md)
 - [Energy source usage records](../manufacturing/energy-source-usage.md)

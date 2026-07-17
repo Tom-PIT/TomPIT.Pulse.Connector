@@ -34,6 +34,6 @@ Defines a classification for waste in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
+## Referenced by
 
-Waste types are referenced by [Waste records](../manufacturing/waste.md).
+- [Waste records](../manufacturing/waste.md)

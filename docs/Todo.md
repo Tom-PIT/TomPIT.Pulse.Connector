@@ -3,7 +3,4 @@
 
 
 ### docs
-
-#### maintenance-reason.md
-
-- Add the API service name and base path when Maintenance reason is implemented.
+- add link to possible example SCALAR API URL for API/index.md

@@ -32,8 +32,6 @@ Represents a physical or organizational operating location in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
-
-Plants are referenced by:
+## Referenced by
 
 - [Production lines](production-line.md)

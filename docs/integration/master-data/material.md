@@ -40,11 +40,11 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-Materials reference a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting the material.
+- [Measure unit](measure-unit.md)
 
-## Used by
+Create or retrieve the measure unit before submitting the material.
 
-Materials are referenced by:
+## Referenced by
 
 - [Material plans](../manufacturing/material-plan.md)
 - [Material usage records](../manufacturing/material-usage.md)

@@ -40,8 +40,10 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-Products reference a [measure unit](measure-unit.md). Create or retrieve the measure unit before submitting the product.
+- [Measure unit](measure-unit.md)
 
-## Used by
+Create or retrieve the measure unit before submitting the product.
 
-Products are referenced by [Batches](../manufacturing/batch.md).
+## Referenced by
+
+- [Batches](../manufacturing/batch.md)

@@ -32,6 +32,6 @@ Represents a defined work period used to organize operational activity in Pulse.
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
-## Used by
+## Referenced by
 
-Shifts are referenced by [Batch shift records](../manufacturing/batch-shift.md).
+- [Batch shift records](../manufacturing/batch-shift.md)
