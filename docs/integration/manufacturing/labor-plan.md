@@ -35,14 +35,6 @@ When the exact timing of the planned work is important, add one or more [labor p
 > [!NOTE]
 > When a price is based on elapsed time, Pulse expresses it per hour. Although Pulse commonly represents durations internally using ticks, hours are used for time-based price calculations.
 
-## Planned work periods
-
-The labor plan identifies the labor role or type of work and its planned quantity and cost.
-
-When the schedule within the stage also matters, use [labor plan periods](labor-plan-period.md) to record the exact planned start and end of each work interval.
-
-A single labor plan may have one or more planned work periods.
-
 ## API service
 
 | Service | Base path |

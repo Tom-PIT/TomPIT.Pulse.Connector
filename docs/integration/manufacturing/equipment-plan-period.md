@@ -1,10 +1,8 @@
 # Equipment plan period
 
-Represents a specific time interval during which equipment is planned for use.
+Represents a specific time interval during which equipment is planned for use. An [equipment plan](equipment-plan.md) may contain multiple periods when the equipment is planned for use during separate intervals.
 
-An equipment plan identifies which equipment is expected to be used during a stage. An equipment plan period adds the exact timing of that planned use.
-
-This is useful when equipment is shared, capacity is limited, or the timing of access matters—for example, with bottleneck equipment, tools, laboratory equipment, packaging lines, or inspection stations.
+An equipment plan identifies which equipment is expected to be used during a stage. An equipment plan period adds the **exact timing** of that planned use.
 
 ## The Equipment plan period object
 

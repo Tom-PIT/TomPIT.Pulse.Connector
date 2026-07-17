@@ -19,8 +19,8 @@ Represents the planned execution time of a stage.
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | [`id`](stage.md) | integer | Unique identifier of the stage plan. It is identical to the `id` of the related stage. | `208` |
-| `start` | string or null | Planned stage start timestamp in ISO 8601 format. | `"2026-07-20T08:00:00+02:00"` |
-| `end` | string or null | Planned stage end timestamp in ISO 8601 format. | `"2026-07-20T10:30:00+02:00"` |
+| `start` | string or null | Optional planned stage start timestamp in ISO 8601 format. | `"2026-07-20T08:00:00+02:00"` |
+| `end` | string or null | Optional planned stage end timestamp in ISO 8601 format. | `"2026-07-20T10:30:00+02:00"` |
 
 </div>
 

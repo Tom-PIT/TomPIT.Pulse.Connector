@@ -34,9 +34,7 @@ Although Batch belongs to the Manufacturing API family, it is not limited to pro
 
 ## Price
 
-The `price` field provides the revenue context for the batch. Pulse can compare this value with the costs derived from materials, labor, energy, equipment, downtime, waste, and other operational records.
-
-The value can represent a sales price, agreed batch value, internal valuation, planned revenue basis, or another value supplied by the source system for the specific execution.
+`price` provides the revenue or valuation context for the batch. It can represent a sales price, agreed batch value, internal valuation, planned revenue basis, or another value supplied by the source system.
 
 ## API service
 
@@ -53,7 +51,9 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 May also reference: 
 
-- [Customer](../master-data/customer.md). Create or retrieve these records before submitting the batch.
+- [Customer](../master-data/customer.md). 
+
+Create or retrieve these records before submitting the batch.
 
 ## Referenced by
 

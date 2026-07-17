@@ -1,8 +1,6 @@
 # Labor usage period
 
-Represents a specific time interval during which labor was actually performed.
-
-A labor usage record identifies the labor role or type of work and the actual quantity used. A labor usage period adds the exact timing of that work.
+Represents a specific interval during which labor was actually performed. A [labor usage](labor-usage.md) record may contain multiple periods when work occurred during separate intervals.
 
 This allows Pulse to compare planned and actual work schedules and identify late work, longer-than-planned activity, waiting, handover issues, or labor associated with downtime, waste, and quality deviations.
 
@@ -29,8 +27,6 @@ This allows Pulse to compare planned and actual work schedules and identify late
 | `end` | string | Actual end timestamp of the work, in ISO 8601 format. | `"2026-07-20T10:35:00+02:00"` |
 
 </div>
-
-A single [labor usage](labor-usage.md) record may contain multiple periods when the work occurred during separate intervals.
 
 ## API service
 

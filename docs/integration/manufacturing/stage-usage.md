@@ -34,7 +34,7 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-- [stage](stage.md)
+- [Stage](stage.md)
 
 Create or retrieve the stage before submitting the usage record.
 

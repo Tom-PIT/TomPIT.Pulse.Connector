@@ -82,7 +82,10 @@ Supported `dimension` values are:
 | `17` | Maintenance | A [maintenance record](../maintenance/maintenance.md) |
 | `18` | Maintenance kind | A preventive or corrective [maintenance classification](../maintenance/maintenance.md#maintenance-kind) |
 
-The selected dimension determines the operational context in which Pulse interprets the value. Use the dimension that corresponds to the context represented by the source record. A value linked to a stage, batch, production line, or equipment record can usually support more precise analysis than a value linked only to a plant.
+The selected dimension determines the operational context in which Pulse interprets the value. Use the dimension that corresponds to the context represented by the source record. 
+
+> [!IMPORTANT]
+> More precise context enables more precise analysis. A value linked only to a plant can describe broader environmental conditions, while a value linked to a production line, stage, equipment record, or batch allows Pulse to evaluate the relationship between those conditions and a specific operational result more accurately.
 
 ## Measurement values and limits
 

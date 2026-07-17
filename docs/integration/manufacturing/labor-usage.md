@@ -39,14 +39,6 @@ When the exact timing of the work is important, add one or more [labor usage per
 > [!NOTE]
 > When a price is based on elapsed time, Pulse expresses it per hour. Although Pulse commonly represents durations internally using ticks, hours are used for time-based price calculations.
 
-## Actual work periods
-
-The labor usage record identifies the labor role or type of work and the actual quantity and cost.
-
-When the timing of the work also matters, use [labor usage periods](labor-usage-period.md) to record the exact start and end of each actual work interval.
-
-A single labor usage record may have one or more actual work periods.
-
 ## API service
 
 | Service | Base path |

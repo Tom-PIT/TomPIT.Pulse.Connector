@@ -19,8 +19,8 @@ Represents the actual execution time of a batch.
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | [`id`](batch.md) | integer | Unique identifier of the batch usage record. It is identical to the `id` of the related batch. | `105` |
-| `start` | string or null | Actual start timestamp in ISO 8601 format. | `"2026-07-20T06:12:00+02:00"` |
-| `end` | string or null | Actual end timestamp in ISO 8601 format. | `"2026-07-20T14:37:00+02:00"` |
+| `start` | string or null | Optional actual start timestamp in ISO 8601 format. | `"2026-07-20T06:12:00+02:00"` |
+| `end` | string or null | Optional actual end timestamp in ISO 8601 format. | `"2026-07-20T14:37:00+02:00"` |
 
 </div>
 

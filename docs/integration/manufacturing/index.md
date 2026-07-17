@@ -2,22 +2,21 @@
 
 Manufacturing data describes planned and actual operational activity submitted to Pulse.
 
-These records connect batches, stages, resource plans, actual usage, output, downtime, delays, waste, shifts, and measurements. Together, they provide the operational context Pulse needs to compare what was expected with what actually happened.
+These records connect batches, stages, resource plans, actual usage, output, downtime, delays, waste, shifts, and measurements.
 
-A batch is not limited to production. It represents a broader operational unit of work, such as a production run, supply activity, logistics operation, service process, or another grouped activity tracked in Pulse.
+> [!IMPORTANT]
+> A **batch** is not limited to production. It represents a broader operational unit of work, such as a production run, supply activity, logistics operation, service process, or another grouped activity tracked in Pulse.
 
 Before submitting manufacturing data, synchronize the required [master data](../master-data/index.md).
 
 ## Manufacturing structure
-
-Manufacturing records follow a hierarchy:
 
 ```mermaid
 graph TD
   A[Batch] --> B[Batch plan]
   A --> C[Batch usage]
   A --> D[Batch shifts]
-  A --> E[Produced quantities]
+  A --> E[Produced]
   A --> F[Stages]
 
   F --> G[Stage plan]
@@ -30,83 +29,74 @@ graph TD
   H --> M[Waste]
 ```
 
-A batch represents the broader operational activity. Stages divide the batch into individual operations or execution steps. Plans describe expected activity, while usage records describe actual activity.
-
-## Planned and actual data
-
-Pulse separates planned values from actual execution data.
-
-| Data type | Purpose |
-| --- | --- |
-| **Plan** | Describes the expected time, quantity, cost, or resource requirement |
-| **Usage** | Describes the actual time, quantity, cost, or resource consumption |
-| **Period** | Describes a time interval associated with labor or equipment |
-| **Waste** | Describes resources or value lost during execution |
-
-This separation allows Pulse to compare expectations with actual results and identify operational deviations.
+Plans describe expected activity. Usage records describe actual activity.
 
 ## Available manufacturing data
 
-### Core production records
+### Core records
 
 | Resource | Purpose |
 | --- | --- |
 | [**Batch**](batch.md) | Represents an operational unit of work and its business context. |
-| **Batch plan** | Describes the planned timing of a batch. |
-| **Batch usage** | Describes the actual timing of a batch. |
-| [**Batch shift**](batch-shift.md) | Assigns one or more shifts to a batch. |
-| **Produced** | Records outputs and their quality classification. |
-| **Stage** | Represents an operation or execution step within a batch. |
-| **Stage plan** | Describes the planned timing of a stage. |
-| **Stage usage** | Describes the actual timing of a stage. |
+| [**Batch plan**](batch-plan.md) | Describes the planned timing and quantity of a batch. |
+| [**Batch usage**](batch-usage.md) | Describes the actual timing of a batch. |
+| [**Batch shift**](batch-shift.md) | Assigns shifts to a batch during specific intervals. |
+| [**Produced**](produced.md) | Records output quantities and quality classification. |
+| [**Stage**](stage.md) | Represents an operation or execution step within a batch. |
+| [**Stage plan**](stage-plan.md) | Describes the planned timing of a stage. |
+| [**Stage usage**](stage-usage.md) | Describes the actual timing of a stage. |
 | [**Stage delay**](stage-delay.md) | Records a delay associated with a stage. |
-| [**Ambient value**](ambient-value.md) | Records a measured value linked to the manufacturing context. |
+| [**Ambient value**](ambient-value.md) | Records a measured value in a specific operational context. |
 
 ### Resource plans
-
-Resource plans describe the quantities and prices expected during a stage.
 
 | Resource | Master data reference |
 | --- | --- |
 | [**Material plan**](material-plan.md) | [Material](../master-data/material.md) |
 | [**Energy source plan**](energy-source-plan.md) | [Energy source](../master-data/energy-source.md) |
 | [**Equipment plan**](equipment-plan.md) | [Equipment](../master-data/equipment.md) |
+| [**Equipment plan period**](equipment-plan-period.md) | — |
 | [**Labor plan**](labor-plan.md) | [Labor](../master-data/labor.md) |
-| **Expense plan** | [Expense](../master-data/expense.md) |
+| [**Labor plan period**](labor-plan-period.md) | — |
+| [**Expense plan**](expense-plan.md) | [Expense](../master-data/expense.md) |
 
 ### Resource usage
-
-Resource usage records describe the quantities and prices actually consumed during a stage.
 
 | Resource | Master data reference |
 | --- | --- |
 | [**Material usage**](material-usage.md) | [Material](../master-data/material.md) |
 | [**Energy source usage**](energy-source-usage.md) | [Energy source](../master-data/energy-source.md) |
 | [**Equipment usage**](equipment-usage.md) | [Equipment](../master-data/equipment.md) |
+| [**Equipment usage period**](equipment-usage-period.md) | — |
 | [**Labor usage**](labor-usage.md) | [Labor](../master-data/labor.md) |
-| **Expense usage** | [Expense](../master-data/expense.md) |
+| [**Labor usage period**](labor-usage-period.md) | — |
+| [**Expense usage**](expense-usage.md) | [Expense](../master-data/expense.md) |
 
-### Downtime and waste
+### Downtime
 
 | Resource | Purpose |
 | --- | --- |
 | [**Downtime**](downtime.md) | Records a downtime event associated with a stage. |
-| **Downtime plan** | Describes planned downtime. |
-| **Downtime usage** | Describes actual downtime. |
-| [**Waste**](waste.md) | Records waste generated during stage execution. |
-| [**Waste material usage**](waste-material-usage.md) | Records material associated with waste. |
-| [**Waste energy source usage**](waste-energy-source-usage.md) | Records energy associated with waste. |
-| **Waste expense usage** | Records expenses associated with waste. |
+| [**Downtime plan**](downtime-plan.md) | Describes the planned downtime interval. |
+| [**Downtime usage**](downtime-usage.md) | Describes the actual downtime interval. |
+| [**Downtime maintenance**](downtime-maintenance.md) | Links a downtime event to a maintenance activity. |
+
+### Waste
+
+| Resource | Purpose |
+| --- | --- |
+| [**Waste**](waste.md) | Records waste, scrap, loss, or another unusable quantity. |
+| [**Waste material usage**](waste-material-usage.md) | Records material attributed to waste. |
+| [**Waste energy source usage**](waste-energy-source-usage.md) | Records energy attributed to waste. |
+| [**Waste expense usage**](waste-expense-usage.md) | Records additional expenses attributed to waste. |
 
 ## Submission order
 
-Submit parent records before the records that reference them.
+Submit parent records before records that reference them.
 
-A typical sequence is:
-
-1. Synchronize the required master data.
+1. Synchronize the required [master data](../master-data/index.md).
 2. Create the batch.
-3. Submit the batch plan, usage, shifts, and produced quantities as applicable.
+3. Submit batch plan, usage, shifts, and produced quantities as applicable.
 4. Create the stages that belong to the batch.
 5. Submit stage plans and stage usage.
 6. Submit resource plans and actual usage.

@@ -64,7 +64,7 @@ This information can help Pulse identify whether operational differences are ass
 
 | Service | Base path |
 | --- | --- |
-| `LotService` | `/services/pulse/traceability/lots` |
+| `LotService` | `/services/pulse/manufacturing/lots` |
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 

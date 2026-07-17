@@ -36,6 +36,6 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-- [Batch](batch.md). 
+- [Batch](batch.md)
 
 Create or retrieve the batch before submitting the batch plan.

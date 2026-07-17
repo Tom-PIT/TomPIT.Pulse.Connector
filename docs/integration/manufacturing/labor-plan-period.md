@@ -1,10 +1,8 @@
 # Labor plan period
 
-Represents a specific time interval during which labor is planned for a stage.
+Represents a specific time interval during which labor is planned for a stage. A [labor plan](labor-plan.md) may contain multiple periods when the work is planned for separate intervals.
 
 A labor plan identifies the labor role or type of work and the planned quantity. A labor plan period adds the exact timing of that planned work.
-
-This is useful when the timing of labor affects handovers, manual operations, inspections, bottlenecks, equipment coordination, or other parts of the stage schedule.
 
 ## The Labor plan period object
 
