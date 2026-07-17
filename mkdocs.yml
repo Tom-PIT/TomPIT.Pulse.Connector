@@ -147,7 +147,11 @@ nav:
     - Traceability:
         - Lots: integration/traceability/lot.md
     - Measurements: integration/measurements.md
-    - Updates and errors: integration/updates-and-errors-handling.md
+    - Updates and errors handling: integration/updates-and-errors-handling.md
+  
+  - Data model:
+     - Dimension: data-model/dimension.md
+     - Ambient value sharding: data-model/ambient-value-sharding.md
 
   - Scenarios:
       - Typical production day: scenarios/typical-operational-day.md
