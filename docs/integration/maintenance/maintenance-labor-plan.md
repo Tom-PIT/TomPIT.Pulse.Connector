@@ -1,16 +1,16 @@
-# Maintenance equipment plan
+# Maintenance labor plan
 
-Describes planned supporting equipment use for a maintenance activity.
+Describes planned labor use for a maintenance activity.
 
-## The Maintenance equipment plan object
+## The Maintenance labor plan object
 
 ```json
 {
   "id": 501,
   "maintenance": 314,
-  "equipment": 92,
-  "quantity": 2.5,
-  "price": 48.0
+  "labor": 24,
+  "quantity": 3.0,
+  "price": 42.0
 }
 ```
 
@@ -22,9 +22,9 @@ Describes planned supporting equipment use for a maintenance activity.
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `501` |
 | [`maintenance`](maintenance.md) | integer | Pulse `id` of the maintenance activity. | `314` |
-| [`equipment`](../master-data/equipment.md) | integer | Pulse `id` of the equipment planned for the maintenance activity. | `92` |
-| `quantity` | number | Planned duration of equipment use, expressed in hours. | `2.5` |
-| `price` | number | Optional planned price per hour. | `48.0` |
+| [`labor`](../master-data/labor.md) | integer | Pulse `id` of the labor planned for the maintenance activity. | `24` |
+| `quantity` | number | Planned duration of labor, expressed in hours. | `3.0` |
+| `price` | number | Optional planned price per hour. | `42.0` |
 
 </div>
 
@@ -35,13 +35,13 @@ Describes planned supporting equipment use for a maintenance activity.
 
 | Service | Base path |
 | --- | --- |
-| `MaintenanceEquipmentPlanService` | `/services/pulse/maintenance/plan/equipment` |
+| `MaintenanceLaborPlanService` | `/services/pulse/maintenance/plan/labor` |
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
 ## Depends on
 
 - [Maintenance](maintenance.md)
-- [Equipment](../master-data/equipment.md)
+- [Labor](../master-data/labor.md)
 
-Create or retrieve the applicable records before submitting the maintenance equipment plan.
+Create or retrieve the applicable records before submitting the maintenance labor plan.

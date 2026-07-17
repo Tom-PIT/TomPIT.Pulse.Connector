@@ -20,7 +20,7 @@ Pulse can receive data from ERP, MES, SCADA, IoT, and other operational systems.
 
 1. [Review the integration overview](getting-started/index.md).
 2. [Authenticate with the Pulse API](getting-started/authentication.md).
-3. [Send your first data](getting-started/first-request.md).
+3. [Send your first data](getting-started/first-api-request.md).
 4. [Validate the result](getting-started/validation.md).
 5. [Map your source data](integration/index.md).
 

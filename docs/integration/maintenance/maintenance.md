@@ -1,8 +1,8 @@
 # Maintenance
 
-Represents a maintenance activity tracked in Pulse.
+Represents a preventive or corrective maintenance activity tracked in Pulse.
 
-A maintenance record identifies the activity and classifies its fundamental nature as preventive or corrective. Planned timing, actual timing, resource requirements, resource usage, and related downtime are recorded through the maintenance records that reference it.
+The Maintenance record identifies and classifies the activity. Related plan and usage records describe its planned and actual timing, resources, and costs.
 
 ## The Maintenance object
 
@@ -10,7 +10,9 @@ A maintenance record identifies the activity and classifies its fundamental natu
 {
   "id": 314,
   "code": "MNT-2026-0042",
-  "kind": "Corrective"
+  "kind": "Corrective",
+  "reason": 17,
+  "equipment": 82
 }
 ```
 
@@ -23,6 +25,8 @@ A maintenance record identifies the activity and classifies its fundamental natu
 | `id` | integer | Unique identifier assigned by Pulse. | `314` |
 | `code` | string | Unique business code used to identify the maintenance activity in the source system and Pulse. | `"MNT-2026-0042"` |
 | `kind` | enum | Fundamental nature of the maintenance activity: `Preventive` or `Corrective`. | `"Corrective"` |
+| [`reason`](../master-data/maintenance-reason.md) | integer | Optional Pulse `id` of the reason for the maintenance activity. | `17` |
+| [`equipment`](../master-data/equipment.md) | integer | Optional Pulse `id` of the equipment associated with the maintenance activity. | `82` |
 
 </div>
 
@@ -35,9 +39,7 @@ A maintenance record identifies the activity and classifies its fundamental natu
 | `Preventive` | A maintenance activity performed to prevent a failure, deterioration, or later downtime. |
 | `Corrective` | A maintenance activity performed in response to an existing problem, failure, downtime, deviation, or deterioration. |
 
-This distinction is important because preventive and corrective maintenance have different operational and business meanings.
-
-Preventive maintenance may introduce a planned cost and planned interruption, but it can reduce the risk of a larger loss later. Corrective maintenance usually indicates that a problem has already occurred and may already have affected time, capacity, quality, or cost.
+Preventive maintenance is performed before a failure to reduce operational risk. Corrective maintenance responds to an existing problem, failure, deviation, or deterioration.
 
 > [!NOTE]
 > The API model also includes `NotSet`. Use `Preventive` or `Corrective` when the maintenance kind is known.
@@ -70,9 +72,18 @@ For example, a maintenance activity may be classified as `Corrective`, while its
 
 See the [API reference](../../api/index.md) for supported operations and complete request schemas.
 
+## Depends on
+
+May also reference:
+
+- [Maintenance reason](../master-data/maintenance-reason.md)
+- [Equipment](../master-data/equipment.md)
+
+Create or retrieve the applicable records before submitting the Maintenance record.
+
 ## Referenced by
 
 - [Maintenance plans](maintenance-plan.md)
 - [Maintenance usage records](maintenance-usage.md)
 - [Downtime maintenance records](../manufacturing/downtime-maintenance.md)
-- [Ambient value records](../manufacturing/ambient-value.md)
+- [Ambient value records](../manufacturing/ambient-value.md) that use the Maintenance [dimension](../../data-model/dimension.md)

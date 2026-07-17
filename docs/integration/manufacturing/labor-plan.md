@@ -27,7 +27,7 @@ When the exact timing of the planned work is important, add one or more [labor p
 | `id` | integer | Unique identifier of the labor plan. | `521` |
 | [`stage`](stage.md) | integer | Pulse `id` of the stage for which the labor is planned. | `208` |
 | [`labor`](../master-data/labor.md) | integer | Pulse `id` of the planned labor role or type of work. | `41` |
-| `quantity` | number | Planned quantity of labor. | `6.0` |
+| `quantity` | number | Planned quantity of labor in hours. | `6.0` |
 | `price` | number or null | Optional planned hourly price. | `32.0` |
 
 </div>
