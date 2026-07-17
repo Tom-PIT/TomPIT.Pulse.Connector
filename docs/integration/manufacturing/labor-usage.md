@@ -30,7 +30,7 @@ When the exact timing of the work is important, add one or more [labor usage per
 | `id` | integer | Unique identifier of the labor usage record. | `692` |
 | [`stage`](stage.md) | integer | Pulse `id` of the stage in which the labor was used. | `208` |
 | [`labor`](../master-data/labor.md) | integer | Pulse `id` of the labor role or type of work that was used. | `41` |
-| `quantity` | number | Actual quantity of labor used. | `7.5` |
+| `quantity` | number | Actual quantity of labor used in hours. | `7.5` |
 | `price` | number or null | Optional actual hourly price for this labor usage. | `34.0` |
 | `date` | string | Date and time when the labor usage was recorded or occurred, in ISO 8601 format. | `"2026-07-20T10:48:00+02:00"` |
 
