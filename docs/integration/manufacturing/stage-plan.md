@@ -37,11 +37,3 @@ See the [API reference](../../api/index.md) for supported operations and complet
 - [Stage](stage.md)
 
 Create or retrieve the stage before submitting the stage plan.
-
-## Referenced by
-
-- [Material plans](material-plan.md)
-- [Energy source plans](energy-source-plan.md)
-- [Equipment plans](equipment-plan.md)
-- [Labor plans](labor-plan.md)
-- [Expense plans](expense-plan.md)

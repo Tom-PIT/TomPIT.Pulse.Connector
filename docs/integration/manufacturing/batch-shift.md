@@ -42,7 +42,7 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 ## Depends on
 
-- [Batch](batch.md) 
+- [Batch](batch.md)
 - [Shift](../master-data/shift.md) 
 
 Create or retrieve both records before submitting the batch shift.

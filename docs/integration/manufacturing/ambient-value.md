@@ -33,7 +33,7 @@ The related [ambient type](../master-data/ambient-type.md) defines what is being
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `7421` |
 | `date` | string | Date and time to which the measured value applies, in ISO 8601 format. | `"2026-07-20T09:18:00+02:00"` |
-| `dimension` | enum | Context in which the value was measured. Determines how `dimensionId` is interpreted. | `3` |
+| [`dimension`](../../data-model/dimension.md) | enum | Context in which the value was measured. Determines how `dimensionId` is interpreted. | `3` |
 | `dimensionId` | integer | Pulse `id` of the specific record identified by `dimension`. | `208` |
 | [`type`](../master-data/ambient-type.md) | integer | Pulse `id` of the ambient type that defines what the value represents. | `22` |
 | `min` | string or null | Optional minimum permitted value for this measurement and context. | `"18"` |
@@ -45,7 +45,7 @@ The related [ambient type](../master-data/ambient-type.md) defines what is being
 
 ## Dimension context
 
-The combination of `dimension` and `dimensionId` identifies what the measurement applies to.
+The combination of [`dimension`](../../data-model/dimension.md) and `dimensionId` identifies what the measurement applies to.
 
 For example:
 
@@ -58,34 +58,8 @@ For example:
 
 means that the value applies to Stage `208`.
 
-Supported `dimension` values are:
-
-| Value | Dimension | `dimensionId` identifies |
-| --- | --- | --- |
-| `0` | Other | Another supported context |
-| `1` | Plant | A [plant](../master-data/plant.md) |
-| `2` | Production line | A [production line](../master-data/production-line.md) |
-| `3` | Stage | A [stage](stage.md) |
-| `4` | Shift | A [shift](../master-data/shift.md) |
-| `5` | Product | A [product](../master-data/product.md) |
-| `6` | Batch | A [batch](batch.md) |
-| `7` | Energy source | An [energy source](../master-data/energy-source.md) |
-| `8` | Equipment | An [equipment](../master-data/equipment.md) record |
-| `9` | Expense | An [expense](../master-data/expense.md) |
-| `10` | Labor | A [labor](../master-data/labor.md) record |
-| `11` | Material | A [material](../master-data/material.md) |
-| `12` | Downtime category | A [downtime category](../master-data/downtime-category.md) |
-| `13` | Downtime type | A [downtime type](../master-data/downtime-type.md) |
-| `14` | Downtime cause | A [downtime cause](../master-data/downtime-cause.md) |
-| `15` | Waste type | A [waste type](../master-data/waste-type.md) |
-| `16` | Delay | A [delay](../master-data/delay.md) |
-| `17` | Maintenance | A [maintenance record](../maintenance/maintenance.md) |
-| `18` | Maintenance kind | A preventive or corrective [maintenance classification](../maintenance/maintenance.md#maintenance-kind) |
-
-The selected dimension determines the operational context in which Pulse interprets the value. Use the dimension that corresponds to the context represented by the source record. 
-
-> [!IMPORTANT]
-> More precise context enables more precise analysis. A value linked only to a plant can describe broader environmental conditions, while a value linked to a production line, stage, equipment record, or batch allows Pulse to evaluate the relationship between those conditions and a specific operational result more accurately.
+> [!NOTE]
+> More precise context enables more precise analysis. A value linked only to a plant can describe broader environmental conditions, while a value linked to a production line, stage, equipment record, or batch allows Pulse to evaluate its relationship with a specific operational result more accurately.
 
 ## Measurement values and limits
 

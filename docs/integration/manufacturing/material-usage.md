@@ -32,7 +32,7 @@ Pulse can compare this actual consumption with the related [material plan](mater
 | `quantity` | number | Actual quantity of the material used. | `132.5` |
 | `price` | number or null | Optional actual price per measure unit for this consumption record. | `4.45` |
 | `date` | string | Date and time when the material consumption was recorded or occurred, in ISO 8601 format. | `"2026-07-20T10:48:00+02:00"` |
-| [`lot`](../../traceability/lot.md) | integer or null | Optional Pulse `id` of the lot associated with the consumed material. | `92` |
+| [`lot`](../traceability/lot.md) | integer or null | Optional Pulse `id` of the lot associated with the consumed material. | `92` |
 
 </div>
 
@@ -53,6 +53,6 @@ See the [API reference](../../api/index.md) for supported operations and complet
 
 May also reference:
 
-- [Lot](../../traceability/lot.md)
+- [Lot](../traceability/lot.md)
 
 Create or retrieve the applicable records before submitting the material usage record.

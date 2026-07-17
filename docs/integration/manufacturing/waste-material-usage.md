@@ -30,7 +30,7 @@ The quantity remains separate from the [waste](waste.md) record so Pulse can ide
 | [`material`](../master-data/material.md) | integer | Pulse `id` of the material consumed or lost. | `63` |
 | `price` | number or null | Optional price per measure unit for this material loss. | `4.45` |
 | [`supplier`](../master-data/supplier.md) | integer or null | Optional Pulse `id` of the supplier associated with the material. | `18` |
-| [`lot`](../../traceability/lot.md) | integer or null | Optional Pulse `id` of the lot associated with the material. | `92` |
+| [`lot`](../traceability/lot.md) | integer or null | Optional Pulse `id` of the lot associated with the material. | `92` |
 
 </div>
 
@@ -52,6 +52,6 @@ See the [API reference](../../api/index.md) for supported operations and complet
 May also reference:
 
 - [Supplier](../master-data/supplier.md)
-- [Lot](../../traceability/lot.md)
+- [Lot](../traceability/lot.md)
 
 Create or retrieve the applicable records before submitting the waste material usage record.

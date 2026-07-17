@@ -48,7 +48,3 @@ See the [API reference](../../api/index.md) for supported operations and complet
 - [Material](../master-data/material.md)
 
 Create or retrieve the applicable records before submitting the material plan.
-
-## Referenced by
-
-- [Material usage records](material-usage.md)

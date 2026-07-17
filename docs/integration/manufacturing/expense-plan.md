@@ -46,7 +46,3 @@ See the [API reference](../../api/index.md) for supported operations and complet
 - [Expense](../master-data/expense.md)
 
 Create or retrieve the applicable records before submitting the expense plan.
-
-## Referenced by
-
-- [Expense usage records](expense-usage.md)

@@ -37,12 +37,3 @@ See the [API reference](../../api/index.md) for supported operations and complet
 - [Stage](stage.md)
 
 Create or retrieve the stage before submitting the usage record.
-
-## Referenced by
-
-- [Material usage records](material-usage.md)
-- [Energy source usage records](energy-source-usage.md)
-- [Equipment usage records](equipment-usage.md)
-- [Labor usage records](labor-usage.md)
-- [Expense usage records](expense-usage.md)
-- [Waste records](waste.md)

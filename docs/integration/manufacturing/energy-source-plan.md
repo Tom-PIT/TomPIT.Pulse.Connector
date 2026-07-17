@@ -46,7 +46,3 @@ See the [API reference](../../api/index.md) for supported operations and complet
 - [Energy source](../master-data/energy-source.md)
 
 Create or retrieve the applicable records before submitting the energy source plan.
-
-## Referenced by
-
-- [Energy source usage records](energy-source-usage.md)
