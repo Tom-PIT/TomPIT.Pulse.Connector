@@ -145,9 +145,9 @@ nav:
         - Maintenance equipment plan: integration/maintenance/maintenance-equipment-plan.md
         - Maintenance equipment usage: integration/maintenance/maintenance-equipment-usage.md
     - Traceability:
-        - Lots: integration/traceability/lots.md
+        - Lots: integration/traceability/lot.md
     - Measurements: integration/measurements.md
-    - Updates and errors: integration/updates-and-errors.md
+    - Updates and errors: integration/updates-and-errors-handling.md
 
   - Scenarios:
       - Typical production day: scenarios/typical-operational-day.md
