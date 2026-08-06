@@ -1,18 +1,20 @@
-# Integrating with Pulse
+# Serial Production integration
 
-A Pulse integration maps operational data from source systems to the Pulse data model and submits it through the Pulse API.
+This section describes the Pulse Serial Production connector profile.
 
-Production integrations should run through an application, service, script, middleware process, or another automated workflow. Use Scalar to inspect and test individual API requests.
+The connector maps serial-production concepts, including plants, production lines, batches, stages, resource plans and usage, output, downtime, waste, maintenance, traceability, and measurements, into the shared Pulse Tenant data model.
+
+Other connector profiles may use different terminology and mappings while writing to the same underlying Tenant model.
 
 ## Integration flow
 
 ```mermaid
 graph LR
-  A[Source systems] --> B[Map source data]
+  A[Source systems] --> B[Serial Production connector mapping]
   B --> C[Synchronize master data]
   C --> D[Submit operational data]
   D --> E[Submit measurements]
-  E --> F[Validate and monitor]
+  E --> F[Shared Pulse Tenant model]
 ```
 
 ## Before you begin
@@ -26,9 +28,9 @@ You need:
 
 See [Authentication](../getting-started/authentication.md) and [First API request](../getting-started/first-api-request.md).
 
-## Map source data to Pulse
+## Map source data to the Serial Production connector
 
-Identify how records from the source system correspond to Pulse entities.
+Identify how records from the source system correspond to the entities exposed by the Serial Production connector.
 
 Start with stable master data such as plants, production lines, products, materials, equipment, labor, shifts, and measure units. Then map operational records such as batches, stages, plans, usage, output, downtime, waste, maintenance, and measurements.
 
@@ -70,7 +72,7 @@ Before submitting a request:
 
 See [Validation](../getting-started/validation.md) and [Updates and error handling](updates-and-error-handling.md).
 
-## Integration areas
+## Serial Production integration areas
 
 | Area | Purpose |
 | --- | --- |
@@ -84,6 +86,6 @@ See [Validation](../getting-started/validation.md) and [Updates and error handli
 
 1. Complete [Authentication](../getting-started/authentication.md).
 2. Send the [first API request](../getting-started/first-api-request.md).
-3. Review the [data model](../data-model/index.md).
-4. Follow the [typical operational day](../scenarios/typical-operational-day.md) scenario.
+3. Review the [Serial Production data model](../data-model/index.md).
+4. Follow the [end-to-end Serial Production scenario](../scenarios/typical-operational-day.md).
 5. Use the [API reference](../api/index.md) to inspect the required services.

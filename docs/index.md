@@ -4,17 +4,18 @@ Pulse uses operational data from source systems to connect business activities, 
 
 Pulse is not limited to manufacturing. It can be used in production, retail, wholesale, logistics, services, and other operational environments where data is exchanged between systems and business activities need to be analyzed.
 
-This documentation explains how to map source data to the Pulse data model and send it through the Pulse API.
+Pulse uses a shared Tenant data model across industries. Industry-specific connectors map source-system data into this common model, while profiles define how Pulse interprets that data for analysis.
 
-``` mermaid 
+This documentation explains the general integration process, the shared Pulse data model, and the available connector profiles.
+
+```mermaid
 graph LR
-  A[Source systems] --> B[Data mapping]
-  B --> C[Pulse API]
-  C --> D[Pulse data model]
-  D --> E[Answers]
+  A[Source systems] --> B[Industry-specific connector]
+  B --> C[Pulse Tenant data model]
+  C --> D[Active profile]
+  D --> E[Analysis]
+  E --> F[Answers]
 ```
-
-Pulse can receive data from ERP, MES, SCADA, IoT, and other operational systems.
 
 ## Start here
 
