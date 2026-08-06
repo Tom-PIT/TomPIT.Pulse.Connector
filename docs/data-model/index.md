@@ -1,14 +1,16 @@
-# Data model
+# Serial Production data model
 
-The Pulse data model defines how operational records are structured and connected.
+The Serial Production connector model defines how operational records are structured and connected for this connector profile.
 
-Use this section to understand relationships that apply across multiple integration areas.
+Use this section to understand relationships and identifiers that apply across the Serial Production integration areas.
+
+The connector maps these records into the shared Pulse Tenant data model.
 
 ## Core concepts
 
 ### Entity relationships
 
-Pulse entities reference related records through integer `id` values.
+Serial Production connector entities reference related records through integer `id` values.
 
 Some records depend on a parent entity, while others share the same identity as their parent.
 
@@ -22,7 +24,7 @@ See [Relationships](relationships.md) for:
 
 ### Dimensions
 
-Some records use `dimension` and `dimensionId` to identify their operational context.
+Some Serial Production records use `dimension` and `dimensionId` to identify their operational context.
 
 See [Dimension](dimension.md) for the supported contexts and how `dimensionId` is interpreted.
 
@@ -38,4 +40,4 @@ See [Ambient value sharding](ambient-value-sharding.md).
 
 For request requirements, data types, identifiers, date formats, and common validation failures, see [Validation](../getting-started/validation.md).
 
-For submission order and integration workflow, see [Integrating with Pulse](../integration/index.md).
+For submission order and connector workflow, see [Serial Production integration](../integration/index.md).
