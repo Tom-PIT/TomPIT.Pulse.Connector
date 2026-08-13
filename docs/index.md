@@ -2,32 +2,35 @@
 
 Pulse uses operational data from source systems to connect business activities, identify patterns, evaluate their impact, and generate recommendations.
 
-Pulse is not limited to manufacturing. It can be used in production, retail, wholesale, logistics, services, and other operational environments where data is exchanged between systems and business activities need to be analyzed.
+Pulse is designed for different industries and operational environments, including production, retail, wholesale, logistics, services, and others.
 
-This documentation explains how to map source data to the Pulse data model and send it through the Pulse API.
+Integrations use industry-specific **connector models** to map source-system data into Pulse. Each connector model defines the entities, relationships, and integration flow that apply to a particular operational context.
 
-``` mermaid 
+Pulse uses a shared internal data model to process this information consistently across industries. The internal model itself is not part of this integration documentation.
+
+```mermaid
 graph LR
-  A[Source systems] --> B[Data mapping]
-  B --> C[Pulse API]
-  C --> D[Pulse data model]
+  A[Source systems] --> B[Connector model]
+  B --> C[Pulse]
+  C --> D[Analysis]
   D --> E[Answers]
 ```
-
-Pulse can receive data from ERP, MES, SCADA, IoT, and other operational systems.
 
 ## Start here
 
 1. [Review the integration overview](getting-started/index.md).
 2. [Authenticate with the Pulse API](getting-started/authentication.md).
-3. [Send your first data](getting-started/first-api-request.md).
-4. [Validate the result](getting-started/validation.md).
-5. [Map your source data](integration/index.md).
+3. [Choose a connector model](connector-models/index.md).
+4. Follow the integration guide for that connector model.
+
+## Connector models
+
+Connector models describe how data from a specific industry or operational environment is represented when integrating with Pulse.
+
+Available connector models:
+
+- [Serial Production](connector-models/serial-production/index.md)
 
 ## Reference
 
-- [Pulse data model](data-model/index.md)
-- [Entity relationships](data-model/relationships.md)
-- [Typical operational day](scenarios/typical-operational-day.md)
-- [API reference](api/index.md)
 - [Troubleshooting](troubleshooting.md)
