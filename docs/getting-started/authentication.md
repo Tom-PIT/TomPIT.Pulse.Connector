@@ -10,11 +10,15 @@ https://<organization>.tompit.pulse.com
 > [!IMPORTANT]
 > The exact hostname can differ. Do not hard-code the example above. Use the base URL assigned to your organization.
 
-All Pulse service paths are relative to that base URL. For example:
+All Pulse service paths are relative to the base URL assigned to your organization.
+
+For example, when using the Serial Production connector model, the Plant service may be available at:
 
 ```text
 https://<organization-base-url>/services/pulse/types/plants
 ```
+
+Other connector models may expose different service paths.
 
 ## API token
 
@@ -56,11 +60,7 @@ PULSE_BASE_URL=https://<organization-base-url>
 PULSE_API_TOKEN=<your-api-token>
 ```
 
-The application can then build service URLs from the configured base URL:
-
-```text
-{PULSE_BASE_URL}/services/pulse/types/plants
-```
+The application can then build service URLs from the configured base URL.
 
 ## Token rotation
 
@@ -72,4 +72,7 @@ When replacing a token:
 4. Verify that API requests succeed with the new token.
 5. Revoke or remove the previous token when supported.
 
-See [First API request](first-api-request.md) for a simple connection test using the Plant service.
+## Next steps
+
+1. [Choose a connector model](../connector-models/index.md).
+2. Follow the integration guide for the selected connector model.

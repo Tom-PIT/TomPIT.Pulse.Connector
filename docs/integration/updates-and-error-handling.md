@@ -11,7 +11,7 @@ Use the operation that matches the intended change.
 | **Patch** | Change only the specified attributes of an existing record. Unspecified attributes remain unchanged. |
 | **Delete** | Remove an existing record when deletion is supported and appropriate. |
 
-Use the [API reference](../api/index.md) to confirm which operations are available for each service.
+Use the API reference of the respective connector model to confirm which operations are available for each service.
 
 ## Matching records by code
 
@@ -71,7 +71,7 @@ Do not retry every failure automatically. Validation and dependency errors requi
 
 When the result of an insert request is uncertain, check whether the record already exists before retrying. Use its `code` or another supported lookup field.
 
-Retry behavior and idempotency guarantees may differ by service. Use the API reference for confirmed service-specific behavior.
+Do not assume that repeating the same request is always safe. Check the service-specific API documentation before retrying an uncertain request.
 
 ## Preventing duplicate records
 
