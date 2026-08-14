@@ -1,11 +1,8 @@
 # Manufacturing
 
-Manufacturing data describes planned and actual operational activity submitted to Pulse.
+Manufacturing data describes planned and actual operational activity within the Serial Production connector model.
 
 These records connect batches, stages, resource plans, actual usage, output, downtime, delays, waste, shifts, and measurements.
-
-> [!IMPORTANT]
-> A **batch** is not limited to production. It represents a broader operational unit of work, such as a production run, supply activity, logistics operation, service process, or another grouped activity tracked in Pulse.
 
 Before submitting manufacturing data, synchronize the required [master data](../master-data/index.md).
 
