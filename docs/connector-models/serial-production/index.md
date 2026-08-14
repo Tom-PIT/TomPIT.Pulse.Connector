@@ -1,10 +1,10 @@
 # Serial Production integration
 
-This section describes the Pulse Serial Production connector profile.
+This section describes the Pulse Serial Production connector model.
 
-The connector maps serial-production concepts, including plants, production lines, batches, stages, resource plans and usage, output, downtime, waste, maintenance, traceability, and measurements, into the shared Pulse Tenant data model.
+The connector maps serial-production concepts, including plants, production lines, batches, stages, resource plans and usage, output, downtime, waste, maintenance, traceability, and measurements, into the shared internal Pulse data model.
 
-Other connector profiles may use different terminology and mappings while writing to the same underlying Tenant model.
+Other connector models may use different terminology and mappings depending on their operational context.
 
 ## Integration flow
 
@@ -70,7 +70,7 @@ Before submitting a request:
 - Use the expected quantity and price units.
 - Inspect the response before submitting dependent records.
 
-See [Validation](validation.md) and [Updates and error handling](../../integration/updates-and-error-handling.md).
+See [Validation](../../integration/validation.md) and [Updates and error handling](../../integration/updates-and-error-handling.md).
 
 ## Serial Production integration areas
 

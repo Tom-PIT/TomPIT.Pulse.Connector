@@ -38,6 +38,6 @@ See [Ambient value sharding](ambient-value-sharding.md).
 
 ## Related guidance
 
-For request requirements, data types, identifiers, date formats, and common validation failures, see [Validation](../validation.md).
+For request requirements, data types, identifiers, date formats, and common validation failures, see [Validation](../../../integration/validation.md).
 
 For submission order and connector workflow, see [Serial Production integration](../index.md).

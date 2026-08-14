@@ -1,6 +1,6 @@
 # End-to-end operational scenario
 
-This scenario shows how a Serial Production integration can submit one complete operational flow to Pulse.
+This scenario shows how a Food and Beverage integration can submit one complete operational flow to Pulse.
 
 The exact records depend on the source system and the operation being represented. Submit only the records that apply.
 
@@ -147,4 +147,4 @@ After each step:
 - Retrieve important records by `code` when a current Pulse `id` is required.
 - Log failures and retry only after identifying the cause.
 
-See [Validation](../validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).
+See [Validation](../../../integration/validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).

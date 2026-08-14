@@ -147,4 +147,4 @@ After each step:
 - Retrieve important records by `code` when a current Pulse `id` is required.
 - Log failures and retry only after identifying the cause.
 
-See [Validation](../validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).
+See [Validation](../../../integration/validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).

@@ -1,16 +1,16 @@
-# Serial Production integration
+# Food & Beverage integration
 
-This section describes the Pulse Serial Production connector profile.
+This section describes the Pulse Food & Beverage connector model.
 
-The connector maps serial-production concepts, including plants, production lines, batches, stages, resource plans and usage, output, downtime, waste, maintenance, traceability, and measurements, into the shared Pulse Tenant data model.
+The connector maps food & beverage concepts, including plants, production lines, batches, stages, resource plans and usage, output, downtime, waste, maintenance, traceability, and measurements, into the shared internal Pulse data model.
 
-Other connector profiles may use different terminology and mappings while writing to the same underlying Tenant model.
+Other connector models may use different terminology and mappings depending on their operational context.
 
 ## Integration flow
 
 ```mermaid
 graph LR
-  A[Source systems] --> B[Serial Production connector mapping]
+  A[Source systems] --> B[Food & Beverage connector mapping]
   B --> C[Synchronize master data]
   C --> D[Submit operational data]
   D --> E[Submit measurements]
@@ -28,9 +28,9 @@ You need:
 
 See [Authentication](../../getting-started/authentication.md) and [First API request](first-api-request.md).
 
-## Map source data to the Serial Production connector
+## Map source data to the Food & Beverage connector
 
-Identify how records from the source system correspond to the entities exposed by the Serial Production connector.
+Identify how records from the source system correspond to the entities exposed by the Food & Beverage connector.
 
 Start with stable master data such as plants, production lines, products, materials, equipment, labor, shifts, and measure units. Then map operational records such as batches, stages, plans, usage, output, downtime, waste, maintenance, and measurements.
 
@@ -70,9 +70,9 @@ Before submitting a request:
 - Use the expected quantity and price units.
 - Inspect the response before submitting dependent records.
 
-See [Validation](validation.md) and [Updates and error handling](../../integration/updates-and-error-handling.md).
+See [Validation](../../integration/validation.md) and [Updates and error handling](../../integration/updates-and-error-handling.md).
 
-## Serial Production integration areas
+## Food & Beverage integration areas
 
 | Area | Purpose |
 | --- | --- |
@@ -86,6 +86,6 @@ See [Validation](validation.md) and [Updates and error handling](../../integrati
 
 1. Complete [Authentication](../../getting-started/authentication.md).
 2. Send the [first API request](first-api-request.md).
-3. Review the [Serial Production data model](data-model/index.md).
-4. Follow the [end-to-end Serial Production scenario](scenarios/typical-operational-day.md).
+3. Review the [Food & Beverage data model](data-model/index.md).
+4. Follow the [end-to-end Food & Beverage scenario](scenarios/typical-operational-day.md).
 5. Use the [API reference](api/index.md) to inspect the required services.

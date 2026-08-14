@@ -56,9 +56,9 @@ Use the relevant entity page or API reference to confirm the available values.
 
 Examples include:
 
-- [Dimension](data-model/dimension.md).
-- Maintenance kind.
-- Other entity-specific classifications documented in the API.
+- Dimension
+- Maintenance kind
+- Other entity-specific classifications documented in the API
 
 ## Dates and time ranges
 
@@ -98,7 +98,7 @@ Examples:
 - Resource plans and usage records belong to a Stage.
 - Waste detail records belong to a Waste record.
 - Downtime maintenance requires both a Downtime and Maintenance record.
-- `dimensionId` must identify a record that matches the selected [Dimension](data-model/dimension.md).
+- `dimensionId` must identify a record that matches the selected Dimension.
 
 Create or retrieve the required parent records before submitting dependent records.
 
@@ -128,4 +128,4 @@ Before submitting a request:
 | Incorrect property name | Use the documented camelCase field name. |
 | Incorrect data type | Use the JSON type defined by the schema. |
 
-See [Updates and error handling](../../integration/updates-and-error-handling.md) for guidance on correcting requests, retrying failures, and preventing duplicate records.
+See [Updates and error handling](updates-and-error-handling.md) for guidance on correcting requests, retrying failures, and preventing duplicate records.
