@@ -22,7 +22,7 @@ The OpenAPI specification describes the available endpoints, request fields, par
 
 You can use [Scalar](https://scalar.com/) to inspect the available services, request schemas, and responses in your Pulse instance.
 
-Scalar is intended for API exploration and testing. Production data exchange should be implemented in an integration service, application, script, middleware process, or another automated workflow.
+Scalar is intended for API exploration and testing. For automated integrations, production data exchange is typically implemented in an integration service, application, script, middleware process, or another automated workflow.
 
 ## Authentication
 
@@ -33,6 +33,16 @@ Authorization: Bearer <your-api-token>
 ```
 
 See [Authentication](authentication.md) for details.
+
+## Excel integration templates
+
+For supported models, Pulse may provide an Excel integration template that can be completed directly by operational or business users.
+
+The template provides a structured way to prepare master data and operational records before they are submitted to Pulse. It is especially useful when source data is collected manually, exported from existing systems, or prepared by teams that do not work directly with the Pulse API.
+
+Where available, using the model-specific Excel template is the recommended starting point for defining and validating the data required by the integration.
+
+The selected model documentation provides the applicable template and usage instructions.
 
 ## Integration flow
 

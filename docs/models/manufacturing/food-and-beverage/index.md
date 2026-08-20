@@ -16,6 +16,12 @@ When integrating Food & Beverage production, pay particular attention to:
 
 The rest of this section describes how these concepts are represented and submitted to Pulse.
 
+## Excel integration template
+
+For integrations based on file exchange, Pulse provides a [Food & Beverage Excel template](excel-template.md) that can be completed directly by operational users.
+
+The workbook covers master data, production activity, measurements, maintenance, quality, and traceability. Related records are connected through predefined codes and dropdowns, so users can prepare the required data without working directly with the Pulse API model.
+
 ## Integration flow
 
 ```mermaid
