@@ -1,16 +1,26 @@
-# Food & Beverage integration
+# Food & Beverage
 
-This section describes the Pulse Food & Beverage connector model.
+The Food & Beverage model represents batch-oriented manufacturing processes such as dairy, beverages, bakery, meat processing, and prepared foods.
 
-The connector maps Food & Beverage concepts, including plants, production lines, batches, stages, resource plans and usage, output, downtime, waste, maintenance, traceability, and measurements, into the shared internal Pulse data model.
+It covers production structure, batches and stages, material and resource usage, output, downtime, waste, maintenance, traceability, and process measurements.
 
-Other connector models may use different terminology and mappings depending on their operational context.
+## What is specific to this model
+
+When integrating Food & Beverage production, pay particular attention to:
+
+- **Batch and lot traceability** for ingredients and other traceable materials.
+- **Process measurements** such as temperature, pressure, humidity, pH, and other quality-related values.
+- **Material usage** for ingredients, packaging, and other production inputs.
+- **Waste and product loss** generated during processing, filling, and packaging.
+- **Supplier and lot context** where differences in incoming materials may affect production results.
+
+The rest of this section describes how these concepts are represented and submitted to Pulse.
 
 ## Integration flow
 
 ```mermaid
 graph LR
-  A[Source systems] --> B[Food & Beverage connector mapping]
+  A[Source systems] --> B[Food & Beverage model mapping]
   B --> C[Synchronize master data]
   C --> D[Submit operational data]
   D --> E[Submit measurements]
