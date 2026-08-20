@@ -1,15 +1,18 @@
 # Production line
 
-Represents a production line associated with a plant in Pulse.
+Represents a production line within a plant.
 
 ## The Production line object
 
 ```json
 {
-  "id": 24,
-  "plant": 12,
   "code": "YOGURT-LINE-01",
-  "name": "Yogurt Filling Line 1"
+  "name": "Yogurt Filling Line 1",
+  "plant": "PLANT-LJ",
+  "attributes": {
+    "format": "150g cup",
+    "installed": 2019
+  }
 }
 ```
 
@@ -19,18 +22,18 @@ Represents a production line associated with a plant in Pulse.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Unique identifier assigned by Pulse. | `24` |
-| [`plant`](plant.md) | integer | Pulse `id` of the plant to which the production line belongs. | `12` |
-| `code` | string | Business code used to identify the production line in external systems and integrations. | `"YOGURT-LINE-01"` |
+| `code` | string | Business code used to identify the production line in source systems and integrations. | `"YOGURT-LINE-01"` |
 | `name` | string | Human-readable name of the production line. | `"Yogurt Filling Line 1"` |
+| `plant` | string | Code of the plant to which the production line belongs. | `"PLANT-LJ"` |
+| `attributes` | object or null | Optional additional source-system attributes associated with the production line. These values are stored with the line but are not used for analysis. | `{ "format": "150g cup", "installed": 2019 }` |
 
 </div>
 
-## API service
+## API resource
 
-| Service | Base path |
+| Resource | Base path |
 | --- | --- |
-| `ProductionLineService` | `/services/pulse/types/production-lines` |
+| Production line | `/services/pulse/food-beverage/lines` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
 
@@ -38,4 +41,8 @@ See the [API reference](../api/index.md) for supported operations and complete r
 
 - [Plant](plant.md)
 
-Create or retrieve the plant before submitting the production line.
+The plant referenced by `plant` must be available before submitting the production line.
+
+## Referenced by
+
+- [Expected values](../expected.md)

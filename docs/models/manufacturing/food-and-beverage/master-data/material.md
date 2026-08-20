@@ -1,17 +1,24 @@
 # Material
 
-Represents a raw material, component, or supply used during an operational process in Pulse.
+Represents an ingredient, packaging material, chemical, or other material used in Food & Beverage operations.
 
 ## The Material object
 
 ```json
 {
-  "id": 42,
-  "code": "MILK-PASTEURIZED",
-  "name": "Pasteurized Milk",
-  "measureUnit": 21,
-  "price": 0.68,
-  "description": "Pasteurized milk used as a primary ingredient in yogurt production"
+  "code": "MILK-RAW",
+  "name": "Raw Milk 3.8% Fat",
+  "measureUnit": "kg",
+  "group": "MG-DAIRY-RAW",
+  "lotTracked": true,
+  "types": {
+    "allergen": "ALG-MILK",
+    "storage": "CHILLED",
+    "origin": "SI"
+  },
+  "attributes": {
+    "supplierPartNo": "RM-3801"
+  }
 }
 ```
 
@@ -21,20 +28,27 @@ Represents a raw material, component, or supply used during an operational proce
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Unique identifier assigned by Pulse. | `42` |
-| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"MILK-PASTEURIZED"` |
-| `name` | string | Human-readable name of the material. | `"Pasteurized Milk"` |
-| [`measureUnit`](measure-unit.md) | integer | Pulse `id` of the measure unit in which material quantities are expressed. | `21` |
-| `price` | number or null | Optional default price per measure unit. Pulse may use this value when a related operational record does not provide its own price. | `0.68` |
-| `description` | string or null | Optional description of the material and its role in the process. | `"Pasteurized milk used as a primary ingredient in yogurt production"` |
+| `code` | string | Business code used to identify the material in source systems and integrations. | `"MILK-RAW"` |
+| `name` | string | Human-readable name of the material. | `"Raw Milk 3.8% Fat"` |
+| `measureUnit` | string | Code of the measure unit in which material quantities are expressed. | `"kg"` |
+| `group` | string or null | Optional code identifying the material group. | `"MG-DAIRY-RAW"` |
+| `lotTracked` | boolean | Indicates whether consumption of the material must reference a lot. Defaults to `true`. | `true` |
+| `types` | object or null | Optional classifications used to group and analyse the material, such as allergen, storage, or origin. | `{ "allergen": "ALG-MILK", "storage": "CHILLED" }` |
+| `attributes` | object or null | Optional additional source-system attributes. These values are stored with the material but are not used for analysis. | `{ "supplierPartNo": "RM-3801" }` |
 
 </div>
 
-## API service
+## Lot tracking
 
-| Service | Base path |
+Materials that require traceability should use `lotTracked: true`.
+
+When `lotTracked` is `true`, consumption records for the material must reference a lot. Materials that are not normally lot-tracked, such as water, steam, or similar utilities, can use `lotTracked: false`.
+
+## API resource
+
+| Resource | Base path |
 | --- | --- |
-| `MaterialService` | `/services/pulse/types/materials` |
+| Material | `/services/pulse/food-beverage/materials` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
 
@@ -42,7 +56,7 @@ See the [API reference](../api/index.md) for supported operations and complete r
 
 - [Measure unit](measure-unit.md)
 
-Create or retrieve the measure unit before submitting the material.
+The measure unit referenced by `measureUnit` must be available before submitting the material.
 
 ## Referenced by
 

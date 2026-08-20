@@ -6,12 +6,11 @@ Represents a finished product or other output tracked in Pulse.
 
 ```json
 {
-  "id": 42,
   "code": "YOG-STRAWBERRY-150G",
   "name": "Strawberry Yogurt 150 g",
-  "measureUnit": 21,
-  "price": 0.79,
-  "description": "Strawberry yogurt packaged in a 150 g cup"
+  "brand": "BRAND-A",
+  "measureUnit": "pcs",
+  "unitPrice": 0.79
 }
 ```
 
@@ -21,20 +20,19 @@ Represents a finished product or other output tracked in Pulse.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Unique identifier assigned by Pulse. | `21` |
-| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"YOG-STRAWBERRY-150G"` |
+| `code` | string | Business code used to identify the product in source systems and integrations. | `"YOG-STRAWBERRY-150G"` |
 | `name` | string | Human-readable name of the product. | `"Strawberry Yogurt 150 g"` |
-| [`measureUnit`](measure-unit.md) | integer | Pulse `id` of the measure unit used for the product. | `21` |
-| `price` | number or null | Optional default price per measure unit. Pulse may use this value when a related operational record does not provide its own price. | `0.79` |
-| `description` | string or null | Optional description of the product or output tracked in Pulse. | `"Strawberry yogurt packaged in a 150 g cup"` |
+| `brand` | string or null | Optional code identifying the product brand. | `"BRAND-A"` |
+| `measureUnit` | string | Code of the measure unit used for the product. | `"pcs"` |
+| `unitPrice` | number or null | Optional price per product unit. | `0.79` |
 
 </div>
 
-## API service
+## API resource
 
-| Service | Base path |
+| Resource | Base path |
 | --- | --- |
-| `ProductService` | `/services/pulse/types/products` |
+| Product | `/services/pulse/food-beverage/products` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
 
@@ -42,8 +40,8 @@ See the [API reference](../api/index.md) for supported operations and complete r
 
 - [Measure unit](measure-unit.md)
 
-Create or retrieve the measure unit before submitting the product.
+The measure unit referenced by `measureUnit` must be available before submitting the product.
 
 ## Referenced by
 
-- [Batches](../manufacturing/batch.md)
+- [Expected values](../expected.md)

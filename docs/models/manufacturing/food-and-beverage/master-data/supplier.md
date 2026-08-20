@@ -1,15 +1,19 @@
 # Supplier
 
-Represents a supplier associated with material or energy usage in Pulse.
+Represents a supplier associated with materials and other inputs used in Food & Beverage operations.
 
 ## The Supplier object
 
 ```json
 {
-  "id": 36,
   "code": "SUP-001",
-  "name": "Example supplier",
-  "description": "Supplier of raw materials and production consumables"
+  "name": "Alpine Milk Cooperative Slovenia",
+  "taxNumber": "SI12345678",
+  "group": "SG-COOP",
+  "attributes": {
+    "country": "SI",
+    "approvalExpires": "2027-03-31"
+  }
 }
 ```
 
@@ -19,18 +23,19 @@ Represents a supplier associated with material or energy usage in Pulse.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Unique identifier assigned by Pulse. | `36` |
-| `code` | string | Business code used to identify the supplier in external systems and integrations. | `"SUP-001"` |
-| `name` | string | Human-readable name of the supplier. | `"Example supplier"` |
-| `description` | string or null | Optional description of the supplier and the goods or services it provides. | `"Supplier of raw materials and production consumables"` |
+| `code` | string | Business code used to identify the supplier in source systems and integrations. | `"SUP-001"` |
+| `name` | string | Human-readable name of the supplier. | `"Alpine Milk Cooperative Slovenia"` |
+| `taxNumber` | string or null | Optional tax number used to identify the supplier across source systems. | `"SI12345678"` |
+| `group` | string or null | Optional code identifying the supplier group. | `"SG-COOP"` |
+| `attributes` | object or null | Optional additional source-system attributes associated with the supplier. | `{ "country": "SI", "approvalExpires": "2027-03-31" }` |
 
 </div>
 
-## API service
+## API resource
 
-| Service | Base path |
+| Resource | Base path |
 | --- | --- |
-| `SupplierService` | `/services/pulse/types/suppliers` |
+| Supplier | `/services/pulse/food-beverage/suppliers` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
 
