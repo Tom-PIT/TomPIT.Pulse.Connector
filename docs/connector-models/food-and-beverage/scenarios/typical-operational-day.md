@@ -186,4 +186,4 @@ After each step:
 - Confirm that plans, actual usage, output, waste, downtime, and measurements reference the intended production records.
 - Log failures and retry only after identifying the cause.
 
-See [Validation](../validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).
+See [Validation](../../../integration/validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).

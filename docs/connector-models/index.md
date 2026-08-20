@@ -9,4 +9,4 @@ Connector models map industry-specific data into Pulse while allowing the platfo
 ## Available connector models
 
 - [Serial Production](serial-production/index.md)
-- Food & Beverage
+- [Food & Beverage](food-and-beverage/index.md)
