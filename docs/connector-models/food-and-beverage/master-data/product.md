@@ -7,11 +7,11 @@ Represents a finished product or other output tracked in Pulse.
 ```json
 {
   "id": 42,
-  "code": "CHAIR-OAK",
-  "name": "Oak wood chair",
+  "code": "YOG-STRAWBERRY-150G",
+  "name": "Strawberry Yogurt 150 g",
   "measureUnit": 21,
-  "price": 49.99,
-  "description": "Finished oak chair produced for sale"
+  "price": 0.79,
+  "description": "Strawberry yogurt packaged in a 150 g cup"
 }
 ```
 
@@ -21,12 +21,12 @@ Represents a finished product or other output tracked in Pulse.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Unique identifier assigned by Pulse. | `42` |
-| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"CHAIR-OAK"` |
-| `name` | string | Human-readable name of the product. | `"Oak wood chair"` |
+| `id` | integer | Unique identifier assigned by Pulse. | `21` |
+| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"YOG-STRAWBERRY-150G"` |
+| `name` | string | Human-readable name of the product. | `"Strawberry Yogurt 150 g"` |
 | [`measureUnit`](measure-unit.md) | integer | Pulse `id` of the measure unit used for the product. | `21` |
-| `price` | number or null | Optional default price per measure unit. Pulse may use this value when a related operational record does not provide its own price. | `49.99` |
-| `description` | string or null | Optional description of the product or output tracked in Pulse. | `"Finished oak chair produced for sale"` |
+| `price` | number or null | Optional default price per measure unit. Pulse may use this value when a related operational record does not provide its own price. | `0.79` |
+| `description` | string or null | Optional description of the product or output tracked in Pulse. | `"Strawberry yogurt packaged in a 150 g cup"` |
 
 </div>
 

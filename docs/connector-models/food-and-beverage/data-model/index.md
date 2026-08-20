@@ -1,16 +1,16 @@
-# Serial Production data model
+# Food & Beverage data model
 
-The Serial Production connector model defines how operational records are structured and connected for this connector profile.
+The Food & Beverage connector model defines how operational records are structured and connected within this integration.
 
-Use this section to understand relationships and identifiers that apply across the Serial Production integration areas.
+Use this section to understand relationships and identifiers that apply across the Food & Beverage integration areas.
 
-The connector maps these records into the shared Pulse Tenant data model.
+The connector maps these records into Pulse.
 
 ## Core concepts
 
 ### Entity relationships
 
-Serial Production connector entities reference related records through integer `id` values.
+Food & Beverage connector entities reference related records through integer `id` values.
 
 Some records depend on a parent entity, while others share the same identity as their parent.
 
@@ -24,7 +24,7 @@ See [Relationships](relationships.md) for:
 
 ### Dimensions
 
-Some Serial Production records use `dimension` and `dimensionId` to identify their operational context.
+Some Food & Beverage records use `dimension` and `dimensionId` to identify their operational context.
 
 See [Dimension](dimension.md) for the supported contexts and how `dimensionId` is interpreted.
 
@@ -40,4 +40,4 @@ See [Ambient value sharding](ambient-value-sharding.md).
 
 For request requirements, data types, identifiers, date formats, and common validation failures, see [Validation](../../../integration/validation.md).
 
-For submission order and connector workflow, see [Serial Production integration](../index.md).
+For submission order and connector workflow, see [Food & Beverage integration](../index.md).

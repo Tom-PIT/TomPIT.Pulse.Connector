@@ -2,7 +2,7 @@
 
 Represents a measured or received value at a specific time and within a specific operational context.
 
-An ambient value is not limited to environmental measurements. It can describe temperature, humidity, pressure, vibration, dust, airflow, lighting, machine temperature, air quality, weather conditions, or another measurable condition that may help explain an operational result.
+An ambient value can describe temperature, humidity, pressure, vibration, dust, airflow, lighting, machine temperature, air quality, weather conditions, or another measurable condition that may help explain a production result.
 
 The related [ambient type](../master-data/ambient-type.md) defines what is being measured and, when applicable, its measure unit and expected range. The ambient value records the actual observation and connects it to a specific Pulse context through `dimension` and `dimensionId`.
 

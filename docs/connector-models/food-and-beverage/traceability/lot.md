@@ -11,11 +11,11 @@ Two lots of the same material or product may differ in supplier, quality, age, e
 ```json
 {
   "id": 92,
-  "code": "LOT-2026-0719-A",
+  "code": "MILK-2026-0717-A",
   "supplier": 18,
   "customer": null,
-  "created": "2026-07-19T07:30:00+02:00",
-  "expire": "2027-01-19T23:59:59+01:00"
+  "created": "2026-07-17T05:45:00+02:00",
+  "expire": "2026-07-24T23:59:59+02:00"
 }
 ```
 
@@ -26,12 +26,11 @@ Two lots of the same material or product may differ in supplier, quality, age, e
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `92` |
-| `code` | string | Lot, batch, or traceability code used by the source system or organization. | `"LOT-2026-0719-A"` |
+| `code` | string | Lot, batch, or traceability code used by the source system or organization. | `"MILK-2026-0717-A"` |
 | [`supplier`](../master-data/supplier.md) | integer or null | Optional Pulse `id` of the supplier associated with the lot. | `18` |
 | [`customer`](../master-data/customer.md) | integer or null | Optional Pulse `id` of the customer associated with the lot. | `null` |
-| `created` | string or null | Optional timestamp when the lot was created, received, or recorded, in ISO 8601 format. | `"2026-07-19T07:30:00+02:00"` |
-| `expire` | string or null | Optional timestamp after which the lot is no longer valid, usable, or quality-acceptable, in ISO 8601 format. | `"2027-01-19T23:59:59+01:00"` |
-
+| `created` | string or null | Optional timestamp when the lot was created, received, or recorded, in ISO 8601 format. | `"2026-07-17T05:45:00+02:00"` |
+| `expire` | string or null | Optional timestamp after which the lot is no longer valid, usable, or quality-acceptable, in ISO 8601 format. | `"2026-07-24T23:59:59+02:00"` |
 </div>
 
 ## Traceability context

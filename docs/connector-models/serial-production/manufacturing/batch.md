@@ -1,8 +1,6 @@
 # Batch
 
-Represents a specific operational unit of work tracked in Pulse.
-
-Although Batch belongs to the Manufacturing API family, it is not limited to production. A batch can represent a production series, supply activity, logistics operation, service process, or another grouped execution that Pulse evaluates as one unit.
+Represents a production batch, production run, or another operational unit of work within the Serial Production connector model.
 
 ## The Batch object
 

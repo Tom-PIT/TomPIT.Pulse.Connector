@@ -7,9 +7,9 @@ Defines a classification for waste in Pulse.
 ```json
 {
   "id": 16,
-  "code": "SCRAP",
-  "name": "Production scrap",
-  "description": "Material rejected or discarded during production"
+  "code": "PRODUCT-LOSS",
+  "name": "Product loss",
+  "description": "Product lost, rejected, or discarded during production"
 }
 ```
 
@@ -20,9 +20,9 @@ Defines a classification for waste in Pulse.
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `16` |
-| `code` | string | Business code used to identify the waste type in external systems and integrations. | `"SCRAP"` |
-| `name` | string | Human-readable name of the waste type. | `"Production scrap"` |
-| `description` | string or null | Optional description of the waste classification. | `"Material rejected or discarded during production"` |
+| `code` | string | Business code used to identify the waste type in external systems and integrations. | `"PRODUCT-LOSS"` |
+| `name` | string | Human-readable name of the waste type. | `"Product loss"` |
+| `description` | string or null | Optional description of the waste classification. | `"Product lost, rejected, or discarded during production"` |
 
 </div>
 

@@ -7,11 +7,11 @@ Represents a raw material, component, or supply used during an operational proce
 ```json
 {
   "id": 42,
-  "code": "STEEL-SHEET",
-  "name": "Steel sheet",
+  "code": "MILK-PASTEURIZED",
+  "name": "Pasteurized Milk",
   "measureUnit": 21,
-  "price": 12.50,
-  "description": "Steel sheet used as an input material in production"
+  "price": 0.68,
+  "description": "Pasteurized milk used as a primary ingredient in yogurt production"
 }
 ```
 
@@ -22,11 +22,11 @@ Represents a raw material, component, or supply used during an operational proce
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `42` |
-| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"STEEL-SHEET"` |
-| `name` | string | Human-readable name of the material. | `"Steel sheet"` |
+| `code` | string | Unique business code within the entity type, used for external identification and integrations. | `"MILK-PASTEURIZED"` |
+| `name` | string | Human-readable name of the material. | `"Pasteurized Milk"` |
 | [`measureUnit`](measure-unit.md) | integer | Pulse `id` of the measure unit in which material quantities are expressed. | `21` |
-| `price` | number or null | Optional default price per measure unit. Pulse may use this value when a related operational record does not provide its own price. | `12.50` |
-| `description` | string or null | Optional description of the material and its role in the process. | `"Steel sheet used as an input material in production"` |
+| `price` | number or null | Optional default price per measure unit. Pulse may use this value when a related operational record does not provide its own price. | `0.68` |
+| `description` | string or null | Optional description of the material and its role in the process. | `"Pasteurized milk used as a primary ingredient in yogurt production"` |
 
 </div>
 

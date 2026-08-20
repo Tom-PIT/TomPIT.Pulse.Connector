@@ -11,8 +11,8 @@ The quantity remains separate from the [waste](waste.md) record so Pulse can ide
   "id": 813,
   "waste": 812,
   "quantity": 18.5,
-  "material": 63,
-  "price": 4.45,
+  "material": 42,
+  "price": 0.68,
   "supplier": 18,
   "lot": 92
 }
@@ -27,8 +27,8 @@ The quantity remains separate from the [waste](waste.md) record so Pulse can ide
 | `id` | integer | Unique identifier of the waste material usage record. | `813` |
 | [`waste`](waste.md) | integer | Pulse `id` of the waste record to which the material loss is attributed. | `812` |
 | `quantity` | number | Quantity of material consumed or lost because of the waste. | `18.5` |
-| [`material`](../master-data/material.md) | integer | Pulse `id` of the material consumed or lost. | `63` |
-| `price` | number or null | Optional price per measure unit for this material loss. | `4.45` |
+| [`material`](../master-data/material.md) | integer | Pulse `id` of the material consumed or lost. | `42` |
+| `price` | number or null | Optional price per measure unit for this material loss. | `0.68` |
 | [`supplier`](../master-data/supplier.md) | integer or null | Optional Pulse `id` of the supplier associated with the material. | `18` |
 | [`lot`](../traceability/lot.md) | integer or null | Optional Pulse `id` of the lot associated with the material. | `92` |
 

@@ -2,7 +2,7 @@
 
 Represents a measured or received value at a specific time and within a specific operational context.
 
-An ambient value is not limited to environmental measurements. It can describe temperature, humidity, pressure, vibration, dust, airflow, lighting, machine temperature, air quality, weather conditions, or another measurable condition that may help explain an operational result.
+An ambient value is not limited to environmental measurements. It can describe product temperature, tank temperature, humidity, pressure, pH, or another measurable condition that may help explain an operational result.
 
 The related [ambient type](../master-data/ambient-type.md) defines what is being measured and, when applicable, its measure unit and expected range. The ambient value records the actual observation and connects it to a specific Pulse context through `dimension` and `dimensionId`.
 
@@ -18,10 +18,10 @@ The related [ambient type](../master-data/ambient-type.md) defines what is being
   "dimension": 3,
   "dimensionId": 208,
   "type": 22,
-  "min": "18",
-  "max": "26",
-  "expected": "22",
-  "value": "28.4"
+  "min": "72",
+  "max": "75",
+  "expected": "73",
+  "value": "72.4"
 }
 ```
 
@@ -36,10 +36,10 @@ The related [ambient type](../master-data/ambient-type.md) defines what is being
 | [`dimension`](../data-model/dimension.md) | enum | Context in which the value was measured. Determines how `dimensionId` is interpreted. | `3` |
 | `dimensionId` | integer | Pulse `id` of the specific record identified by `dimension`. | `208` |
 | [`type`](../master-data/ambient-type.md) | integer | Pulse `id` of the ambient type that defines what the value represents. | `22` |
-| `min` | string or null | Optional minimum permitted value for this measurement and context. | `"18"` |
-| `max` | string or null | Optional maximum permitted value for this measurement and context. | `"26"` |
-| `expected` | string or null | Optional expected, target, or reference value for this measurement and context. | `"22"` |
-| `value` | string or null | Optional measured or received value. | `"28.4"` |
+| `min` | string or null | Optional minimum permitted value for this measurement and context. | `"72"` |
+| `max` | string or null | Optional maximum permitted value for this measurement and context. | `"75"` |
+| `expected` | string or null | Optional expected, target, or reference value for this measurement and context. | `"73"` |
+| `value` | string or null | Optional measured or received value. | `"72.4"` |
 
 </div>
 
@@ -56,10 +56,10 @@ For example:
 }
 ```
 
-means that the value applies to Stage `208`.
+means that the value applies to Pasteurization Stage `208`.
 
 > [!NOTE]
-> More precise context enables more precise analysis. A value linked only to a plant can describe broader environmental conditions, while a value linked to a production line, stage, equipment record, or batch allows Pulse to evaluate its relationship with a specific operational result more accurately.
+> More precise context enables more precise analysis. A value linked only to a plant can describe broader environmental conditions, while a value linked to a production line, stage, equipment record, or batch allows Pulse to evaluate its relationship with a specific production result more accurately.
 
 ## Measurement values and limits
 
