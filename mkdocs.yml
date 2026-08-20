@@ -76,6 +76,7 @@ nav:
       - Serial Production:
           - Overview: connector-models/serial-production/index.md
           - First API request: connector-models/serial-production/first-api-request.md
+          - Measurements: connector-models/serial-production/measurements.md
 
           - Data model:
               - Overview: connector-models/serial-production/data-model/index.md
@@ -175,8 +176,6 @@ nav:
           - Traceability:
               - Lot: connector-models/serial-production/traceability/lot.md
 
-          - Measurements: connector-models/serial-production/measurements.md
-
           - Scenarios:
               - End-to-end operational scenario: connector-models/serial-production/scenarios/typical-operational-day.md
 
@@ -185,6 +184,7 @@ nav:
       - Food & Beverage:
           - Overview: connector-models/food-and-beverage/index.md
           - First API request: connector-models/food-and-beverage/first-api-request.md
+          - Measurements: connector-models/food-and-beverage/measurements.md
 
           - Data model:
               - Overview: connector-models/food-and-beverage/data-model/index.md
@@ -283,8 +283,6 @@ nav:
 
           - Traceability:
               - Lot: connector-models/food-and-beverage/traceability/lot.md
-
-          - Measurements: connector-models/food-and-beverage/measurements.md
 
           - Scenarios:
               - End-to-end operational scenario: connector-models/food-and-beverage/scenarios/typical-operational-day.md
