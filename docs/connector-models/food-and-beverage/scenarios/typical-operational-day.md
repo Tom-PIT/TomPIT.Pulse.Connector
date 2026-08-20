@@ -1,43 +1,51 @@
 # End-to-end operational scenario
 
-This scenario shows how a Food and Beverage integration can submit one complete operational flow to Pulse.
+This scenario shows how a Food & Beverage integration can submit one complete production flow to Pulse.
 
-The exact records depend on the source system and the operation being represented. Submit only the records that apply.
+The exact records depend on the source system and production process. Submit only the records that apply.
 
 ## Scenario
 
-A planned operational batch runs on a production line. It contains two stages, consumes materials and energy, uses equipment and labor, produces output, records a downtime event, creates waste, and includes measured values.
+A batch of strawberry yogurt is produced on a yogurt production line.
+
+The batch moves through production stages that prepare and process the product before filling and packaging. The process consumes ingredients and energy, uses production equipment and labor, produces finished output, records downtime and waste when they occur, and captures process measurements such as temperature.
+
+The example demonstrates how these records are connected in Pulse.
 
 ## 1. Synchronize master data
 
-Create or retrieve the required records:
+Create or retrieve the required records.
 
-- [Plant](../master-data/plant.md)
-- [Production line](../master-data/production-line.md)
-- [Product](../master-data/product.md)
-- [Measure units](../master-data/measure-unit.md)
-- [Materials](../master-data/material.md)
-- [Energy sources](../master-data/energy-source.md)
-- [Equipment](../master-data/equipment.md)
-- [Labor](../master-data/labor.md)
-- [Shifts](../master-data/shift.md)
-- [Downtime category](../master-data/downtime-category.md)
-- [Waste types](../master-data/waste-type.md)
-- [Ambient types](../master-data/ambient-type.md)
+For this scenario, they may include:
+
+- [Plant](../master-data/plant.md), such as a dairy production plant.
+- [Production line](../master-data/production-line.md), such as a yogurt production line.
+- [Product](../master-data/product.md), such as strawberry yogurt.
+- [Measure units](../master-data/measure-unit.md), such as kilograms, liters, and degrees Celsius.
+- [Materials](../master-data/material.md), such as milk, fruit preparation, sugar, and packaging material.
+- [Energy sources](../master-data/energy-source.md).
+- [Equipment](../master-data/equipment.md), such as a pasteurizer, mixing tank, or filling machine.
+- [Labor](../master-data/labor.md).
+- [Shifts](../master-data/shift.md).
+- [Downtime category](../master-data/downtime-category.md).
+- [Waste types](../master-data/waste-type.md), such as product loss or packaging waste.
+- [Ambient types](../master-data/ambient-type.md), such as product temperature.
 
 Retrieve code-based records by `code` and use the returned Pulse `id` values.
 
 ## 2. Create the batch
 
-Create a [Batch](../manufacturing/batch.md) for the operational unit of work.
+Create a [Batch](../manufacturing/batch.md) for the yogurt production batch.
 
 ```json
 {
-  "code": "BATCH-2026-0717-01"
+  "code": "YOG-2026-0717-01"
 }
 ```
 
 Store the returned `id` for the current workflow.
+
+The Batch connects the production activity to the applicable Product, Production line, and other related records.
 
 ## 3. Submit batch plan and usage
 
@@ -47,17 +55,22 @@ Use the Batch `id` for both records.
 Batch.id = BatchPlan.id = BatchUsage.id
 ```
 
-Submit the planned timing and quantity through [Batch plan](../manufacturing/batch-plan.md).
+Submit the planned production timing and quantity through [Batch plan](../manufacturing/batch-plan.md).
 
-Submit the actual timing through [Batch usage](../manufacturing/batch-usage.md).
+Submit the actual production timing through [Batch usage](../manufacturing/batch-usage.md).
 
 Assign applicable shifts through [Batch shift](../manufacturing/batch-shift.md).
 
-## 4. Create the stages
+## 4. Create the production stages
 
-Create the stages that belong to the Batch.
+Create the [Stages](../manufacturing/stage.md) that belong to the Batch.
 
-For each [Stage](../manufacturing/stage.md):
+For example, the yogurt production process may contain stages such as:
+
+1. Mixing and pasteurization.
+2. Filling and packaging.
+
+For each Stage:
 
 1. Submit its planned timing.
 2. Submit its actual timing.
@@ -68,19 +81,23 @@ Use the Stage `id` for both Stage plan and Stage usage.
 
 ## 5. Submit resource plans
 
-Submit expected resources for each Stage:
+Submit the resources expected for each Stage.
 
-- [Material plan](../manufacturing/material-plan.md).
-- [Energy source plan](../manufacturing/energy-source-plan.md).
-- [Equipment plan](../manufacturing/equipment-plan.md).
-- [Labor plan](../manufacturing/labor-plan.md).
-- [Expense plan](../manufacturing/expense-plan.md).
+Depending on the production process, this may include:
+
+- [Material plan](../manufacturing/material-plan.md) for ingredients or packaging material.
+- [Energy source plan](../manufacturing/energy-source-plan.md) for expected energy consumption.
+- [Equipment plan](../manufacturing/equipment-plan.md) for production equipment.
+- [Labor plan](../manufacturing/labor-plan.md) for expected labor.
+- [Expense plan](../manufacturing/expense-plan.md) for other planned costs.
+
+For example, the mixing and pasteurization stage may plan milk, fruit preparation, energy, a mixing tank, a pasteurizer, and the required labor.
 
 Equipment and Labor quantities represent hours. Their time-based prices are expressed per hour.
 
 ## 6. Submit actual usage
 
-Submit what was actually consumed or used:
+Submit the resources actually consumed or used during production:
 
 - [Material usage](../manufacturing/material-usage.md).
 - [Energy source usage](../manufacturing/energy-source-usage.md).
@@ -90,21 +107,29 @@ Submit what was actually consumed or used:
 
 Use the related Stage `id`.
 
-## 7. Record output
+For example, Material usage can record the actual quantities of milk, fruit preparation, or packaging material consumed during the applicable production stage.
 
-Submit [Produced](../manufacturing/produced.md) records for output quantities and quality classification.
+When lot traceability applies, associate resource usage with the applicable [Lot](../traceability/lot.md).
 
-Bad-quality output is still Produced. Use Waste for scrap, loss, or unusable quantity.
+## 7. Record produced output
+
+Submit [Produced](../manufacturing/produced.md) records for the quantities produced and their quality classification.
+
+For example, the filling and packaging stage may record the quantity of finished yogurt produced.
+
+Bad-quality output is still Produced. Use Waste for scrap, product loss, packaging loss, or another unusable quantity.
 
 ## 8. Record downtime and maintenance
 
-When a Stage is interrupted:
+When a production Stage is interrupted:
 
 1. Create a [Downtime](../manufacturing/downtime.md) record.
 2. Submit its planned or actual timing as applicable.
 3. Create a [Maintenance](../maintenance/maintenance.md) record when maintenance work is performed.
 4. Submit maintenance plan, usage, and resources.
 5. Link the records through [Downtime maintenance](../manufacturing/downtime-maintenance.md).
+
+For example, downtime may occur because a filling machine stops and requires corrective maintenance.
 
 Submit the attributed percentage as a decimal fraction. For example:
 
@@ -116,7 +141,14 @@ Submit the attributed percentage as a decimal fraction. For example:
 
 ## 9. Record waste
 
-Create a [Waste](../manufacturing/waste.md) record when the operation generates scrap, loss, or another unusable quantity.
+Create a [Waste](../manufacturing/waste.md) record when the process generates product loss, rejected material, packaging waste, or another unusable quantity.
+
+Examples can include:
+
+- Product lost during filling.
+- Rejected product.
+- Ingredient loss.
+- Damaged packaging material.
 
 Submit related detail records when applicable:
 
@@ -126,9 +158,13 @@ Submit related detail records when applicable:
 
 ## 10. Submit measurements
 
-Submit operational measurements as [Ambient value](../manufacturing/ambient-value.md) records.
+Submit production and process measurements as [Ambient value](../manufacturing/ambient-value.md) records.
 
-Use the most precise [Dimension](../data-model/dimension.md) available, such as Stage, Equipment, or Batch.
+Food & Beverage processes commonly depend on measurements such as temperature, pressure, humidity, or other process and environmental values.
+
+For example, the integration may submit the measured product temperature during pasteurization.
+
+Use the most precise [Dimension](../data-model/dimension.md) available, such as Stage, Equipment, Batch, or Production line.
 
 ```json
 {
@@ -138,6 +174,8 @@ Use the most precise [Dimension](../data-model/dimension.md) available, such as 
 }
 ```
 
+Here, the value could represent a temperature measurement associated with a specific production Stage.
+
 ## 11. Verify the submitted data
 
 After each step:
@@ -145,6 +183,7 @@ After each step:
 - Inspect the response.
 - Confirm referenced records exist.
 - Retrieve important records by `code` when a current Pulse `id` is required.
+- Confirm that plans, actual usage, output, waste, downtime, and measurements reference the intended production records.
 - Log failures and retry only after identifying the cause.
 
-See [Validation](../../../integration/validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).
+See [Validation](../validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).

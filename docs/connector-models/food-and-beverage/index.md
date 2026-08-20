@@ -2,7 +2,7 @@
 
 This section describes the Pulse Food & Beverage connector model.
 
-The connector maps food & beverage concepts, including plants, production lines, batches, stages, resource plans and usage, output, downtime, waste, maintenance, traceability, and measurements, into the shared internal Pulse data model.
+The connector maps Food & Beverage concepts, including plants, production lines, batches, stages, resource plans and usage, output, downtime, waste, maintenance, traceability, and measurements, into the shared internal Pulse data model.
 
 Other connector models may use different terminology and mappings depending on their operational context.
 
@@ -14,7 +14,7 @@ graph LR
   B --> C[Synchronize master data]
   C --> D[Submit operational data]
   D --> E[Submit measurements]
-  E --> F[Shared Pulse Tenant model]
+  E --> F[Pulse]
 ```
 
 ## Before you begin

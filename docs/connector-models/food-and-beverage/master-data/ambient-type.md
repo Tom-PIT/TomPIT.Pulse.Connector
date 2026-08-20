@@ -7,13 +7,13 @@ Defines a measurement type, its unit, and expected value range in Pulse.
 ```json
 {
   "id": 22,
-  "code": "TEMPERATURE",
-  "name": "Temperature",
-  "description": "Ambient temperature in the production area",
+  "code": "PRODUCT-TEMPERATURE",
+  "name": "Product Temperature",
+  "description": "Product temperature measured during processing",
   "measureUnit": 4,
-  "min": "18",
-  "max": "26",
-  "expected": "22"
+  "min": "72",
+  "max": "75",
+  "expected": "73"
 }
 ```
 
@@ -24,13 +24,13 @@ Defines a measurement type, its unit, and expected value range in Pulse.
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `22` |
-| `code` | string | Business code used to identify the ambient type in external systems and integrations. | `"TEMPERATURE"` |
-| `name` | string | Human-readable name of the ambient type. | `"Temperature"` |
-| `description` | string or null | Additional information about the ambient type. | `"Ambient temperature in the production area"` |
+| `code` | string | Business code used to identify the ambient type in external systems and integrations. | `"PRODUCT-TEMPERATURE"` |
+| `name` | string | Human-readable name of the ambient type. | `"Product Temperature"` |
+| `description` | string or null | Additional information about the ambient type. | `"Product temperature measured during processing"` |
 | [`measureUnit`](measure-unit.md) | integer or null | Pulse `id` of the measure unit used for the ambient values. | `4` |
-| `min` | string or null | Minimum expected value for the ambient measurement. | `"18"` |
-| `max` | string or null | Maximum expected value for the ambient measurement. | `"26"` |
-| `expected` | string or null | Expected value for the ambient measurement. | `"22"` |
+| `min` | string or null | Minimum expected value for the ambient measurement. | `"72"` |
+| `max` | string or null | Maximum expected value for the ambient measurement. | `"75"` |
+| `expected` | string or null | Expected value for the ambient measurement. | `"73"` |
 
 </div>
 

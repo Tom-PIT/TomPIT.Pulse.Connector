@@ -10,8 +10,8 @@ A stage divides a batch into meaningful parts of the process so that plans, actu
 {
   "id": 208,
   "batch": 105,
-  "code": "PACKING",
-  "name": "Packing"
+  "code": "PASTEURIZATION",
+  "name": "Pasteurization"
 }
 ```
 
@@ -23,8 +23,8 @@ A stage divides a batch into meaningful parts of the process so that plans, actu
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `208` |
 | [`batch`](batch.md) | integer | Pulse `id` of the batch to which the stage belongs. | `105` |
-| `code` | string | Business code used to identify the stage in source systems and integrations. Stable codes help Pulse compare equivalent stages across batches. | `"PACKING"` |
-| `name` | string | Human-readable name of the stage. | `"Packing"` |
+| `code` | string | Business code used to identify the stage in source systems and integrations. Stable codes help Pulse compare equivalent stages across batches. | `"PASTEURIZATION"` |
+| `name` | string | Human-readable name of the stage. | `"Pasteurization"` |
 
 </div>
 

@@ -1,8 +1,6 @@
 # Batch
 
-Represents a specific operational unit of work tracked in Pulse.
-
-Although Batch belongs to the Manufacturing API family, it is not limited to production. A batch can represent a production series, supply activity, logistics operation, service process, or another grouped execution that Pulse evaluates as one unit.
+Represents a production batch, production run, or another grouped production execution tracked through the Food & Beverage connector model.
 
 ## The Batch object
 
@@ -11,7 +9,7 @@ Although Batch belongs to the Manufacturing API family, it is not limited to pro
   "id": 105,
   "product": 42,
   "productionLine": 24,
-  "code": "BATCH-2026-0015",
+  "code": "YOG-2026-0717-01",
   "price": 125.00,
   "customer": 36
 }
@@ -26,7 +24,7 @@ Although Batch belongs to the Manufacturing API family, it is not limited to pro
 | `id` | integer | Unique identifier assigned by Pulse. | `105` |
 | [`product`](../master-data/product.md) | integer | Pulse `id` of the product or other output associated with the batch. | `42` |
 | [`productionLine`](../master-data/production-line.md) | integer | Pulse `id` of the production line or execution unit associated with the batch. | `24` |
-| `code` | string | Business code used to identify the batch in source systems, traceability records, and integrations. | `"BATCH-2026-0015"` |
+| `code` | string | Business code used to identify the batch in source systems, traceability records, and integrations. | `"YOG-2026-0717-01"` |
 | `price` | number or null | Price or revenue value associated with the batch or its output in the context of this execution. | `125.00` |
 | [`customer`](../master-data/customer.md) | integer or null | Pulse `id` of the customer associated with the batch, when applicable. | `36` |
 

@@ -7,10 +7,10 @@ Represents a machine, asset, or other equipment resource tracked in Pulse.
 ```json
 {
   "id": 31,
-  "code": "CNC-01",
-  "name": "CNC milling machine",
+  "code": "PASTEURIZER-01",
+  "name": "Pasteurizer 01",
   "price": 85.00,
-  "description": "CNC machine used for precision milling operations"
+  "description": "Pasteurizer used for thermal processing of the yogurt mixture"
 }
 ```
 
@@ -21,10 +21,10 @@ Represents a machine, asset, or other equipment resource tracked in Pulse.
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `31` |
-| `code` | string | Business code used to identify the equipment in external systems and integrations. | `"CNC-01"` |
-| `name` | string | Human-readable name of the equipment. | `"CNC milling machine"` |
+| `code` | string | Business code used to identify the equipment in external systems and integrations. | `"PASTEURIZER-01"` |
+| `name` | string | Human-readable name of the equipment. | `"Pasteurizer 01"` |
 | `price` | number or null | Optional default hourly price. Pulse may use this value when a related operational record does not provide its own price. | `85.00` |
-| `description` | string or null | Optional description of the equipment and its role in the process. | `"CNC machine used for precision milling operations"` |
+| `description` | string or null | Optional description of the equipment and its role in the process. | `"Pasteurizer used for thermal processing of the yogurt mixture"` |
 
 </div>
 

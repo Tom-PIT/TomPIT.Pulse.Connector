@@ -14,7 +14,7 @@ graph LR
   B --> C[Synchronize master data]
   C --> D[Submit operational data]
   D --> E[Submit measurements]
-  E --> F[Shared Pulse Tenant model]
+  E --> F[Pulse]
 ```
 
 ## Before you begin

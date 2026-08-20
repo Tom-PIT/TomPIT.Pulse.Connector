@@ -64,7 +64,7 @@ For example:
 
 | Source-system record | Pulse record |
 | --- | --- |
-| `code: PRODUCT-001` | `id: 21` |
+| `code: YOG-STRAWBERRY-150G` | `id: 21` |
 
 When an insert operation succeeds, Pulse commonly returns the numeric `id` assigned to the new record.
 
@@ -102,8 +102,8 @@ Suppose your source system contains:
 
 | Field | Value |
 | --- | --- |
-| Product code | `PRODUCT-001` |
-| Name | `Product 001` |
+| Product code | `YOG-STRAWBERRY-150G` |
+| Name | `Strawberry Yogurt 150 g` |
 | Unit | `piece` |
 
 Before submitting the product, obtain the Pulse `id` of the corresponding `piece` unit.
@@ -113,8 +113,8 @@ The request body then uses that Pulse identifier:
 ```json
 {
   "measureUnit": 1,
-  "code": "PRODUCT-001",
-  "name": "Product 001"
+  "code": "YOG-STRAWBERRY-150G",
+  "name": "Strawberry Yogurt 150 g"
 }
 ```
 
@@ -131,8 +131,8 @@ Pulse returns the corresponding record, including its `id`:
 ```json
 {
   "id": 21,
-  "code": "PRODUCT-001",
-  "name": "Product 001",
+  "code": "YOG-STRAWBERRY-150G",
+  "name": "Strawberry Yogurt 150 g",
   "measureUnit": 1
 }
 ```
@@ -141,7 +141,6 @@ Use the returned `id` in the related request.
 
 > [!NOTE]
 > The example shows the minimum commonly required fields. Optional fields such as `price` and `description` can also be included when available in the source system.
-
 
 ## Synchronization approach
 
