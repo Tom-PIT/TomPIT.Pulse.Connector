@@ -20,16 +20,16 @@ graph LR
 
 1. [Review the integration overview](getting-started/index.md).
 2. [Authenticate with the Pulse API](getting-started/authentication.md).
-3. [Choose a connector model](connector-models/index.md).
-4. Follow the integration guide for that connector model.
+3. [Choose a model](models/index.md), according to your industry or operational environment.
+4. Follow the integration guide for that model.
 
-## Connector models
+## Models
 
-Connector models describe how data from a specific industry or operational environment is represented when integrating with Pulse.
+Models describe how data from a specific industry or operational environment is represented when integrating with Pulse.
 
-Available connector models:
+Available models:
 
-- [Serial Production](connector-models/serial-production/index.md)
+- [Food & Beverages](models/manufacturing/food-and-beverage/index.md)
 
 ## Reference
 

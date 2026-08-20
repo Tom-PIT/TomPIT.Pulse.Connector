@@ -74,5 +74,5 @@ When replacing a token:
 
 ## Next steps
 
-1. [Choose a connector model](../connector-models/index.md).
+1. [Choose a connector model](../models/index.md).
 2. Follow the integration guide for the selected connector model.

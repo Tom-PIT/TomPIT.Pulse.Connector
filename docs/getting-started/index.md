@@ -60,11 +60,11 @@ Each connector model provides its own:
 - Integration examples.
 - API guidance.
 
-See [Connector models](../connector-models/index.md).
+See [Connector models](../models/index.md).
 
 ## Next steps
 
 1. [Configure authentication](authentication.md).
-2. [Choose a connector model](../connector-models/index.md).
+2. [Choose a connector model](../models/index.md).
 3. Follow the integration guide for the selected connector model.
 4. Use the API reference for the selected connector model.
