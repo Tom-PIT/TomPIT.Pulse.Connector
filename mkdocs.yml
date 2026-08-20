@@ -67,6 +67,7 @@ nav:
       - Authentication: getting-started/authentication.md
 
   - Integration guidance:
+      - Validation: integration/validation.md
       - Updates and error handling: integration/updates-and-error-handling.md
 
   - Connector models:
@@ -75,7 +76,6 @@ nav:
       - Serial Production:
           - Overview: connector-models/serial-production/index.md
           - First API request: connector-models/serial-production/first-api-request.md
-          - Validation: connector-models/serial-production/validation.md
 
           - Data model:
               - Overview: connector-models/serial-production/data-model/index.md
@@ -181,3 +181,112 @@ nav:
               - End-to-end operational scenario: connector-models/serial-production/scenarios/typical-operational-day.md
 
           - API reference: connector-models/serial-production/api/index.md
+
+      - Food & Beverage:
+          - Overview: connector-models/food-and-beverage/index.md
+          - First API request: connector-models/food-and-beverage/first-api-request.md
+
+          - Data model:
+              - Overview: connector-models/food-and-beverage/data-model/index.md
+              - Relationships: connector-models/food-and-beverage/data-model/relationships.md
+              - Dimension: connector-models/food-and-beverage/data-model/dimension.md
+              - Ambient value sharding: connector-models/food-and-beverage/data-model/ambient-value-sharding.md
+
+          - Master data:
+              - Overview: connector-models/food-and-beverage/master-data/index.md
+              - Measure unit: connector-models/food-and-beverage/master-data/measure-unit.md
+              - Plant: connector-models/food-and-beverage/master-data/plant.md
+              - Production line: connector-models/food-and-beverage/master-data/production-line.md
+              - Product: connector-models/food-and-beverage/master-data/product.md
+              - Material: connector-models/food-and-beverage/master-data/material.md
+              - Energy source: connector-models/food-and-beverage/master-data/energy-source.md
+              - Equipment: connector-models/food-and-beverage/master-data/equipment.md
+              - Labor: connector-models/food-and-beverage/master-data/labor.md
+              - Expense: connector-models/food-and-beverage/master-data/expense.md
+              - Shift: connector-models/food-and-beverage/master-data/shift.md
+              - Supplier: connector-models/food-and-beverage/master-data/supplier.md
+              - Customer: connector-models/food-and-beverage/master-data/customer.md
+              - Downtime category: connector-models/food-and-beverage/master-data/downtime-category.md
+              - Downtime type: connector-models/food-and-beverage/master-data/downtime-type.md
+              - Downtime cause: connector-models/food-and-beverage/master-data/downtime-cause.md
+              - Waste type: connector-models/food-and-beverage/master-data/waste-type.md
+              - Delay: connector-models/food-and-beverage/master-data/delay.md
+              - Maintenance reason: connector-models/food-and-beverage/master-data/maintenance-reason.md
+              - Ambient type: connector-models/food-and-beverage/master-data/ambient-type.md
+
+          - Manufacturing:
+              - Overview: connector-models/food-and-beverage/manufacturing/index.md
+
+              - Core records:
+                  - Batch: connector-models/food-and-beverage/manufacturing/batch.md
+                  - Batch plan: connector-models/food-and-beverage/manufacturing/batch-plan.md
+                  - Batch usage: connector-models/food-and-beverage/manufacturing/batch-usage.md
+                  - Batch shift: connector-models/food-and-beverage/manufacturing/batch-shift.md
+                  - Produced: connector-models/food-and-beverage/manufacturing/produced.md
+                  - Stage: connector-models/food-and-beverage/manufacturing/stage.md
+                  - Stage plan: connector-models/food-and-beverage/manufacturing/stage-plan.md
+                  - Stage usage: connector-models/food-and-beverage/manufacturing/stage-usage.md
+                  - Stage delay: connector-models/food-and-beverage/manufacturing/stage-delay.md
+                  - Ambient value: connector-models/food-and-beverage/manufacturing/ambient-value.md
+
+              - Resource plans:
+                  - Material plan: connector-models/food-and-beverage/manufacturing/material-plan.md
+                  - Energy source plan: connector-models/food-and-beverage/manufacturing/energy-source-plan.md
+                  - Equipment plan: connector-models/food-and-beverage/manufacturing/equipment-plan.md
+                  - Equipment plan period: connector-models/food-and-beverage/manufacturing/equipment-plan-period.md
+                  - Labor plan: connector-models/food-and-beverage/manufacturing/labor-plan.md
+                  - Labor plan period: connector-models/food-and-beverage/manufacturing/labor-plan-period.md
+                  - Expense plan: connector-models/food-and-beverage/manufacturing/expense-plan.md
+
+              - Resource usage:
+                  - Material usage: connector-models/food-and-beverage/manufacturing/material-usage.md
+                  - Energy source usage: connector-models/food-and-beverage/manufacturing/energy-source-usage.md
+                  - Equipment usage: connector-models/food-and-beverage/manufacturing/equipment-usage.md
+                  - Equipment usage period: connector-models/food-and-beverage/manufacturing/equipment-usage-period.md
+                  - Labor usage: connector-models/food-and-beverage/manufacturing/labor-usage.md
+                  - Labor usage period: connector-models/food-and-beverage/manufacturing/labor-usage-period.md
+                  - Expense usage: connector-models/food-and-beverage/manufacturing/expense-usage.md
+
+              - Downtime:
+                  - Downtime: connector-models/food-and-beverage/manufacturing/downtime.md
+                  - Downtime plan: connector-models/food-and-beverage/manufacturing/downtime-plan.md
+                  - Downtime usage: connector-models/food-and-beverage/manufacturing/downtime-usage.md
+                  - Downtime maintenance: connector-models/food-and-beverage/manufacturing/downtime-maintenance.md
+
+              - Waste:
+                  - Waste: connector-models/food-and-beverage/manufacturing/waste.md
+                  - Waste material usage: connector-models/food-and-beverage/manufacturing/waste-material-usage.md
+                  - Waste energy source usage: connector-models/food-and-beverage/manufacturing/waste-energy-source-usage.md
+                  - Waste expense usage: connector-models/food-and-beverage/manufacturing/waste-expense-usage.md
+
+          - Maintenance:
+              - Overview: connector-models/food-and-beverage/maintenance/index.md
+
+              - Core records:
+                  - Maintenance: connector-models/food-and-beverage/maintenance/maintenance.md
+                  - Maintenance plan: connector-models/food-and-beverage/maintenance/maintenance-plan.md
+                  - Maintenance usage: connector-models/food-and-beverage/maintenance/maintenance-usage.md
+
+              - Resource plans:
+                  - Material plan: connector-models/food-and-beverage/maintenance/maintenance-material-plan.md
+                  - Energy source plan: connector-models/food-and-beverage/maintenance/maintenance-energy-source-plan.md
+                  - Equipment plan: connector-models/food-and-beverage/maintenance/maintenance-equipment-plan.md
+                  - Labor plan: connector-models/food-and-beverage/maintenance/maintenance-labor-plan.md
+                  - Expense plan: connector-models/food-and-beverage/maintenance/maintenance-expense-plan.md
+
+              - Resource usage:
+                  - Material usage: connector-models/food-and-beverage/maintenance/maintenance-material-usage.md
+                  - Energy source usage: connector-models/food-and-beverage/maintenance/maintenance-energy-source-usage.md
+                  - Equipment usage: connector-models/food-and-beverage/maintenance/maintenance-equipment-usage.md
+                  - Labor usage: connector-models/food-and-beverage/maintenance/maintenance-labor-usage.md
+                  - Expense usage: connector-models/food-and-beverage/maintenance/maintenance-expense-usage.md
+
+          - Traceability:
+              - Lot: connector-models/food-and-beverage/traceability/lot.md
+
+          - Measurements: connector-models/food-and-beverage/measurements.md
+
+          - Scenarios:
+              - End-to-end operational scenario: connector-models/food-and-beverage/scenarios/typical-operational-day.md
+
+          - API reference: connector-models/food-and-beverage/api/index.md
