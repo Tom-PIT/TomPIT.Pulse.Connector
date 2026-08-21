@@ -84,6 +84,7 @@ nav:
               - Master data:
                   - Overview: models/manufacturing/food-and-beverage/master-data/index.md
                   - Types and attributes: models/manufacturing/food-and-beverage/master-data/types-and-attributes.md
+                  - Production line: models/manufacturing/food-and-beverage/master-data/production-line.md
                   - Plant: models/manufacturing/food-and-beverage/master-data/plant.md
                   - Machine: models/manufacturing/food-and-beverage/master-data/machine.md
                   - Vessel: models/manufacturing/food-and-beverage/master-data/vessel.md
