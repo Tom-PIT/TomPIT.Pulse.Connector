@@ -15,6 +15,8 @@ theme:
    ## - navigation.tabs.sticky
    ## - navigation.sections
     - navigation.indexes
+    - toc.follow
+    - navigation.tracking
     - navigation.top
     - content.code.copy
     - search.suggest
@@ -42,6 +44,7 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+      toc_depth: 3
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.highlight:
@@ -68,6 +71,7 @@ nav:
       - Authentication: getting-started/authentication.md
 
   - Models:
+      - Overview: models/index.md
       - Manufacturing:
           - Food & Beverage:
               - Overview: models/manufacturing/food-and-beverage/index.md
@@ -81,7 +85,6 @@ nav:
                   - Overview: models/manufacturing/food-and-beverage/master-data/index.md
                   - Types and attributes: models/manufacturing/food-and-beverage/master-data/types-and-attributes.md
                   - Plant: models/manufacturing/food-and-beverage/master-data/plant.md
-                  - Production line: models/manufacturing/food-and-beverage/master-data/production-line.md
                   - Machine: models/manufacturing/food-and-beverage/master-data/machine.md
                   - Vessel: models/manufacturing/food-and-beverage/master-data/vessel.md
                   - Product: models/manufacturing/food-and-beverage/master-data/product.md
