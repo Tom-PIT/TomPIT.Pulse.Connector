@@ -20,7 +20,7 @@ Pulse can compare this actual consumption with the related [energy source plan](
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -38,7 +38,7 @@ Pulse can compare this actual consumption with the related [energy source plan](
 
 The measure unit is defined by the related [energy source](../master-data/energy-source.md).
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

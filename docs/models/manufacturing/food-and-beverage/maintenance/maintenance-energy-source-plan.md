@@ -14,7 +14,7 @@ Describes planned energy use for a maintenance activity.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -28,7 +28,7 @@ Describes planned energy use for a maintenance activity.
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

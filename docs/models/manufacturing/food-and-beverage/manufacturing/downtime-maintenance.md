@@ -15,7 +15,7 @@ A downtime record explains where and why operational time was lost. A maintenanc
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -48,7 +48,7 @@ Pulse can use this percentage when assigning maintenance costs to the downtime. 
 > [!NOTE]
 > Downtime maintenance does not replace the related downtime or maintenance records. It only defines the relationship between them and the share attributed to the downtime.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

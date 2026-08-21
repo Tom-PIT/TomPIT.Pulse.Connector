@@ -16,7 +16,7 @@ Use this record for costs caused by waste that are not represented as material o
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -30,7 +30,7 @@ Use this record for costs caused by waste that are not represented as material o
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

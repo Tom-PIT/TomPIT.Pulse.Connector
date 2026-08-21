@@ -12,7 +12,7 @@ Represents the actual execution time of a batch.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -24,7 +24,7 @@ Represents the actual execution time of a batch.
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

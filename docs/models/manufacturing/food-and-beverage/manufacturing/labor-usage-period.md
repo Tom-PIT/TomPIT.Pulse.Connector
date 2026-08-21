@@ -15,7 +15,7 @@ This allows Pulse to compare planned and actual work schedules and identify late
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -28,7 +28,7 @@ This allows Pulse to compare planned and actual work schedules and identify late
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

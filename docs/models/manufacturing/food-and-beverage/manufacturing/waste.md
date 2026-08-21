@@ -18,7 +18,7 @@ A waste record identifies where and when the loss occurred. It may also classify
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -33,7 +33,7 @@ A waste record identifies where and when the loss occurred. It may also classify
 
 Related usage records describe the material, energy, and additional expenses attributed to the waste.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

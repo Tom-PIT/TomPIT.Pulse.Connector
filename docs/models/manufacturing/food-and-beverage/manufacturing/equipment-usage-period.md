@@ -15,7 +15,7 @@ An equipment usage record may contain multiple periods when the equipment was us
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -28,7 +28,7 @@ An equipment usage record may contain multiple periods when the equipment was us
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

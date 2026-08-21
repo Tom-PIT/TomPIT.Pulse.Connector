@@ -19,7 +19,7 @@ Produced records include both good and bad output. A product classified as bad q
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -33,7 +33,7 @@ Produced records include both good and bad output. A product classified as bad q
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

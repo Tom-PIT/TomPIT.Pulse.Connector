@@ -18,7 +18,7 @@ Pulse can compare the planned expense with the related [expense usage](expense-u
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -32,7 +32,7 @@ Pulse can compare the planned expense with the related [expense usage](expense-u
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

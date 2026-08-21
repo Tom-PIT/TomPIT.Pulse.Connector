@@ -17,7 +17,7 @@ This record identifies which energy source was consumed and how much of that con
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -34,7 +34,7 @@ This record identifies which energy source was consumed and how much of that con
 
 The measure unit is defined by the related [energy source](../master-data/energy-source.md).
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

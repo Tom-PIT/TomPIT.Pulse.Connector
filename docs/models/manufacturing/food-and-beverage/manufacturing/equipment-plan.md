@@ -18,7 +18,7 @@ When the exact timing of the planned use is important, add one or more [equipmen
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -26,13 +26,13 @@ When the exact timing of the planned use is important, add one or more [equipmen
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier of the equipment plan. | `512` |
 | [`stage`](stage.md) | integer | Pulse `id` of the stage in which the equipment is planned for use. | `208` |
-| [`equipment`](../master-data/equipment.md) | integer | Pulse `id` of the equipment planned for use. | `34` |
+| [`machine`](../master-data/machine.md) | integer | Pulse `id` of the equipment planned for use. | `34` |
 | `quantity` | number | Planned quantity of equipment use in hours. | `2.5` |
 | `price` | number or null | Optional planned hourly price for the equipment use. | `48.0` |
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |
@@ -43,7 +43,7 @@ See the [API reference](../api/index.md) for supported operations and complete r
 ## Depends on
 
 - [Stage](stage.md)
-- [Equipment](../master-data/equipment.md)
+- [Machine](../master-data/machine.md)
 
 Create or retrieve the applicable records before submitting the equipment plan.
 

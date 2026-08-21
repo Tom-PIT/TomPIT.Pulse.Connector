@@ -95,7 +95,6 @@ See [Validation](../../../integration/validation.md) and [Updates and error hand
 | [**Master data**](master-data/index.md) | Stable entities and classifications referenced by operational records. |
 | [**Manufacturing**](manufacturing/index.md) | Planned and actual operational activity, resources, output, downtime, and waste. |
 | [**Maintenance**](maintenance/index.md) | Preventive and corrective maintenance plans, execution, resources, and costs. |
-| [**Traceability**](traceability/lot.md) | Traceable lots referenced by applicable usage records. |
 | [**Measurements**](measurements.md) | Measured operational values submitted as Ambient value records. |
 
 ## Recommended next steps

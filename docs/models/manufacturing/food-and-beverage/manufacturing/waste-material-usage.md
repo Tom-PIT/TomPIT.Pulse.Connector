@@ -18,7 +18,7 @@ The quantity remains separate from the [waste](waste.md) record so Pulse can ide
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -36,7 +36,7 @@ The quantity remains separate from the [waste](waste.md) record so Pulse can ide
 
 The measure unit is defined by the related [material](../master-data/material.md).
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

@@ -14,7 +14,7 @@ A downtime usage record belongs to a [downtime](downtime.md) record. Its `id` is
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -26,7 +26,7 @@ A downtime usage record belongs to a [downtime](downtime.md) record. Its `id` is
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

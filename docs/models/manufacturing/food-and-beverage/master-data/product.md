@@ -10,11 +10,17 @@ Represents a finished product or other output tracked in Pulse.
   "name": "Strawberry Yogurt 150 g",
   "brand": "BRAND-A",
   "measureUnit": "pcs",
-  "unitPrice": 0.79
+  "unitPrice": 0.79,
+  "types": {
+    "packFormat": "CUP-150G"
+  },
+  "attributes": {
+    "erpCode": "SKU-4471"
+  }
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -25,8 +31,12 @@ Represents a finished product or other output tracked in Pulse.
 | `brand` | string or null | Optional code identifying the product brand. | `"BRAND-A"` |
 | `measureUnit` | string | Code of the measure unit used for the product. | `"pcs"` |
 | `unitPrice` | number or null | Optional price per product unit. | `0.79` |
+| `types` | object or null | Optional classifications used to group and analyse the product. | `{ "packFormat": "CUP-150G" }` |
+| `attributes` | object or null | Optional additional source-system metadata associated with the product. These values are stored but are not used for analysis. | `{ "erpCode": "SKU-4471" }` |
 
 </div>
+
+See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
 
 ## API resource
 
@@ -35,13 +45,3 @@ Represents a finished product or other output tracked in Pulse.
 | Product | `/services/pulse/food-beverage/products` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
-
-## Depends on
-
-- [Measure unit](measure-unit.md)
-
-The measure unit referenced by `measureUnit` must be available before submitting the product.
-
-## Referenced by
-
-- [Expected values](../expected.md)

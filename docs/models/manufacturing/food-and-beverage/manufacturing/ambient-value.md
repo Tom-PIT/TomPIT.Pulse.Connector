@@ -25,7 +25,7 @@ The related [ambient type](../master-data/ambient-type.md) defines what is being
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -75,7 +75,7 @@ These fields are represented as strings. Submit values in a format consistent wi
 
 The limits defined on an ambient value can provide context-specific thresholds. The same ambient type may have different permitted or expected values for different plants, lines, stages, equipment, or other contexts.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

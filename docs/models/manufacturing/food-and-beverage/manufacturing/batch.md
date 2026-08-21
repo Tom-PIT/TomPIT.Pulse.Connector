@@ -15,7 +15,7 @@ Represents a production batch, production run, or another grouped production exe
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -34,7 +34,7 @@ Represents a production batch, production run, or another grouped production exe
 
 `price` provides the revenue or valuation context for the batch. It can represent a sales price, agreed batch value, internal valuation, planned revenue basis, or another value supplied by the source system.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

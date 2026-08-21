@@ -20,7 +20,7 @@ Pulse can compare this actual consumption with the related [material plan](mater
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -38,7 +38,7 @@ Pulse can compare this actual consumption with the related [material plan](mater
 
 The measure unit is defined by the related [material](../master-data/material.md).
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

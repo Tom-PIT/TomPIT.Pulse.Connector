@@ -14,7 +14,7 @@ Represents a delay associated with a stage during a specific time interval.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -28,7 +28,7 @@ Represents a delay associated with a stage during a specific time interval.
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

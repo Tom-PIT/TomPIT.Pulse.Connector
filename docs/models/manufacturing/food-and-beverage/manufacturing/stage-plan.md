@@ -12,7 +12,7 @@ Represents the planned execution time of a stage.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -24,7 +24,7 @@ Represents the planned execution time of a stage.
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

@@ -14,7 +14,7 @@ Describes planned supporting equipment use for a maintenance activity.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -22,7 +22,7 @@ Describes planned supporting equipment use for a maintenance activity.
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `501` |
 | [`maintenance`](maintenance.md) | integer | Pulse `id` of the maintenance activity. | `314` |
-| [`equipment`](../master-data/equipment.md) | integer | Pulse `id` of the equipment planned for the maintenance activity. | `92` |
+| [`machine`](../master-data/machine.md) | integer | Pulse `id` of the equipment planned for the maintenance activity. | `92` |
 | `quantity` | number | Planned duration of equipment use, expressed in hours. | `2.5` |
 | `price` | number | Optional planned price per hour. | `48.0` |
 
@@ -31,17 +31,17 @@ Describes planned supporting equipment use for a maintenance activity.
 > [!NOTE]
 > When a price is based on elapsed time, Pulse expresses it per hour. Although Pulse commonly represents durations internally using ticks, hours are used for time-based price calculations.
 
-## API service
+## API resource
 
-| Service | Base path |
+| Resource | Base path |
 | --- | --- |
-| `MaintenanceEquipmentPlanService` | `/services/pulse/maintenance/plan/equipment` |
+| Plant | `/services/pulse/food-beverage/plants` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
 
 ## Depends on
 
 - [Maintenance](maintenance.md)
-- [Equipment](../master-data/equipment.md)
+- [Machine](../master-data/machine.md)
 
 Create or retrieve the applicable records before submitting the maintenance equipment plan.

@@ -18,7 +18,7 @@ This allows Pulse to compare performance, resource use, delays, downtime, output
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -32,7 +32,7 @@ This allows Pulse to compare performance, resource use, delays, downtime, output
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

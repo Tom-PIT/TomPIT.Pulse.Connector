@@ -14,7 +14,7 @@ A downtime plan belongs to a [downtime](downtime.md) record. Its `id` is identic
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -26,7 +26,7 @@ A downtime plan belongs to a [downtime](downtime.md) record. Its `id` is identic
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

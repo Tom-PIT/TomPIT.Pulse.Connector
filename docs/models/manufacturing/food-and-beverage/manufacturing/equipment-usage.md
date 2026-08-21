@@ -19,7 +19,7 @@ Pulse can compare this actual use with the related [equipment plan](equipment-pl
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -27,14 +27,14 @@ Pulse can compare this actual use with the related [equipment plan](equipment-pl
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier of the equipment usage record. | `704` |
 | [`stage`](stage.md) | integer | Pulse `id` of the stage in which the equipment was used. | `208` |
-| [`equipment`](../master-data/equipment.md) | integer | Pulse `id` of the equipment that was used. | `34` |
+| [`machine`](../master-data/machine.md) | integer | Pulse `id` of the equipment that was used. | `34` |
 | `quantity` | number | Actual quantity of equipment use in hours. | `3.0` |
 | `price` | number or null | Optional actual hourly price or cost basis for the equipment use. | `52.0` |
 | `date` | string | Date and time when the equipment use was recorded or occurred, in ISO 8601 format. | `"2026-07-20T10:48:00+02:00"` |
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |
@@ -45,7 +45,7 @@ See the [API reference](../api/index.md) for supported operations and complete r
 ## Depends on
 
 - [Stage](stage.md)
-- [Equipment](../master-data/equipment.md)
+- [Machine](../master-data/machine.md)
 
 Create or retrieve the applicable records before submitting the equipment usage record.
 

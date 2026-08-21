@@ -40,7 +40,7 @@ graph TD
 | --- | --- | --- |
 | [**Maintenance material plan**](maintenance-material-plan.md) | Describes planned material quantity and price. | [Material](../master-data/material.md) |
 | [**Maintenance energy source plan**](maintenance-energy-source-plan.md) | Describes planned energy quantity and price. | [Energy source](../master-data/energy-source.md) |
-| [**Maintenance equipment plan**](maintenance-equipment-plan.md) | Describes planned equipment hours and hourly price. | [Equipment](../master-data/equipment.md) |
+| [**Maintenance equipment plan**](maintenance-equipment-plan.md) | Describes planned equipment hours and hourly price. | [Machine](../master-data/machine.md) |
 | [**Maintenance labor plan**](maintenance-labor-plan.md) | Describes planned labor hours and hourly price. | [Labor](../master-data/labor.md) |
 | [**Maintenance expense plan**](maintenance-expense-plan.md) | Describes a planned additional expense. | [Expense](../master-data/expense.md) |
 
@@ -50,7 +50,7 @@ graph TD
 | --- | --- | --- |
 | [**Maintenance material usage**](maintenance-material-usage.md) | Records actual material quantity and price. | [Material](../master-data/material.md) |
 | [**Maintenance energy source usage**](maintenance-energy-source-usage.md) | Records actual energy quantity and price. | [Energy source](../master-data/energy-source.md) |
-| [**Maintenance equipment usage**](maintenance-equipment-usage.md) | Records actual equipment hours and hourly price. | [Equipment](../master-data/equipment.md) |
+| [**Maintenance equipment usage**](maintenance-equipment-usage.md) | Records actual equipment hours and hourly price. | [Machine](../master-data/machine.md) |
 | [**Maintenance labor usage**](maintenance-labor-usage.md) | Records actual labor hours and hourly price. | [Labor](../master-data/labor.md) |
 | [**Maintenance expense usage**](maintenance-expense-usage.md) | Records an actual additional expense. | [Expense](../master-data/expense.md) |
 

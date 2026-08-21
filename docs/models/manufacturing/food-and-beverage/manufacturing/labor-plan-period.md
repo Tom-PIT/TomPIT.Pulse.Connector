@@ -15,7 +15,7 @@ A labor plan identifies the labor role or type of work and the planned quantity.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -30,7 +30,7 @@ A labor plan identifies the labor role or type of work and the planned quantity.
 
 A single [labor plan](labor-plan.md) may contain multiple periods when the work is planned for separate intervals.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

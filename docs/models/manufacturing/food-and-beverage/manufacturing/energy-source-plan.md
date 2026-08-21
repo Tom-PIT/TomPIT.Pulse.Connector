@@ -16,7 +16,7 @@ Energy source plans allow Pulse to compare expected energy consumption and cost 
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -32,7 +32,7 @@ Energy source plans allow Pulse to compare expected energy consumption and cost 
 
 The measure unit is defined by the related [energy source](../master-data/energy-source.md).
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

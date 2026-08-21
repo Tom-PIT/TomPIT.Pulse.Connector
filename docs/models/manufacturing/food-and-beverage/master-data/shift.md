@@ -6,32 +6,37 @@ Represents a defined work period used to organize operational activity in Pulse.
 
 ```json
 {
-  "id": 8,
   "code": "MORNING",
-  "name": "Morning shift"
+  "name": "Morning shift",
+  "types": {
+    "shiftType": "DAY"
+  },
+  "attributes": {
+    "startsAt": "06:00",
+    "endsAt": "14:00"
+  }
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Unique identifier assigned by Pulse. | `8` |
-| `code` | string | Business code used to identify the shift in external systems and integrations. | `"MORNING"` |
+| `code` | string | Business code used to identify the shift in source systems and integrations. | `"MORNING"` |
 | `name` | string | Human-readable name of the shift. | `"Morning shift"` |
+| `types` | object or null | Optional classifications used to group and analyse the shift. | `{ "shiftType": "DAY" }` |
+| `attributes` | object or null | Optional additional source-system metadata associated with the shift. These values are stored but are not used for analysis. | `{ "startsAt": "06:00", "endsAt": "14:00" }` |
 
 </div>
 
-## API service
+See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
 
-| Service | Base path |
+## API resource
+
+| Resource | Base path |
 | --- | --- |
-| `ShiftService` | `/services/pulse/types/shifts` |
+| Shift | `/services/pulse/food-beverage/shifts` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
-
-## Referenced by
-
-- [Batch shift records](../manufacturing/batch-shift.md)

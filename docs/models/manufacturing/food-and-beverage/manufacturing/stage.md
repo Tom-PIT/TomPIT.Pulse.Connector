@@ -15,7 +15,7 @@ A stage divides a batch into meaningful parts of the process so that plans, actu
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -28,7 +28,7 @@ A stage divides a batch into meaningful parts of the process so that plans, actu
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

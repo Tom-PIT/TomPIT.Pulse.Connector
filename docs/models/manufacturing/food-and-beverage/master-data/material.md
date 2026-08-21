@@ -22,7 +22,7 @@ Represents an ingredient, packaging material, chemical, or other material used i
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -38,6 +38,8 @@ Represents an ingredient, packaging material, chemical, or other material used i
 
 </div>
 
+See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
+
 ## Lot tracking
 
 Materials that require traceability should use `lotTracked: true`.
@@ -51,15 +53,3 @@ When `lotTracked` is `true`, consumption records for the material must reference
 | Material | `/services/pulse/food-beverage/materials` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
-
-## Depends on
-
-- [Measure unit](measure-unit.md)
-
-The measure unit referenced by `measureUnit` must be available before submitting the material.
-
-## Referenced by
-
-- [Material plans](../manufacturing/material-plan.md)
-- [Material usage records](../manufacturing/material-usage.md)
-- [Waste material usage records](../manufacturing/waste-material-usage.md)

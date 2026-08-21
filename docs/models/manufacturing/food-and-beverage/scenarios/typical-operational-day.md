@@ -24,7 +24,7 @@ For this scenario, they may include:
 - [Measure units](../master-data/measure-unit.md), such as kilograms, liters, and degrees Celsius.
 - [Materials](../master-data/material.md), such as milk, fruit preparation, sugar, and packaging material.
 - [Energy sources](../master-data/energy-source.md).
-- [Equipment](../master-data/equipment.md), such as a pasteurizer, mixing tank, or filling machine.
+- [Machine](../master-data/machine.md), such as a pasteurizer, mixing tank, or filling machine.
 - [Labor](../master-data/labor.md).
 - [Shifts](../master-data/shift.md).
 - [Downtime category](../master-data/downtime-category.md).

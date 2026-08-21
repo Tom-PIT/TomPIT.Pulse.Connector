@@ -16,7 +16,7 @@ A downtime record identifies the operational context of the event. Planned and a
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -24,13 +24,13 @@ A downtime record identifies the operational context of the event. Planned and a
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `630` |
 | [`stage`](stage.md) | integer | Pulse `id` of the stage associated with the downtime. | `208` |
-| [`equipment`](../master-data/equipment.md) | integer or null | Pulse `id` of the equipment associated with the downtime, when applicable. | `31` |
+| [`machine`](../master-data/machine.md) | integer or null | Pulse `id` of the equipment associated with the downtime, when applicable. | `31` |
 | [`type`](../master-data/downtime-type.md) | integer or null | Pulse `id` of the downtime type, when applicable. | `9` |
 | [`cause`](../master-data/downtime-cause.md) | integer or null | Pulse `id` of the downtime cause, when applicable. | `11` |
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |
@@ -44,7 +44,7 @@ See the [API reference](../api/index.md) for supported operations and complete r
 
 May also reference:
 
-- [Equipment](../master-data/equipment.md)
+- [Machine](../master-data/machine.md)
 - [Downtime type](../master-data/downtime-type.md)
 - [Downtime cause](../master-data/downtime-cause.md)
 

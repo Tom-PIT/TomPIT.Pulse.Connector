@@ -15,7 +15,7 @@ Records actual supporting equipment use for a maintenance activity.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -23,7 +23,7 @@ Records actual supporting equipment use for a maintenance activity.
 | --- | --- | --- | --- |
 | `id` | integer | Unique identifier assigned by Pulse. | `601` |
 | [`maintenance`](maintenance.md) | integer | Pulse `id` of the maintenance activity. | `314` |
-| [`equipment`](../master-data/equipment.md) | integer | Pulse `id` of the equipment used for the maintenance activity. | `92` |
+| [`machine`](../master-data/machine.md) | integer | Pulse `id` of the equipment used for the maintenance activity. | `92` |
 | `quantity` | number | Actual duration of equipment use, expressed in hours. | `2.75` |
 | `price` | number | Optional actual price per hour. | `48.0` |
 | `date` | string | Date and time when the usage occurred or was recorded. | `"2026-07-20T09:15:00Z"` |
@@ -33,7 +33,7 @@ Records actual supporting equipment use for a maintenance activity.
 > [!NOTE]
 > When a price is based on elapsed time, Pulse expresses it per hour. Although Pulse commonly represents durations internally using ticks, hours are used for time-based price calculations.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |
@@ -44,6 +44,6 @@ See the [API reference](../api/index.md) for supported operations and complete r
 ## Depends on
 
 - [Maintenance](maintenance.md)
-- [Equipment](../master-data/equipment.md)
+- [Machine](../master-data/machine.md)
 
 Create or retrieve the applicable records before submitting the maintenance equipment usage.

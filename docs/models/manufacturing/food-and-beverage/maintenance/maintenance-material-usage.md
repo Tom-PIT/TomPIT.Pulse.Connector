@@ -16,7 +16,7 @@ Records actual material use for a maintenance activity.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -32,7 +32,7 @@ Records actual material use for a maintenance activity.
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

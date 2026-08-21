@@ -18,7 +18,7 @@ When the exact timing of the planned work is important, add one or more [labor p
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -35,7 +35,7 @@ When the exact timing of the planned work is important, add one or more [labor p
 > [!NOTE]
 > When a price is based on elapsed time, Pulse expresses it per hour. Although Pulse commonly represents durations internally using ticks, hours are used for time-based price calculations.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

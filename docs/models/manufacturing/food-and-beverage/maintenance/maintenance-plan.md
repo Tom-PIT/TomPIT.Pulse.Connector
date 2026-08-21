@@ -14,7 +14,7 @@ The Maintenance plan shares its identity with the related [Maintenance](maintena
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -26,7 +26,7 @@ The Maintenance plan shares its identity with the related [Maintenance](maintena
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

@@ -14,7 +14,7 @@ The Maintenance usage record shares its identity with the related [Maintenance](
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -26,7 +26,7 @@ The Maintenance usage record shares its identity with the related [Maintenance](
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

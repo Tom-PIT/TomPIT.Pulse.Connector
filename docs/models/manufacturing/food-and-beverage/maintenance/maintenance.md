@@ -16,7 +16,7 @@ The Maintenance record identifies and classifies the activity. Related plan and 
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -26,7 +26,7 @@ The Maintenance record identifies and classifies the activity. Related plan and 
 | `code` | string | Unique business code used to identify the maintenance activity in the source system and Pulse. | `"MNT-2026-0042"` |
 | `kind` | enum | Fundamental nature of the maintenance activity: `Preventive` or `Corrective`. | `"Corrective"` |
 | [`reason`](../master-data/maintenance-reason.md) | integer | Optional Pulse `id` of the reason for the maintenance activity. | `17` |
-| [`equipment`](../master-data/equipment.md) | integer | Optional Pulse `id` of the equipment associated with the maintenance activity. | `82` |
+| [`machine`](../master-data/machine.md) | integer | Optional Pulse `id` of the equipment associated with the maintenance activity. | `82` |
 
 </div>
 
@@ -64,7 +64,7 @@ Maintenance kind and maintenance reason answer different questions:
 
 For example, a maintenance activity may be classified as `Corrective`, while its maintenance reason identifies a bearing failure or another specific cause.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |
@@ -77,7 +77,7 @@ See the [API reference](../api/index.md) for supported operations and complete r
 May also reference:
 
 - [Maintenance reason](../master-data/maintenance-reason.md)
-- [Equipment](../master-data/equipment.md)
+- [Machine](../master-data/machine.md)
 
 Create or retrieve the applicable records before submitting the Maintenance record.
 

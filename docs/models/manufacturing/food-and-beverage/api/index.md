@@ -34,50 +34,171 @@ Open the service in Scalar to inspect:
 - Response schemas.
 - Example requests, when available.
 
-Use Scalar to inspect and test individual requests. Use integration code for continuous or high-volume data exchange.
+Use [Scalar](https://scalar.com/) to inspect and test individual requests. Use integration code for continuous or high-volume data exchange.
 
 ## API conventions
 
-Many Pulse services expose some or all of the following operations. The exact operation set and behavior depend on the service.
+The Food & Beverage facade uses domain-shaped resources and business codes.
 
-| Operation | HTTP method | Purpose |
-| --- | --- | --- |
-| `insert` | `POST` | Create a record. |
-| `update` | `PUT` | Replace the complete editable representation of an existing record. |
-| `patch` | `PATCH` | Update only the specified attributes. |
-| `delete` | `DELETE` | Delete a record. |
-| `select` | `GET` | Retrieve one record by its Pulse `id`. |
-| `query` | `GET` | Retrieve and filter multiple records. |
+### Base route
 
-Insert operations commonly return the Pulse `id` assigned to the new record.
+Food & Beverage resources use the following base route:
 
-When an integration later needs the current Pulse `id` of a code-based record, retrieve the record by `code` and use the returned `id`.
+```text
+{host}/services/pulse/food-beverage/{resource}
+```
+
+For example:
+
+```text
+/services/pulse/food-beverage/products
+/services/pulse/food-beverage/runs
+/services/pulse/food-beverage/readings
+```
+
+### Business codes
+
+Integrator-facing requests use business codes rather than Pulse numeric identifiers.
+
+For example:
+
+```json
+{
+  "code": "YOG-RUN-001",
+  "line": "YOGURT-LINE-01",
+  "product": "YOG-STRAWBERRY-150G"
+}
+```
+
+Pulse may return an internal `id` in a response for support or log correlation, but Food & Beverage API requests do not use that `id` as an input.
+
+### Timestamps
+
+Timestamps sent to the API must use ISO 8601 format with an explicit UTC offset.
+
+For example:
+
+```text
+2026-08-10T22:00:00+02:00
+```
+
+The API does not assume a local time zone.
+
+### Partial updates
+
+Lifecycle and other code-addressed resources support partial updates.
+
+A field that is omitted means that its current value is unchanged.
+
+An explicit `null` clears the value when the field supports clearing.
+
+For example, a run can be submitted when it starts:
+
+```json
+{
+  "code": "YOG-RUN-001",
+  "line": "YOGURT-LINE-01",
+  "product": "YOG-STRAWBERRY-150G",
+  "at": "2026-08-10T22:00:00+02:00"
+}
+```
+
+and submitted again later when its end is known:
+
+```json
+{
+  "code": "YOG-RUN-001",
+  "end": "2026-08-11T06:00:00+02:00",
+  "status": "completed"
+}
+```
+
+### Idempotency and corrections
+
+Writes are idempotent on a key already owned by the source system.
+
+For master-data and lifecycle resources, this is normally the record's `code`.
+
+Replaying the same key with the same values does not create a duplicate.
+
+Submitting the same key with corrected values supersedes the previous version rather than overwriting it.
+
+### Stream resources
+
+Stream resources such as readings, output, consumption, and line states can accept repeated operational records.
+
+Stream endpoints accept either a single object or an array of objects.
+
+When an array contains both accepted and rejected records, the API can return partial success with a result for each submitted item.
+
+### Retraction
+
+Correction and retraction are different operations.
+
+A correction submits the same record key with updated values.
+
+A retraction indicates that the record should not exist and is performed using `DELETE`.
+
+Code-addressed resources can be retracted by their `code`. Stream records are retracted using the fields that form their record key.
+
+### Validation without writing
+
+Supported write resources can be validated without changing data by using:
+
+```text
+?dryRun=true
+```
+
+This validates the submitted payload and reports errors without persisting the record.
+
+### Errors
+
+API errors use stable error codes and include details about the field or relationship that caused the problem.
+
+For example:
+
+```json
+{
+  "error": "unknown-entity",
+  "detail": "no line with code 'L07'",
+  "path": "line"
+}
+```
+
+See the complete API reference in Scalar for operation-specific schemas, allowed values, responses, and errors.
 
 ## Master data
 
-Create and maintain the stable business entities and code lists referenced by operational records.
+Create and maintain the relatively stable business records referenced by Food & Beverage operational data.
 
-| Service | Description | Base path |
+All Food & Beverage master-data resources are addressed by business codes rather than Pulse numeric identifiers.
+
+| Resource | Description | Base path |
 | --- | --- | --- |
-| [**Ambient type**](../master-data/ambient-type.md)<br>`AmbientTypeService` | Define measurement types, units, and expected value ranges. | `/services/pulse/types/ambient-types` |
-| [**Customer**](../master-data/customer.md)<br>`CustomerService` | Define customers referenced by operational records. | `/services/pulse/types/customers` |
-| [**Delay**](../master-data/delay.md)<br>`DelayService` | Define delay classifications used by stage delay records. | `/services/pulse/types/delays` |
-| [**Downtime category**](../master-data/downtime-category.md)<br>`DowntimeCategoryService` | Define categories used to group downtime types. | `/services/pulse/types/downtime-categories` |
-| [**Downtime cause**](../master-data/downtime-cause.md)<br>`DowntimeCauseService` | Define causes associated with downtime records. | `/services/pulse/types/downtime-causes` |
-| [**Downtime type**](../master-data/downtime-type.md)<br>`DowntimeTypeService` | Define planned or unplanned downtime types. | `/services/pulse/types/downtime-types` |
-| [**Energy source**](../master-data/energy-source.md)<br>`EnergySourceService` | Define energy sources and their default price per measure unit. | `/services/pulse/types/energy-sources` |
-| [**Equipment**](../master-data/equipment.md)<br>`EquipmentService` | Define equipment resources used during operational activities. | `/services/pulse/types/equipment` |
-| [**Expense**](../master-data/expense.md)<br>`ExpenseService` | Define additional cost types used by operational records. | `/services/pulse/types/expenses` |
-| [**Labor**](../master-data/labor.md)<br>`LaborService` | Define labor categories or resources used during activities. | `/services/pulse/types/labor` |
-| [**Maintenance reason**](../master-data/maintenance-reason.md)<br>`MaintenanceReasonService` | Define reasons used to classify maintenance activities. | `/services/pulse/types/maintenance-reasons` |
-| [**Material**](../master-data/material.md)<br>`MaterialService` | Define raw materials, components, or supplies consumed during activities. | `/services/pulse/types/materials` |
-| [**Measure unit**](../master-data/measure-unit.md)<br>`MeasureUnitService` | Define units used for quantities, measurements, and prices. | `/services/pulse/types/measure-units` |
-| [**Plant**](../master-data/plant.md)<br>`PlantService` | Define operating locations referenced by production lines. | `/services/pulse/types/plants` |
-| [**Product**](../master-data/product.md)<br>`ProductService` | Define finished products or other outputs tracked in Pulse. | `/services/pulse/types/products` |
-| [**Production line**](../master-data/production-line.md)<br>`ProductionLineService` | Define production lines associated with plants. | `/services/pulse/types/production-lines` |
-| [**Shift**](../master-data/shift.md)<br>`ShiftService` | Define work shifts referenced by operational records. | `/services/pulse/types/shifts` |
-| [**Supplier**](../master-data/supplier.md)<br>`SupplierService` | Define suppliers referenced by material or energy usage. | `/services/pulse/types/suppliers` |
-| [**Waste type**](../master-data/waste-type.md)<br>`WasteTypeService` | Define classifications used by waste records. | `/services/pulse/types/waste-types` |
+| [**Plant**](../master-data/plant.md) | Register a physical operating location. | `/services/pulse/food-beverage/plants` |
+| [**Production line**](../master-data/production-line.md) | Register a production line within a plant. | `/services/pulse/food-beverage/lines` |
+| [**Machine**](../master-data/machine.md) | Register a machine, component, or wear part associated with a production line. | `/services/pulse/food-beverage/machines` |
+| [**Vessel**](../master-data/vessel.md) | Register a tank, silo, or other process vessel associated with a production line. | `/services/pulse/food-beverage/vessels` |
+| [**Product**](../master-data/product.md) | Register a finished product or other output tracked in Pulse. | `/services/pulse/food-beverage/products` |
+| [**Recipe**](../master-data/recipe.md) | Register a formulation version used during production. | `/services/pulse/food-beverage/recipes` |
+| [**Material**](../master-data/material.md) | Register an ingredient, packaging material, chemical, or other material used in production. | `/services/pulse/food-beverage/materials` |
+| [**Supplier**](../master-data/supplier.md) | Register a supplier associated with materials and other inputs. | `/services/pulse/food-beverage/suppliers` |
+| [**Customer**](../master-data/customer.md) | Register a customer associated with Food & Beverage operations. | `/services/pulse/food-beverage/customers` |
+| [**Shift**](../master-data/shift.md) | Register a work period used as production context. | `/services/pulse/food-beverage/shifts` |
+| [**Crew**](../master-data/crew.md) | Register a team or operator group used to attribute work and labor consumption. | `/services/pulse/food-beverage/crews` |
+| [**Lot**](../master-data/lot.md) | Register a traceable quantity of material received or produced. | `/services/pulse/food-beverage/lots` |
+| [**Clean regime**](../master-data/clean-regime.md) | Register a cleaning regime such as dry clean, wet clean, full CIP, or allergen clean. | `/services/pulse/food-beverage/clean-regimes` |
+| [**Reason**](../master-data/reason.md) | Register hierarchical causes used by stoppages, maintenance, holds, complaints, and other operational records. | `/services/pulse/food-beverage/reasons` |
+| [**Metric**](../master-data/metric.md) | Declare a measurable or commanded signal used by readings and expected values. | `/services/pulse/food-beverage/metrics` |
+| [**Types and attributes**](../master-data/types-and-attributes.md) | Declare analysable classifications and understand how they differ from additional source-system metadata. | `/services/pulse/food-beverage/types` |
+
+### Lot analysis
+
+Measured properties associated with a lot, such as fat, protein, moisture, or other composition values, are submitted through the lot analysis resource:
+
+`POST /services/pulse/food-beverage/lots/{code}/analysis`
+
+See [Lot](../master-data/lot.md) for details.
 
 ## Manufacturing
 

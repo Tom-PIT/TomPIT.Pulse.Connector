@@ -13,7 +13,7 @@ Represents the planned timing and quantity of a batch.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -26,7 +26,7 @@ Represents the planned timing and quantity of a batch.
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

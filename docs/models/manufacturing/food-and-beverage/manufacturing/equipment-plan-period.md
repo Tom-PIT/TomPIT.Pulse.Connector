@@ -15,7 +15,7 @@ An equipment plan identifies which equipment is expected to be used during a sta
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -30,7 +30,7 @@ An equipment plan identifies which equipment is expected to be used during a sta
 
 A single [equipment plan](equipment-plan.md) may contain multiple periods when the equipment is planned for use during separate intervals.
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |

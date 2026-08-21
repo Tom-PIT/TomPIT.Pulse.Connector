@@ -15,7 +15,7 @@ Records an actual additional expense for a maintenance activity.
 }
 ```
 
-## Attributes
+## Fields
 
 <div class="attributes-table" markdown>
 
@@ -30,7 +30,7 @@ Records an actual additional expense for a maintenance activity.
 
 </div>
 
-## API service
+## API resource
 
 | Service | Base path |
 | --- | --- |
