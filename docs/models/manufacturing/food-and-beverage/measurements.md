@@ -1,23 +1,26 @@
 # Measurements
 
-Pulse currently represents measured or received operational values as [Ambient value](manufacturing/ambient-value.md) records.
+Measurements in the Food & Beverage model use two resources:
 
-Before submitting measurements, create or retrieve the related:
+- [Metric](master-data/metric.md) defines what is measured or commanded.
+- [Reading](manufacturing/reading.md) records an individual captured value.
 
-- [Ambient type](master-data/ambient-type.md), which defines what is measured and its measure unit.
-- [Dimension](data-model/dimension.md), which defines the operational context.
-- Context record identified by `dimensionId`.
+```mermaid
+flowchart LR
+    A["Metric<br/>what is measured"] --> B["Reading<br/>captured value"]
+```
 
-Each Ambient value records:
+Each reading references exactly one subject, such as a run, batch, production line, machine, vessel, or lot.
 
-- The measurement timestamp.
-- The measured value.
-- The measurement type.
-- The operational context.
-- Optional minimum, maximum, and expected values.
+Measured values and setpoints use the same Reading resource. The Metric determines whether the signal represents a measurement or a commanded value.
 
-Use the most precise context available from the source system. A value linked to a production line, stage, equipment record, or batch provides more specific operational context than a value linked only to a plant.
+Expected, target, or permitted ranges are defined separately through [Expected values](expected.md).
 
-For high-volume measurements, Pulse handles storage through [Ambient value sharding](data-model/ambient-value-sharding.md). Integrations do not select or manage shards.
+## API resources
 
-See [Ambient value](manufacturing/ambient-value.md) for the object fields and API service.
+| Resource | Purpose | Base path |
+| --- | --- | --- |
+| [Metric](master-data/metric.md) | Declare measurable or commanded signals. | `/services/pulse/food-beverage/metrics` |
+| [Reading](manufacturing/reading.md) | Submit captured values. | `/services/pulse/food-beverage/readings` |
+
+See [Metric](master-data/metric.md) and [Reading](manufacturing/reading.md) for the complete object structure and integration guidance.

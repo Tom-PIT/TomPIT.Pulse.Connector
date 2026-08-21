@@ -72,7 +72,7 @@ A typical order is:
 
 Food & Beverage API requests reference related records by business code.
 
-See [Relationships](data-model/relationships.md) for shared identity and dependency rules.
+See [Data model](data-model.md) for shared identity and dependency rules.
 
 ## Business codes
 
@@ -120,6 +120,6 @@ See [Validation](../../../integration/validation.md) and [Updates and error hand
 
 1. Complete [Authentication](../../../getting-started/authentication.md).
 2. Send the [first API request](first-api-request.md).
-3. Review the [Food & Beverage data model](data-model/index.md).
-4. Follow the [end-to-end Food & Beverage scenario](scenarios/typical-operational-day.md).
+3. Review the [Food & Beverage data model](data-model.md).
+4. Follow the [end-to-end Food & Beverage scenario](end-to-end-integration.md).
 5. Use the [API reference](api/index.md) to inspect the required resources and operations.
