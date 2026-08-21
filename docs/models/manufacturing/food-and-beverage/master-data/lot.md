@@ -31,8 +31,8 @@ A lot identifies the specific material quantity involved in production and provi
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | `code` | string | Business code used to identify the lot in source systems and integrations. | `"MILK-2026-0717-A"` |
-| `material` | string | Code of the material associated with the lot. | `"MILK-RAW"` |
-| `supplier` | string or null | Optional code of the supplier from which an incoming lot was received. | `"SUP-001"` |
+| [`material`](material.md) | string | Code of the material associated with the lot. | `"MILK-RAW"` |
+| [`supplier`](supplier.md) | string or null | Optional code of the supplier from which an incoming lot was received. | `"SUP-001"` |
 | `receivedAt` | string or null | Optional timestamp when the lot was received, in ISO 8601 format with an explicit offset. | `"2026-07-17T05:45:00+02:00"` |
 | `expiresAt` | string or null | Optional timestamp when the lot expires, in ISO 8601 format with an explicit offset. | `"2026-07-24T23:59:59+02:00"` |
 | `quantity` | number or null | Optional quantity associated with the lot. | `1000` |

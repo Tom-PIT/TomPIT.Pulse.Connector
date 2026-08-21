@@ -202,22 +202,35 @@ See [Lot](../master-data/lot.md) for details.
 
 ## Manufacturing
 
-Submit planned and actual operational activity, resource usage, output, downtime, waste, and measurements.
+Submit Food & Beverage production work, resource consumption, output, measurements, line conditions, and operational events.
 
-### Core records
+### Production work
 
-| Service | Description | Base path |
+| Resource | Description | Base path |
 | --- | --- | --- |
-| [**Ambient value**](../manufacturing/ambient-value.md)<br>`AmbientValueService` | Submit and retrieve measured values linked to Pulse entities. | `/services/pulse/manufacturing/ambient-values` |
-| [**Batch**](../manufacturing/batch.md)<br>`BatchService` | Manage operational batches and their business context. | `/services/pulse/manufacturing/batches` |
-| [**Batch plan**](../manufacturing/batch-plan.md)<br>`BatchPlanService` | Describe planned batch timing and quantity. | `/services/pulse/manufacturing/batches/plan` |
-| [**Batch shift**](../manufacturing/batch-shift.md)<br>`BatchShiftService` | Assign shifts to a batch during specific intervals. | `/services/pulse/manufacturing/batches/shifts` |
-| [**Batch usage**](../manufacturing/batch-usage.md)<br>`BatchUsageService` | Record actual batch timing. | `/services/pulse/manufacturing/batches/usage` |
-| [**Produced**](../manufacturing/produced.md)<br>`ProducedService` | Record output quantities and quality classification. | `/services/pulse/manufacturing/batches/produced` |
-| [**Stage**](../manufacturing/stage.md)<br>`StageService` | Manage operations or execution steps within a batch. | `/services/pulse/manufacturing/batches/stages` |
-| [**Stage plan**](../manufacturing/stage-plan.md)<br>`StagePlanService` | Describe planned stage timing. | `/services/pulse/manufacturing/batches/stages/plan` |
-| [**Stage usage**](../manufacturing/stage-usage.md)<br>`StageUsageService` | Record actual stage timing. | `/services/pulse/manufacturing/batches/stages/usage` |
-| [**Stage delay**](../manufacturing/stage-delay.md)<br>`StageDelayService` | Record a delay associated with a stage. | `/services/pulse/manufacturing/batches/stages/delays` |
+| [**Run**](../manufacturing/run.md) | Submit a production episode for a product on a production line. | `/services/pulse/food-beverage/runs` |
+| [**Batch**](../manufacturing/batch.md) | Submit a process batch such as a cook, mix, fermentation, or other bulk-production step. | `/services/pulse/food-beverage/batches` |
+| [**Stage**](../manufacturing/stage.md) | Submit an execution step within a production run. | `/services/pulse/food-beverage/stages` |
+| [**Clean**](../manufacturing/clean.md) | Submit a cleaning activity on a production line. | `/services/pulse/food-beverage/cleans` |
+| [**Hold**](../manufacturing/hold.md) | Submit a quality hold placed on a specific lot. | `/services/pulse/food-beverage/holds` |
+
+### Operational records
+
+| Resource | Description | Base path |
+| --- | --- | --- |
+| [**Consumption**](../manufacturing/consumption.md) | Submit actual ingredients, packaging, chemicals, utilities, labor, equipment, and other resources consumed by work. | `/services/pulse/food-beverage/consumption` |
+| [**Output**](../manufacturing/output.md) | Submit good output, waste, downgrade, and reject quantities produced during a run. | `/services/pulse/food-beverage/output` |
+| [**Reading**](../manufacturing/reading.md) | Submit measured or commanded values associated with production entities and activities. | `/services/pulse/food-beverage/readings` |
+| [**Line state**](../manufacturing/line-state.md) | Submit non-running or constrained production-line intervals for time accounting. | `/services/pulse/food-beverage/lines/{code}/states` |
+| [**Event**](../manufacturing/event.md) | Submit discrete operational occurrences such as stoppages, deviations, waste, rework, or rejects. | `/services/pulse/food-beverage/events` |
+
+### Run plans
+
+Planned production quantity and planned resource items can be submitted as part of the Run object or separately through:
+
+`POST /services/pulse/food-beverage/runs/{code}/plan`
+
+See [Run](../manufacturing/run.md) for details.
 
 ### Resource plans
 

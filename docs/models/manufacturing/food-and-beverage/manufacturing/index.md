@@ -1,11 +1,8 @@
 # Manufacturing
 
-Manufacturing data describes planned and actual operational activity submitted to Pulse.
+Manufacturing data describes the operational work, production context, resource use, output, measurements, and line conditions submitted to Pulse.
 
-These records connect batches, stages, resource plans, actual usage, output, downtime, delays, waste, shifts, and measurements.
-
-> [!IMPORTANT]
-> A **batch** is not limited to production. It represents a broader operational unit of work, such as a production run, supply activity, logistics operation, service process, or another grouped activity tracked in Pulse.
+The Food & Beverage model separates process production, line production, resource consumption, measured signals, and operational events into a small set of domain resources.
 
 Before submitting manufacturing data, synchronize the required [master data](../master-data/index.md).
 
@@ -13,104 +10,118 @@ Before submitting manufacturing data, synchronize the required [master data](../
 
 ```mermaid
 graph TD
-  A[Batch] --> B[Batch plan]
-  A --> C[Batch usage]
-  A --> D[Batch shifts]
-  A --> E[Produced]
-  A --> F[Stages]
+    A[Batch] --> B[Bulk lot]
+    B --> C[Run]
 
-  F --> G[Stage plan]
-  F --> H[Stage usage]
-  F --> I[Stage delays]
-  F --> J[Downtime]
+    C --> D[Stage]
+    C --> E[Output]
+    C --> F[Consumption]
+    C --> G[Reading]
 
-  G --> K[Resource plans]
-  H --> L[Resource usage]
-  H --> M[Waste]
+    H[Production line] --> I[Line state]
+    H --> J[Event]
+
+    K[Clean] --> F
+    L[Maintenance] --> F
+    M[Hold] --> B
 ```
 
-Plans describe expected activity. Usage records describe actual activity.
+The main concepts are:
+
+- A **batch** represents process production such as mixing, cooking, or fermentation.
+- A **run** represents production of a specific product on a production line.
+- A **stage** represents an execution step within a run.
+- **Consumption** records resources actually used by production, cleaning, or maintenance work.
+- **Output** records quantities produced by a run.
+- **Readings** record measured or commanded values over time.
+- **Line states** account for non-running or constrained production-line time.
+- **Events** record discrete operational occurrences.
+- **Cleans** and **holds** are lifecycle records with their own duration and business context.
+
+See [Run](run.md) and [Batch](batch.md) for the distinction between line production and process batches.
 
 ## Available manufacturing data
 
-### Core records
+### Production work
 
 | Resource | Purpose |
 | --- | --- |
-| [**Batch**](batch.md) | Represents an operational unit of work and its business context. |
-| [**Batch plan**](batch-plan.md) | Describes the planned timing and quantity of a batch. |
-| [**Batch usage**](batch-usage.md) | Describes the actual timing of a batch. |
-| [**Batch shift**](batch-shift.md) | Assigns shifts to a batch during specific intervals. |
-| [**Produced**](produced.md) | Records output quantities and quality classification. |
-| [**Stage**](stage.md) | Represents an operation or execution step within a batch. |
-| [**Stage plan**](stage-plan.md) | Describes the planned timing of a stage. |
-| [**Stage usage**](stage-usage.md) | Describes the actual timing of a stage. |
-| [**Stage delay**](stage-delay.md) | Records a delay associated with a stage. |
-| [**Ambient value**](ambient-value.md) | Records a measured value in a specific operational context. |
+| [**Run**](run.md) | Represents a production episode for a product on a production line. |
+| [**Batch**](batch.md) | Represents a process batch such as a cook, mix, fermentation, or other bulk-production step. |
+| [**Stage**](stage.md) | Represents an execution step within a production run. |
+| [**Clean**](clean.md) | Represents a cleaning activity on a production line. |
+| [**Hold**](hold.md) | Represents a quality hold placed on a specific lot. |
 
-### Resource plans
-
-| Resource | Purpose | Master data reference |
-| --- | --- | --- |
-| [**Material plan**](material-plan.md) | Describes the planned quantity and price of material used during a stage. | [Material](../master-data/material.md) |
-| [**Energy source plan**](energy-source-plan.md) | Describes the planned quantity and price of an energy source used during a stage. | [Energy source](../master-data/energy-source.md) |
-| [**Equipment plan**](equipment-plan.md) | Describes the planned use and price of equipment during a stage. | [Machine](../master-data/machine.md) |
-| [**Equipment plan period**](equipment-plan-period.md) | Describes a specific interval during which equipment is planned for use. | — |
-| [**Labor plan**](labor-plan.md) | Describes the planned quantity and price of labor during a stage. | [Labor](../master-data/labor.md) |
-| [**Labor plan period**](labor-plan-period.md) | Describes a specific interval during which labor is planned for a stage. | — |
-| [**Expense plan**](expense-plan.md) | Describes an additional cost planned for a stage. | [Expense](../master-data/expense.md) |
-
-### Resource usage
-
-| Resource | Purpose | Master data reference |
-| --- | --- | --- |
-| [**Material usage**](material-usage.md) | Records the actual quantity and price of material used during a stage. | [Material](../master-data/material.md) |
-| [**Energy source usage**](energy-source-usage.md) | Records the actual quantity and price of an energy source used during a stage. | [Energy source](../master-data/energy-source.md) |
-| [**Equipment usage**](equipment-usage.md) | Records the actual use and price of equipment during a stage. | [Machine](../master-data/machine.md) |
-| [**Equipment usage period**](equipment-usage-period.md) | Records a specific interval during which equipment was actually used. | — |
-| [**Labor usage**](labor-usage.md) | Records the actual quantity and price of labor used during a stage. | [Labor](../master-data/labor.md) |
-| [**Labor usage period**](labor-usage-period.md) | Records a specific interval during which labor was actually performed. | — |
-| [**Expense usage**](expense-usage.md) | Records an additional cost incurred during a stage. | [Expense](../master-data/expense.md) |
-
-### Downtime
+### Operational records
 
 | Resource | Purpose |
 | --- | --- |
-| [**Downtime**](downtime.md) | Records a downtime event associated with a stage. |
-| [**Downtime plan**](downtime-plan.md) | Describes the planned downtime interval. |
-| [**Downtime usage**](downtime-usage.md) | Describes the actual downtime interval. |
-| [**Downtime maintenance**](downtime-maintenance.md) | Links a downtime event to a maintenance activity. |
+| [**Consumption**](consumption.md) | Records ingredients, packaging, chemicals, utilities, labor, equipment, and other resources actually consumed. |
+| [**Output**](output.md) | Records good output, waste, downgrade, and reject quantities produced during a run. |
+| [**Reading**](reading.md) | Records a measured or commanded value at a specific time. |
+| [**Line state**](line-state.md) | Records non-running or constrained intervals used for production-line time accounting. |
+| [**Event**](event.md) | Records discrete occurrences such as stoppages, deviations, waste, rework, or rejects. |
 
-### Waste
+## Planned and actual data
 
-| Resource | Purpose |
-| --- | --- |
-| [**Waste**](waste.md) | Records waste, scrap, loss, or another unusable quantity. |
-| [**Waste material usage**](waste-material-usage.md) | Records material attributed to waste. |
-| [**Waste energy source usage**](waste-energy-source-usage.md) | Records energy attributed to waste. |
-| [**Waste expense usage**](waste-expense-usage.md) | Records additional expenses attributed to waste. |
+Planned production quantities and resource requirements are attached to the run plan.
+
+Actual resource use is submitted through [Consumption](consumption.md).
+
+For example:
+
+```text
+Run plan
+   │
+   ├── planned quantity
+   └── planned resource items
+
+Actual production
+   │
+   ├── Consumption
+   ├── Output
+   ├── Readings
+   └── Line states
+```
+
+Keeping planned and actual values separate allows Pulse to compare expected and observed production performance.
+
+## Time-based operational data
+
+Several manufacturing resources describe what happened over time:
+
+- Runs, batches, stages, cleans, and holds have lifecycle timestamps.
+- Readings represent values captured at specific instants.
+- Output and consumption represent individual operational captures.
+- Line states describe intervals of constrained or non-running line time.
+- Events represent discrete occurrences and may optionally have a duration.
+
+Use ISO 8601 timestamps with an explicit UTC offset throughout.
 
 ## Submission order
 
-Submit parent records before records that reference them.
+Submit referenced records before records that depend on them.
+
+A typical integration flow is:
 
 1. Synchronize the required [master data](../master-data/index.md).
-2. Create the batch.
-3. Submit batch plan, usage, shifts, and produced quantities as applicable.
-4. Create the stages that belong to the batch.
-5. Submit stage plans and stage usage.
-6. Submit resource plans and actual usage.
-7. Submit delays, downtime, waste, and measurements.
+2. Submit process [batches](batch.md) and their produced lots when applicable.
+3. Submit production [runs](run.md).
+4. Submit [stages](stage.md) associated with runs.
+5. Submit actual [consumption](consumption.md), [output](output.md), and [readings](reading.md).
+6. Submit [line states](line-state.md) and [events](event.md) as they occur.
+7. Submit [cleans](clean.md) and [holds](hold.md) when those activities are relevant.
 
-When a request requires a Pulse `id`, retrieve the related record by its `code` and use the returned `id`.
+Food & Beverage API requests reference related records by business code rather than Pulse numeric identifiers.
 
-## Time and prices
+## Corrections and updates
 
-Use consistent timestamps and time zones across all manufacturing records.
+Lifecycle records can be submitted before all values are known.
 
-> [!NOTE]
-> When a price is based on elapsed time, Pulse expresses it per hour. Although Pulse commonly represents durations internally using ticks, hours are used for time-based price calculations.
+For example, a run, batch, stage, clean, or hold can be submitted when it starts and updated later using the same business key.
 
-Prices associated with materials, energy sources, products, or other measured quantities use the configured measure unit.
+Fields omitted from a later request remain unchanged.
 
-See the [API reference](../api/index.md#manufacturing) for the available manufacturing services and endpoint paths.
+Repeated stream records such as readings, output, consumption, and line states follow their own record-key and correction rules.
+
+See the [API reference](../api/index.md#manufacturing) for supported operations and complete request schemas.

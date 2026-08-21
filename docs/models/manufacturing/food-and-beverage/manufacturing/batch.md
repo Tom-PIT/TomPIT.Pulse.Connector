@@ -1,17 +1,30 @@
 # Batch
 
-Represents a production batch, production run, or another grouped production execution tracked through the Food & Beverage connector model.
+Represents a process batch such as a cook, mix, fermentation, or other bulk-production step.
+
+A batch describes the process side of Food & Beverage production. It is typically associated with a vessel and recipe and produces a bulk lot that can later supply one or more production runs.
 
 ## The Batch object
 
 ```json
 {
-  "id": 105,
-  "product": 42,
-  "productionLine": 24,
-  "code": "YOG-2026-0717-01",
-  "price": 125.00,
-  "customer": 36
+  "code": "BULK-260810-07",
+  "vessel": "TANK-3",
+  "recipe": "REC-BASE-v2",
+  "produces": "BULK-260810-07",
+  "at": "2026-08-10T18:00:00+02:00"
+}
+```
+
+When the batch finishes, submit the values that became known:
+
+```json
+{
+  "code": "BULK-260810-07",
+  "end": "2026-08-10T21:30:00+02:00",
+  "quantity": 4200,
+  "unit": "kg",
+  "expiresAt": "2026-08-17T00:00:00+02:00"
 }
 ```
 
@@ -21,42 +34,132 @@ Represents a production batch, production run, or another grouped production exe
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Unique identifier assigned by Pulse. | `105` |
-| [`product`](../master-data/product.md) | integer | Pulse `id` of the product or other output associated with the batch. | `42` |
-| [`productionLine`](../master-data/production-line.md) | integer | Pulse `id` of the production line or execution unit associated with the batch. | `24` |
-| `code` | string | Business code used to identify the batch in source systems, traceability records, and integrations. | `"YOG-2026-0717-01"` |
-| `price` | number or null | Price or revenue value associated with the batch or its output in the context of this execution. | `125.00` |
-| [`customer`](../master-data/customer.md) | integer or null | Pulse `id` of the customer associated with the batch, when applicable. | `36` |
+| `code` | string | Business code used to identify the process batch in source systems and integrations. | `"BULK-260810-07"` |
+| [`vessel`](../master-data/vessel.md) | string | Code of the vessel in which the batch is processed. | `"TANK-3"` |
+| [`recipe`](../master-data/recipe.md) | string | Code of the recipe or formulation used for the batch. | `"REC-BASE-v2"` |
+| [`produces`](../master-data/lot.md) | string | Code of the bulk lot produced by the batch. | `"BULK-260810-07"` |
+| `at` | string | Timestamp when the batch started, in ISO 8601 format with an explicit offset. | `"2026-08-10T18:00:00+02:00"` |
+| `end` | string or null | Timestamp when the batch finished, in ISO 8601 format with an explicit offset. | `"2026-08-10T21:30:00+02:00"` |
+| `quantity` | number or null | Quantity of bulk material produced by the batch. | `4200` |
+| `unit` | string or null | Unit in which the produced quantity is expressed. | `"kg"` |
+| `expiresAt` | string or null | Optional expiry timestamp for the produced bulk lot. | `"2026-08-17T00:00:00+02:00"` |
 
 </div>
 
-## Price
+## Batch lifecycle
 
-`price` provides the revenue or valuation context for the batch. It can represent a sales price, agreed batch value, internal valuation, planned revenue basis, or another value supplied by the source system.
+A batch can be submitted when processing starts:
+
+```json
+{
+  "code": "BULK-260810-07",
+  "vessel": "TANK-3",
+  "recipe": "REC-BASE-v2",
+  "produces": "BULK-260810-07",
+  "at": "2026-08-10T18:00:00+02:00"
+}
+```
+
+When processing finishes, submit the same `code` with the fields that became known:
+
+```json
+{
+  "code": "BULK-260810-07",
+  "end": "2026-08-10T21:30:00+02:00",
+  "quantity": 4200,
+  "unit": "kg"
+}
+```
+
+Fields omitted from the second request remain unchanged.
+
+The produced quantity describes the bulk output of the process batch.
+
+## Batch and run
+
+A batch and a [run](run.md) represent different parts of production.
+
+```text
+Process
+  Batch
+    ↓
+  Bulk lot
+    ↓
+Packing
+  Run
+```
+
+A batch represents process production such as mixing, cooking, or fermentation.
+
+A run represents production of a specific product on a production line.
+
+The relationship is not necessarily one-to-one. One batch can supply several runs, and one run can draw from several batches.
+
+For example:
+
+```json
+{
+  "code": "L03-260810-002",
+  "from": [
+    "BULK-260810-07",
+    "BULK-260810-08"
+  ]
+}
+```
+
+This preserves the connection between the process conditions that produced the bulk material and the production runs that later consumed it.
+
+## Produced lot
+
+The value in `produces` identifies the bulk [lot](../master-data/lot.md) created by the batch.
+
+The bulk lot can carry measured composition through lot analysis, for example fat, protein, solids, or Brix.
+
+```text
+POST /services/pulse/food-beverage/lots/{code}/analysis
+```
+
+When a later run references that bulk batch, Pulse can preserve the composition and genealogy context from the process side of production.
+
+## Consumption
+
+Materials consumed while producing the batch are recorded through [consumption](consumption.md).
+
+For example:
+
+```json
+{
+  "batch": "BULK-260810-07",
+  "category": "ingredient",
+  "item": "MILK-RAW",
+  "lot": "MILK-2026-0717-A",
+  "quantity": 940,
+  "unit": "kg",
+  "unitValue": 0.68,
+  "at": "2026-08-10T18:20:00+02:00"
+}
+```
+
+This preserves the genealogy from incoming material lots through the process batch and its produced bulk lot.
+
+## Expiry
+
+`expiresAt` can be supplied when the produced bulk lot has a known expiry time.
+
+When it is not supplied, Pulse may derive the expiry from an applicable declared shelf-life expectation. When neither is available, the bulk lot has no declared expiry.
 
 ## API resource
 
-| Service | Base path |
+| Resource | Base path |
 | --- | --- |
-| `BatchService` | `/services/pulse/manufacturing/batches` |
+| Batch | `/services/pulse/food-beverage/batches` |
 
 See the [API reference](../api/index.md) for supported operations and complete request schemas.
 
 ## Depends on
 
-- [Product](../master-data/product.md) 
-- [Production line](../master-data/production-line.md) 
+- [Vessel](../master-data/vessel.md)
+- [Recipe](../master-data/recipe.md)
+- [Lot](../master-data/lot.md)
 
-May also reference: 
-
-- [Customer](../master-data/customer.md). 
-
-Create or retrieve these records before submitting the batch.
-
-## Referenced by
-
-- [Batch plans](batch-plan.md)
-- [Batch usage records](batch-usage.md)
-- [Batch shift records](batch-shift.md)
-- [Produced records](produced.md)
-- [Stages](stage.md)
+The referenced records must be available before submitting the batch.

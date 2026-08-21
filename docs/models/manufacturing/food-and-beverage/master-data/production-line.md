@@ -26,7 +26,7 @@ Represents a production line within a plant.
 | --- | --- | --- | --- |
 | `code` | string | Business code used to identify the production line in source systems and integrations. | `"YOGURT-LINE-01"` |
 | `name` | string | Human-readable name of the production line. | `"Yogurt Filling Line 1"` |
-| `plant` | string | Code of the plant to which the production line belongs. | `"PLANT-LJ"` |
+| [`plant`](plant.md) | string | Code of the plant to which the production line belongs. | `"PLANT-LJ"` |
 | `types` | object or null | Optional classifications used to group and analyse the production line. | `{ "format": "CUP-FILLING" }` |
 | `attributes` | object or null | Optional additional source-system metadata associated with the production line. These values are stored but are not used for analysis. | `{ "installed": 2019 }` |
 

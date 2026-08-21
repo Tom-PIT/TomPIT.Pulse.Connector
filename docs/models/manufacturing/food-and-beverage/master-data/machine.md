@@ -30,7 +30,7 @@ Machines can be organised hierarchically. For example, a filler head or nozzle c
 | --- | --- | --- | --- |
 | `code` | string | Business code used to identify the machine in source systems and integrations. | `"PASTEURIZER-01"` |
 | `name` | string | Human-readable name of the machine. | `"Pasteurizer 01"` |
-| `line` | string | Code of the production line to which the machine belongs. | `"YOGURT-LINE-01"` |
+| [`line`](production-line.md) | string | Code of the production line to which the machine belongs. | `"YOGURT-LINE-01"` |
 | `parent` | string or null | Optional code of the parent machine. Use this to represent machine components and wear parts hierarchically. | `null` |
 | `types` | object or null | Optional classifications used to group and analyse the machine. | `{ "machineType": "PASTEURIZER" }` |
 | `attributes` | object or null | Optional additional source-system metadata associated with the machine. These values are stored but are not used for analysis. | `{ "manufacturer": "ExampleCo", "installed": 2019 }` |
