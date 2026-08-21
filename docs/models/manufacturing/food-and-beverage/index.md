@@ -105,7 +105,7 @@ Before submitting a request:
 - Use the expected quantity, unit, and value fields.
 - Inspect the response before submitting dependent records.
 
-See [Validation](../../../integration/validation.md) and [Updates and error handling](../../../integration/updates-and-error-handling.md).
+See [Validation](../../../validation.md) and [Troubleshooting](../../../troubleshooting.md).
 
 ## Food & Beverage integration areas
 

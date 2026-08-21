@@ -12,13 +12,13 @@ https://<organization>.tompit.pulse.com
 
 All Pulse service paths are relative to the base URL assigned to your organization.
 
-For example, when using the Serial Production connector model, the Plant service may be available at:
+For example, the Food & Beverage Plant resource may be available at:
 
 ```text
-https://<organization-base-url>/services/pulse/types/plants
+https://<organization-base-url>/services/pulse/food-beverage/plants
 ```
 
-Other connector models may expose different service paths.
+Other models may expose different resource paths.
 
 ## API token
 
@@ -74,5 +74,5 @@ When replacing a token:
 
 ## Next steps
 
-1. [Choose a connector model](../models/index.md).
-2. Follow the integration guide for the selected connector model.
+1. [Choose a model](../models/index.md).
+2. Follow the integration guide for the selected model.
