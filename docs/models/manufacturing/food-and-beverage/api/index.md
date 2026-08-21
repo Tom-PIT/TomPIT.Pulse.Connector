@@ -2,7 +2,7 @@
 
 The **Pulse API** is a REST API for submitting operational data and retrieving Pulse results.
 
-This page provides an index of the public API families and services. Use [Scalar](https://scalar.com/) for the complete operation-level reference, including request fields, parameters, schemas, responses, and the exact operations supported by each service.
+This page provides an index of the public API families and resources. Use [Scalar](https://scalar.com/) for the complete operation-level reference, including request fields, parameters, schemas, responses, and the exact operations supported by each resource.
 
 <div class="grid cards" markdown>
 
@@ -17,15 +17,14 @@ This page provides an index of the public API families and services. Use [Scalar
 - [**Master data**](#master-data)
 - [**Manufacturing**](#manufacturing)
 - [**Maintenance**](#maintenance)
-- [**Answers**](#answers)
 
 </div>
 
 ## Using this reference
 
-Use this page to identify the relevant API family and service.
+Use this page to identify the relevant API family and resources.
 
-Open the service in Scalar to inspect:
+Open the resource in Scalar to inspect:
 
 - Available operations.
 - Request fields and data types.
@@ -202,7 +201,7 @@ See [Lot](../master-data/lot.md) for details.
 
 ## Manufacturing
 
-Submit Food & Beverage production work, resource consumption, output, measurements, line conditions, and operational events.
+Submit Food & Beverage production work, resource consumption, output, measurements, line conditions, quality lifecycle records, and operational events.
 
 ### Production work
 
@@ -212,7 +211,13 @@ Submit Food & Beverage production work, resource consumption, output, measuremen
 | [**Batch**](../manufacturing/batch.md) | Submit a process batch such as a cook, mix, fermentation, or other bulk-production step. | `/services/pulse/food-beverage/batches` |
 | [**Stage**](../manufacturing/stage.md) | Submit an execution step within a production run. | `/services/pulse/food-beverage/stages` |
 | [**Clean**](../manufacturing/clean.md) | Submit a cleaning activity on a production line. | `/services/pulse/food-beverage/cleans` |
+
+### Quality lifecycle
+
+| Resource | Description | Base path |
+| --- | --- | --- |
 | [**Hold**](../manufacturing/hold.md) | Submit a quality hold placed on a specific lot. | `/services/pulse/food-beverage/holds` |
+| [**Complaint**](../manufacturing/complaint.md) | Submit a customer complaint associated with a product and traceable lot. | `/services/pulse/food-beverage/complaints` |
 
 ### Operational records
 
@@ -232,95 +237,14 @@ Planned production quantity and planned resource items can be submitted as part 
 
 See [Run](../manufacturing/run.md) for details.
 
-### Resource plans
-
-| Service | Description | Base path |
-| --- | --- | --- |
-| [**Energy source plan**](../manufacturing/energy-source-plan.md)<br>`EnergySourcePlanService` | Describe planned energy quantity and price for a stage. | `/services/pulse/manufacturing/batches/stages/plan/energy-sources` |
-| [**Equipment plan**](../manufacturing/equipment-plan.md)<br>`EquipmentPlanService` | Describe planned equipment hours and hourly price for a stage. | `/services/pulse/manufacturing/batches/stages/plan/equipment` |
-| [**Equipment plan period**](../manufacturing/equipment-plan-period.md)<br>`EquipmentPlanPeriodService` | Describe a specific planned equipment-use interval. | `/services/pulse/manufacturing/batches/stages/plan/equipment/periods` |
-| [**Expense plan**](../manufacturing/expense-plan.md)<br>`ExpensePlanService` | Describe an additional cost planned for a stage. | `/services/pulse/manufacturing/batches/stages/plan/expenses` |
-| [**Labor plan**](../manufacturing/labor-plan.md)<br>`LaborPlanService` | Describe planned labor hours and hourly price for a stage. | `/services/pulse/manufacturing/batches/stages/plan/labor` |
-| [**Material plan**](../manufacturing/material-plan.md)<br>`MaterialPlanService` | Describe planned material quantity and price for a stage. | `/services/pulse/manufacturing/batches/stages/plan/materials` |
-
-### Resource usage
-
-| Service | Description | Base path |
-| --- | --- | --- |
-| [**Energy source usage**](../manufacturing/energy-source-usage.md)<br>`EnergySourceUsageService` | Record actual energy quantity and price for a stage. | `/services/pulse/manufacturing/batches/stages/usage/energy-sources` |
-| [**Equipment usage**](../manufacturing/equipment-usage.md)<br>`EquipmentUsageService` | Record actual equipment hours and hourly price for a stage. | `/services/pulse/manufacturing/batches/stages/usage/equipment` |
-| [**Equipment usage period**](../manufacturing/equipment-usage-period.md)<br>`EquipmentUsagePeriodService` | Record a specific actual equipment-use interval. | `/services/pulse/manufacturing/batches/stages/usage/equipment/periods` |
-| [**Expense usage**](../manufacturing/expense-usage.md)<br>`ExpenseUsageService` | Record an additional cost incurred during a stage. | `/services/pulse/manufacturing/batches/stages/usage/expenses` |
-| [**Labor usage**](../manufacturing/labor-usage.md)<br>`LaborUsageService` | Record actual labor hours and hourly price for a stage. | `/services/pulse/manufacturing/batches/stages/usage/labor` |
-| [**Labor usage period**](../manufacturing/labor-usage-period.md)<br>`LaborUsagePeriodService` | Record a specific interval during which labor was performed. | `/services/pulse/manufacturing/batches/stages/usage/labor/periods` |
-| [**Material usage**](../manufacturing/material-usage.md)<br>`MaterialUsageService` | Record actual material quantity and price for a stage. | `/services/pulse/manufacturing/batches/stages/usage/materials` |
-
-### Downtime
-
-| Service | Description | Base path |
-| --- | --- | --- |
-| [**Downtime**](../manufacturing/downtime.md)<br>`DowntimeService` | Record a downtime event associated with a stage. | `/services/pulse/manufacturing/batches/stages/downtime` |
-| [**Downtime maintenance**](../manufacturing/downtime-maintenance.md)<br>`DowntimeMaintenanceService` | Link a downtime event to a maintenance activity. | `/services/pulse/manufacturing/batches/stages/downtime/maintenance` |
-| [**Downtime plan**](../manufacturing/downtime-plan.md)<br>`DowntimePlanService` | Describe the planned downtime interval. | `/services/pulse/manufacturing/batches/stages/downtime/plan` |
-| [**Downtime usage**](../manufacturing/downtime-usage.md)<br>`DowntimeUsageService` | Record the actual downtime interval. | `/services/pulse/manufacturing/batches/stages/downtime/usage` |
-
-### Waste
-
-| Service | Description | Base path |
-| --- | --- | --- |
-| [**Waste**](../manufacturing/waste.md)<br>`WasteService` | Record waste, scrap, loss, or another unusable quantity. | `/services/pulse/manufacturing/batches/stages/usage/waste` |
-| [**Waste energy source usage**](../manufacturing/waste-energy-source-usage.md)<br>`WasteEnergySourceUsageService` | Record energy attributed to waste. | `/services/pulse/manufacturing/batches/stages/usage/waste/energy-sources` |
-| [**Waste expense usage**](../manufacturing/waste-expense-usage.md)<br>`WasteExpenseUsageService` | Record additional expenses attributed to waste. | `/services/pulse/manufacturing/batches/stages/usage/waste/expenses` |
-| [**Waste material usage**](../manufacturing/waste-material-usage.md)<br>`WasteMaterialUsageService` | Record material attributed to waste. | `/services/pulse/manufacturing/batches/stages/usage/waste/materials` |
-
 ## Maintenance
 
-Submit preventive and corrective maintenance activities, planned requirements, actual timing, resource usage, and costs.
+Submit preventive or corrective maintenance work performed on machines.
 
-### Core records
-
-| Service | Description | Base path |
+| Resource | Description | Base path |
 | --- | --- | --- |
-| [**Maintenance**](../maintenance/maintenance.md)<br>`MaintenanceService` | Identify and classify a preventive or corrective maintenance activity. | `/services/pulse/maintenance` |
-| [**Maintenance plan**](../maintenance/maintenance-plan.md)<br>`MaintenancePlanService` | Describe the planned timing of a maintenance activity. | `/services/pulse/maintenance/plan` |
-| [**Maintenance usage**](../maintenance/maintenance-usage.md)<br>`MaintenanceUsageService` | Describe the actual timing of a maintenance activity. | `/services/pulse/maintenance/usage` |
+| [**Maintenance**](../maintenance/maintenance.md) | Submit maintenance work, including planned and actual timing, maintenance kind, machine, and reason. | `/services/pulse/food-beverage/maintenance` |
 
-### Resource plans
+Actual materials, labor, equipment, energy, and other resources used during maintenance are submitted through [Consumption](../manufacturing/consumption.md) with the maintenance activity as the subject.
 
-| Service | Description | Base path |
-| --- | --- | --- |
-| [**Maintenance energy source plan**](../maintenance/maintenance-energy-source-plan.md)<br>`MaintenanceEnergySourcePlanService` | Describe planned energy quantity and price for a maintenance activity. | `/services/pulse/maintenance/estimations/energy-sources` |
-| [**Maintenance equipment plan**](../maintenance/maintenance-equipment-plan.md)<br>`MaintenanceEquipmentPlanService` | Describe planned equipment hours and hourly price for a maintenance activity. | `/services/pulse/maintenance/plan/equipment` |
-| [**Maintenance expense plan**](../maintenance/maintenance-expense-plan.md)<br>`MaintenanceExpensePlanService` | Describe an additional cost planned for a maintenance activity. | `/services/pulse/maintenance/plan/expenses` |
-| [**Maintenance labor plan**](../maintenance/maintenance-labor-plan.md)<br>`MaintenanceLaborPlanService` | Describe planned labor hours and hourly price for a maintenance activity. | `/services/pulse/maintenance/plan/labor` |
-| [**Maintenance material plan**](../maintenance/maintenance-material-plan.md)<br>`MaintenanceMaterialPlanService` | Describe planned material quantity and price for a maintenance activity. | `/services/pulse/maintenance/plan/materials` |
-
-### Resource usage
-
-| Service | Description | Base path |
-| --- | --- | --- |
-| [**Maintenance energy source usage**](../maintenance/maintenance-energy-source-usage.md)<br>`MaintenanceEnergySourceUsageService` | Record actual energy quantity and price for a maintenance activity. | `/services/pulse/maintenance/usage/energy-sources` |
-| [**Maintenance equipment usage**](../maintenance/maintenance-equipment-usage.md)<br>`MaintenanceEquipmentUsageService` | Record actual equipment hours and hourly price for a maintenance activity. | `/services/pulse/maintenance/usage/equipment` |
-| [**Maintenance expense usage**](../maintenance/maintenance-expense-usage.md)<br>`MaintenanceExpenseUsageService` | Record an additional cost incurred during a maintenance activity. | `/services/pulse/maintenance/usage/expenses` |
-| [**Maintenance labor usage**](../maintenance/maintenance-labor-usage.md)<br>`MaintenanceLaborUsageService` | Record actual labor hours and hourly price for a maintenance activity. | `/services/pulse/maintenance/usage/labor` |
-| [**Maintenance material usage**](../maintenance/maintenance-material-usage.md)<br>`MaintenanceMaterialUsageService` | Record actual material quantity and price for a maintenance activity. | `/services/pulse/maintenance/usage/materials` |
-
-## Answers
-
-Retrieve analytical results, insights, recommendations, forecasts, and improvement actions.
-
-| Service | Description | Base path |
-| --- | --- | --- |
-| **Assessment**<br>`AssessmentService` | Retrieve an assessment produced by Pulse analysis. | `/services/pulse/analysis/batches/assessment` |
-| **Assessment content**<br>`AssessmentContentService` | Retrieve assessment content produced by Pulse analysis. | `/services/pulse/analysis/batches/assessment/content` |
-| **Conclusion**<br>`ConclusionService` | Retrieve a conclusion produced by Pulse analysis. | `/services/pulse/analysis/batches/assessment/measurements` |
-| **Conclusion content**<br>`ConclusionContentService` | Retrieve conclusion content produced by Pulse analysis. | `/services/pulse/analysis/batches/assessment/measurements/content` |
-| **Forecast**<br>`ForecastService` | Retrieve a forecast produced by Pulse analysis. | `/services/pulse/analysis/forecasts` |
-| **Forecast content**<br>`ForecastContentService` | Retrieve forecast content produced by Pulse analysis. | `/services/pulse/analysis/forecasts/content` |
-| **Improvement action**<br>`ImprovementActionService` | Retrieve an improvement action produced by Pulse analysis. | `/services/pulse/analysis/improvements/actions` |
-| **Improvement action content**<br>`ImprovementActionContentService` | Retrieve improvement action content produced by Pulse analysis. | `/services/pulse/analysis/improvements/actions/content` |
-| **Insight**<br>`InsightService` | Retrieve an insight produced by Pulse analysis. | `/services/pulse/analysis/improvements/insights` |
-| **Insight content**<br>`InsightContentService` | Retrieve insight content produced by Pulse analysis. | `/services/pulse/analysis/improvements/insights/content` |
-| **Recommendation**<br>`RecommendationService` | Retrieve a recommendation produced by Pulse analysis. | `/services/pulse/analysis/improvements/recommendations` |
-| **Recommendation content**<br>`RecommendationContentService` | Retrieve recommendation content produced by Pulse analysis. | `/services/pulse/analysis/improvements/recommendations/content` |
-| **Recommendation scope**<br>`RecommendationScopeService` | Retrieve a recommendation scope produced by Pulse analysis. | `/services/pulse/analysis/improvements/scopes` |
+When maintenance affects production-line availability, submit the corresponding [Line state](../manufacturing/line-state.md) separately.

@@ -2,7 +2,7 @@
 
 The Food & Beverage model represents manufacturing processes such as dairy, beverages, bakery, meat processing, and prepared foods.
 
-It covers production structure, process batches, production runs, resource consumption, output, cleaning, quality holds, maintenance, traceability, line states, events, and process measurements.
+It covers production structure, process batches, production runs, resource consumption, output, cleaning, quality holds, complaints, maintenance, traceability, line states, events, and process measurements.
 
 ## What is specific to this model
 
@@ -51,7 +51,7 @@ Identify how records from the source system correspond to the resources exposed 
 
 Start with stable [master data](master-data/index.md) such as plants, production lines, machines, vessels, products, recipes, materials, suppliers, customers, shifts, crews, lots, clean regimes, reasons, and metrics.
 
-Then map operational records such as [runs](manufacturing/run.md), [batches](manufacturing/batch.md), [stages](manufacturing/stage.md), [consumption](manufacturing/consumption.md), [output](manufacturing/output.md), [readings](manufacturing/reading.md), [line states](manufacturing/line-state.md), [events](manufacturing/event.md), [cleans](manufacturing/clean.md), and [holds](manufacturing/hold.md).
+Then map operational records such as [runs](manufacturing/run.md), [batches](manufacturing/batch.md), [stages](manufacturing/stage.md), [consumption](manufacturing/consumption.md), [output](manufacturing/output.md), [readings](manufacturing/reading.md), [line states](manufacturing/line-state.md), [events](manufacturing/event.md), [cleans](manufacturing/clean.md), [holds](manufacturing/hold.md), [complaints](manufacturing/complaint.md), and [maintenance](maintenance/maintenance.md).
 
 Use the resource pages to confirm required fields, dependencies, units, and API paths.
 
@@ -67,7 +67,8 @@ A typical order is:
 4. Submit [stages](manufacturing/stage.md) associated with runs.
 5. Submit actual [consumption](manufacturing/consumption.md), [output](manufacturing/output.md), and [readings](manufacturing/reading.md).
 6. Submit [line states](manufacturing/line-state.md) and [events](manufacturing/event.md) as they occur.
-7. Submit [cleans](manufacturing/clean.md), [holds](manufacturing/hold.md), and maintenance activity when applicable.
+7. Submit [cleans](manufacturing/clean.md), [holds](manufacturing/hold.md), and [maintenance](maintenance/maintenance.md) when those activities are relevant.
+8. Submit [complaints](manufacturing/complaint.md) when customer-side quality issues become known.
 
 Food & Beverage API requests reference related records by business code.
 
@@ -111,8 +112,8 @@ See [Validation](../../../integration/validation.md) and [Updates and error hand
 | Area | Purpose |
 | --- | --- |
 | [**Master data**](master-data/index.md) | Stable entities and classifications referenced by operational records. |
-| [**Manufacturing**](manufacturing/index.md) | Production runs and batches, stages, resource consumption, output, readings, line states, events, cleaning, and quality holds. |
-| [**Maintenance**](maintenance/index.md) | Preventive and corrective maintenance activity, timing, resources, and costs. |
+| [**Manufacturing**](manufacturing/index.md) | Production runs and batches, stages, resource consumption, output, readings, line states, events, cleaning, quality holds, and complaints. |
+| [**Maintenance**](maintenance/index.md) | Preventive and corrective maintenance work, including planned and actual timing and consumed resources. |
 | [**Measurements**](measurements.md) | Metric definitions, measured values, setpoints, and other operational readings. |
 
 ## Recommended next steps

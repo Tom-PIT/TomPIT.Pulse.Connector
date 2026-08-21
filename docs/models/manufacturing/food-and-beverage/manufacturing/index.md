@@ -1,8 +1,8 @@
 # Manufacturing
 
-Manufacturing data describes the operational work, production context, resource use, output, measurements, and line conditions submitted to Pulse.
+Manufacturing data describes the operational work, production context, resource use, output, measurements, quality issues, and line conditions submitted to Pulse.
 
-The Food & Beverage model separates process production, line production, resource consumption, measured signals, and operational events into a small set of domain resources.
+The Food & Beverage model separates process production, line production, resource consumption, measured signals, quality lifecycle records, and operational events into a small set of domain resources.
 
 Before submitting manufacturing data, synchronize the required [master data](../master-data/index.md).
 
@@ -23,7 +23,9 @@ graph TD
 
     K[Clean] --> F
     L[Maintenance] --> F
+
     M[Hold] --> B
+    N[Complaint] --> B
 ```
 
 The main concepts are:
@@ -36,7 +38,9 @@ The main concepts are:
 - **Readings** record measured or commanded values over time.
 - **Line states** account for non-running or constrained production-line time.
 - **Events** record discrete operational occurrences.
-- **Cleans** and **holds** are lifecycle records with their own duration and business context.
+- **Cleans** represent cleaning activities with their own duration and production-transition context.
+- **Holds** represent internal quality containment around specific lots.
+- **Complaints** represent customer-side quality issues linked back to traceable production lots.
 
 See [Run](run.md) and [Batch](batch.md) for the distinction between line production and process batches.
 
@@ -50,7 +54,13 @@ See [Run](run.md) and [Batch](batch.md) for the distinction between line product
 | [**Batch**](batch.md) | Represents a process batch such as a cook, mix, fermentation, or other bulk-production step. |
 | [**Stage**](stage.md) | Represents an execution step within a production run. |
 | [**Clean**](clean.md) | Represents a cleaning activity on a production line. |
+
+### Quality lifecycle
+
+| Resource | Purpose |
+| --- | --- |
 | [**Hold**](hold.md) | Represents a quality hold placed on a specific lot. |
+| [**Complaint**](complaint.md) | Represents a customer complaint associated with a product and traceable lot. |
 
 ### Operational records
 
@@ -90,7 +100,7 @@ Keeping planned and actual values separate allows Pulse to compare expected and 
 
 Several manufacturing resources describe what happened over time:
 
-- Runs, batches, stages, cleans, and holds have lifecycle timestamps.
+- Runs, batches, stages, cleans, holds, and complaints have lifecycle timestamps.
 - Readings represent values captured at specific instants.
 - Output and consumption represent individual operational captures.
 - Line states describe intervals of constrained or non-running line time.
@@ -111,6 +121,7 @@ A typical integration flow is:
 5. Submit actual [consumption](consumption.md), [output](output.md), and [readings](reading.md).
 6. Submit [line states](line-state.md) and [events](event.md) as they occur.
 7. Submit [cleans](clean.md) and [holds](hold.md) when those activities are relevant.
+8. Submit [complaints](complaint.md) when customer-side quality issues become known.
 
 Food & Beverage API requests reference related records by business code rather than Pulse numeric identifiers.
 
@@ -118,7 +129,7 @@ Food & Beverage API requests reference related records by business code rather t
 
 Lifecycle records can be submitted before all values are known.
 
-For example, a run, batch, stage, clean, or hold can be submitted when it starts and updated later using the same business key.
+For example, a run, batch, stage, clean, hold, or complaint can be submitted when it starts and updated later using the same business key.
 
 Fields omitted from a later request remain unchanged.
 
