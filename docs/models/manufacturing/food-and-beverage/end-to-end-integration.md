@@ -27,7 +27,7 @@ Stable records are typically synchronized before operational data begins to arri
 
 For this example, the integration may register:
 
-- [Plant](master-data/plant.md)
+- [Plant](master-data/site.md)
 - [Production line](master-data/production-line.md)
 - [Machine](master-data/machine.md)
 - [Vessel](master-data/vessel.md)

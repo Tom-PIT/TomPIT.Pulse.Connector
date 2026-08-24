@@ -1,6 +1,6 @@
 # First API request
 
-Use the [Plant](master-data/plant.md) resource for your first test request.
+Use the [Plant](master-data/site.md) resource for your first test request.
 
 A Plant is a simple master-data record and does not depend on another Pulse resource.
 

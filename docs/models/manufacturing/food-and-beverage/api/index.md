@@ -174,7 +174,7 @@ All Food & Beverage master-data resources are addressed by business codes rather
 
 | Resource | Description | Base path |
 | --- | --- | --- |
-| [**Plant**](../master-data/plant.md) | Register a physical operating location. | `/services/pulse/food-beverage/plants` |
+| [**Plant**](../master-data/site.md) | Register a physical operating location. | `/services/pulse/food-beverage/plants` |
 | [**Production line**](../master-data/production-line.md) | Register a production line within a plant. | `/services/pulse/food-beverage/lines` |
 | [**Machine**](../master-data/machine.md) | Register a machine, component, or wear part associated with a production line. | `/services/pulse/food-beverage/machines` |
 | [**Vessel**](../master-data/vessel.md) | Register a tank, silo, or other process vessel associated with a production line. | `/services/pulse/food-beverage/vessels` |

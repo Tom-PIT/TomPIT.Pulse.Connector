@@ -12,7 +12,7 @@ Register the required master data before submitting operational records that ref
 
 | Resource | Purpose |
 | --- | --- |
-| [**Plant**](plant.md) | Represents a physical operating location. |
+| [**Plant**](site.md) | Represents a physical operating location. |
 | [**Production line**](production-line.md) | Represents a production line within a plant. |
 | [**Machine**](machine.md) | Represents a machine, component, or wear part associated with a production line. |
 | [**Vessel**](vessel.md) | Represents a tank, silo, or other process vessel associated with a production line. |
