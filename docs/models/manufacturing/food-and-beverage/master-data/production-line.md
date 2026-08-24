@@ -24,6 +24,9 @@ A production line belongs to exactly one site.
 | `name` | string | Human-readable name of the production line. | `"Yogurt filling line 1"` |
 | [`site`](site.md) | string | Business code of the site the production line belongs to. | `"PLT001"` |
 
+> [!IMPORTANT]
+> The [`site`](site.md) reference must already exist before the vessel is submitted.
+
 </div>
 
 See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
