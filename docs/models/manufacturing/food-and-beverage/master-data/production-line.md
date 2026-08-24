@@ -1,20 +1,16 @@
 # Production line
 
-Represents a production line within a plant.
+Represents a production line within a site.
+
+A production line belongs to exactly one site.
 
 ## The Production line object
 
 ```json
 {
-  "code": "YOGURT-LINE-01",
-  "name": "Yogurt Filling Line 1",
-  "plant": "PLANT-LJ",
-  "types": {
-    "format": "CUP-FILLING"
-  },
-  "attributes": {
-    "installed": 2019
-  }
+  "code": "LINE001",
+  "name": "Yogurt filling line 1",
+  "site": "PLT001"
 }
 ```
 
@@ -24,11 +20,9 @@ Represents a production line within a plant.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Business code used to identify the production line in source systems and integrations. | `"YOGURT-LINE-01"` |
-| `name` | string | Human-readable name of the production line. | `"Yogurt Filling Line 1"` |
-| [`plant`](plant.md) | string | Code of the plant to which the production line belongs. | `"PLANT-LJ"` |
-| `types` | object or null | Optional classifications used to group and analyse the production line. | `{ "format": "CUP-FILLING" }` |
-| `attributes` | object or null | Optional additional source-system metadata associated with the production line. These values are stored but are not used for analysis. | `{ "installed": 2019 }` |
+| `code` | string | Business code used to identify the production line in external systems and integrations. | `"LINE001"` |
+| `name` | string | Human-readable name of the production line. | `"Yogurt filling line 1"` |
+| [`site`](site.md) | string | Business code of the site the production line belongs to. | `"PLT001"` |
 
 </div>
 
@@ -38,12 +32,176 @@ See [Types and attributes](types-and-attributes.md) for guidance on extensible m
 
 | Resource | Base path |
 | --- | --- |
-| Production line | `/services/pulse/food-beverage/lines` |
+| `Production line` | `/services/pulse/food-beverage/lines` |
 
-See the [API reference](../api/index.md) for supported operations and complete request schemas.
+## API methods
 
-## Depends on
+### Create a production line
 
-- [Plant](plant.md)
+`POST /services/pulse/food-beverage/lines`
 
-The plant referenced by `plant` must be available before submitting the production line.
+Creates a new production line.
+
+#### Request
+
+```http
+POST /services/pulse/food-beverage/lines
+Content-Type: application/json
+```
+
+```json
+{
+  "code": "LINE001",
+  "name": "Yogurt filling line 1",
+  "site": "PLT001"
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | string | yes | Business code of the production line. |
+| `name` | string | yes | Human-readable name of the production line. |
+| `site` | string | yes | Business code of the site the production line belongs to. |
+
+
+### Update a production line
+
+`PUT /services/pulse/food-beverage/lines`
+
+Updates an existing production line.
+
+#### Request
+
+```http
+PUT /services/pulse/food-beverage/lines
+Content-Type: application/json
+```
+
+```json
+{
+  "code": "LINE001",
+  "name": "Yogurt filling line 1",
+  "site": "PLT002"
+}
+```
+
+Changing `site` moves the production line to another site.
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | string | yes | Business code of the production line to update. |
+| `name` | string | yes | Human-readable name of the production line. |
+| `site` | string | yes | Business code of the site the production line belongs to. |
+
+
+### Patch a production line
+
+`PATCH /services/pulse/food-beverage/lines`
+
+Partially updates an existing production line.
+
+The fields to update are supplied in the `properties` object.
+
+#### Request
+
+```http
+PATCH /services/pulse/food-beverage/lines
+Content-Type: application/json
+```
+
+```json
+{
+  "properties": {
+    "code": "LINE001",
+    "name": "Yogurt filling line 1A",
+    "site": "PLT002"
+  }
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.code` | string | yes | Business code of the production line to update. |
+| `properties.name` | string | no | New human-readable name of the production line. |
+| `properties.site` | string | no | Business code of the site the production line should belong to. |
+
+
+### Retrieve a production line
+
+`GET /services/pulse/food-beverage/lines/{code}`
+
+Returns the production line identified by its business code.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/lines/LINE001
+```
+
+#### Example response
+
+```json
+{
+  "code": "LINE001",
+  "name": "Yogurt filling line 1",
+  "site": "PLT001"
+}
+```
+
+
+### List production lines
+
+`GET /services/pulse/food-beverage/lines`
+
+Returns production lines matching the supplied filters.
+
+Production lines can be filtered by site.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/lines?site=PLT001
+```
+
+#### Query parameters
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `site` | string | Limits results to production lines belonging to the specified site. |
+
+#### Example response
+
+```json
+[
+  {
+    "code": "LINE001",
+    "name": "Yogurt filling line 1",
+    "site": "PLT001"
+  },
+  {
+    "code": "LINE002",
+    "name": "Yogurt filling line 2",
+    "site": "PLT001"
+  }
+]
+```
+
+
+### Delete a production line
+
+`DELETE /services/pulse/food-beverage/lines/{code}`
+
+Deletes the production line identified by its business code.
+
+#### Request
+
+```http
+DELETE /services/pulse/food-beverage/lines/LINE001
+```
