@@ -8,7 +8,6 @@ A production line belongs to exactly one site.
 
 ```json
 {
-  "id": 123,
   "code": "LINE001",
   "name": "Yogurt filling line 1",
   "parent": "PLT001"
@@ -21,7 +20,6 @@ A production line belongs to exactly one site.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Pulse identifier of the production line. Returned by Pulse and used where an API method requires an internal identifier. | `123` |
 | `code` | string | Unique business code used to identify the production line in external systems and integrations. | `"LINE001"` |
 | `name` | string | Human-readable name of the production line. | `"Yogurt filling line 1"` |
 | [`parent`](site.md) | string | Business code of the site the production line belongs to. | `"PLT001"` |
@@ -111,7 +109,7 @@ Changing `parent` moves the production line to another site.
 
 Partially updates an existing production line.
 
-The production line is identified by its `id`. The fields to update are supplied in the `properties` object.
+The fields to update are supplied in the `properties` object. The production line is identified by its business `code`.
 
 #### Request
 
@@ -122,8 +120,8 @@ Content-Type: application/json
 
 ```json
 {
-  "id": 123,
   "properties": {
+    "code": "LINE001",
     "name": "Yogurt filling line 1A",
     "parent": "PLT002"
   }
@@ -134,9 +132,8 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | integer | yes | Identifier of the production line to update. |
 | `properties` | object | yes | Fields included in the partial update. |
-| `properties.code` | string | no | New unique business code of the production line. |
+| `properties.code` | string | yes | Unique business code of the production line to update. |
 | `properties.name` | string | no | New human-readable name of the production line. |
 | `properties.parent` | string | no | Business code of the site the production line should belong to. |
 
@@ -163,7 +160,6 @@ GET /services/pulse/food-beverage/lines/select?id=LINE001
 
 ```json
 {
-  "id": 123,
   "code": "LINE001",
   "name": "Yogurt filling line 1",
   "parent": "PLT001"
@@ -198,13 +194,11 @@ GET /services/pulse/food-beverage/lines/query?parents=PLT001
 ```json
 [
   {
-    "id": 123,
     "code": "LINE001",
     "name": "Yogurt filling line 1",
     "parent": "PLT001"
   },
   {
-    "id": 124,
     "code": "LINE002",
     "name": "Yogurt filling line 2",
     "parent": "PLT001"

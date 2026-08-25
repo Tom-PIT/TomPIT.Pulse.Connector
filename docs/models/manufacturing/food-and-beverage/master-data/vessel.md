@@ -8,9 +8,10 @@ A vessel belongs to a production line and can act as a carryover scope between p
 
 ```json
 {
+  "id": 123,
   "code": "TANK-3",
   "name": "Fermentation tank 3",
-  "line": "LINE001"
+  "parent": "LINE001"
 }
 ```
 
@@ -20,14 +21,17 @@ A vessel belongs to a production line and can act as a carryover scope between p
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Business code used to identify the vessel in external systems and integrations. | `"TANK-3"` |
+| `id` | integer | Pulse identifier of the vessel. Returned by Pulse and used where an API method requires an internal identifier. | `123` |
+| `code` | string | Unique business code used to identify the vessel in external systems and integrations. | `"TANK-3"` |
 | `name` | string | Human-readable name of the vessel. | `"Fermentation tank 3"` |
-| [`line`](production-line.md) | string | Business code of the production line the vessel belongs to or feeds. | `"LINE001"` |
+| [`parent`](production-line.md) | string | Business code of the production line the vessel belongs to or feeds. | `"LINE001"` |
 
 </div>
 
 > [!IMPORTANT]
-> The production line referenced by [`line`](production-line.md) must already exist before the vessel is submitted.
+> `code` must be unique. Two vessels cannot use the same code.
+>
+> The production line referenced by `parent` must already exist before the vessel is submitted.
 
 See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
 
@@ -41,14 +45,14 @@ See [Types and attributes](types-and-attributes.md) for guidance on extensible m
 
 ### Create a vessel
 
-`POST /services/pulse/food-beverage/vessels`
+`POST /services/pulse/food-beverage/vessels/insert`
 
 Creates a new vessel.
 
 #### Request
 
 ```http
-POST /services/pulse/food-beverage/vessels
+POST /services/pulse/food-beverage/vessels/insert
 Content-Type: application/json
 ```
 
@@ -56,7 +60,7 @@ Content-Type: application/json
 {
   "code": "TANK-3",
   "name": "Fermentation tank 3",
-  "line": "LINE001"
+  "parent": "LINE001"
 }
 ```
 
@@ -64,21 +68,21 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Business code of the vessel. |
+| `code` | string | yes | Unique business code of the vessel. |
 | `name` | string | yes | Human-readable name of the vessel. |
-| `line` | string | yes | Business code of the production line the vessel belongs to or feeds. |
+| `parent` | string | yes | Business code of the production line the vessel belongs to or feeds. |
 
 
 ### Update a vessel
 
-`PUT /services/pulse/food-beverage/vessels`
+`PUT /services/pulse/food-beverage/vessels/update`
 
 Updates an existing vessel.
 
 #### Request
 
 ```http
-PUT /services/pulse/food-beverage/vessels
+PUT /services/pulse/food-beverage/vessels/update
 Content-Type: application/json
 ```
 
@@ -86,24 +90,24 @@ Content-Type: application/json
 {
   "code": "TANK-3",
   "name": "Fermentation tank 3",
-  "line": "LINE002"
+  "parent": "LINE002"
 }
 ```
 
-Changing `line` moves the vessel to another production line.
+Changing `parent` moves the vessel to another production line.
 
 #### Parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Business code of the vessel to update. |
+| `code` | string | yes | Unique business code of the vessel to update. |
 | `name` | string | yes | Human-readable name of the vessel. |
-| `line` | string | yes | Business code of the production line the vessel belongs to or feeds. |
+| `parent` | string | yes | Business code of the production line the vessel belongs to or feeds. |
 
 
 ### Patch a vessel
 
-`PATCH /services/pulse/food-beverage/vessels`
+`PATCH /services/pulse/food-beverage/vessels/patch`
 
 Partially updates an existing vessel.
 
@@ -112,7 +116,7 @@ The fields to update are supplied in the `properties` object. The vessel is iden
 #### Request
 
 ```http
-PATCH /services/pulse/food-beverage/vessels
+PATCH /services/pulse/food-beverage/vessels/patch
 Content-Type: application/json
 ```
 
@@ -121,7 +125,7 @@ Content-Type: application/json
   "properties": {
     "code": "TANK-3",
     "name": "Fermentation tank 3",
-    "line": "LINE002"
+    "parent": "LINE002"
   }
 }
 ```
@@ -131,67 +135,78 @@ Content-Type: application/json
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `properties` | object | yes | Fields included in the partial update. |
-| `properties.code` | string | yes | Business code of the vessel to update. |
+| `properties.code` | string | yes | Unique business code of the vessel to update. |
 | `properties.name` | string | no | New human-readable name of the vessel. |
-| `properties.line` | string | no | New production line the vessel belongs to or feeds. |
+| `properties.parent` | string | no | Business code of the production line the vessel should belong to. |
 
 
 ### Retrieve a vessel
 
-`GET /services/pulse/food-beverage/vessels/{code}`
+`GET /services/pulse/food-beverage/vessels/select`
 
 Returns the vessel identified by its business code.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/vessels/TANK-3
+GET /services/pulse/food-beverage/vessels/select?id=TANK-3
 ```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the vessel to retrieve. |
 
 #### Example response
 
 ```json
 {
+  "id": 123,
   "code": "TANK-3",
   "name": "Fermentation tank 3",
-  "line": "LINE001"
+  "parent": "LINE001"
 }
 ```
 
 
 ### List vessels
 
-`GET /services/pulse/food-beverage/vessels`
+`GET /services/pulse/food-beverage/vessels/query`
 
 Returns vessels matching the supplied filters.
 
-Vessels can be filtered by production line.
+Vessels can be filtered by code, name, and parent production line.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/vessels?line=LINE001
+GET /services/pulse/food-beverage/vessels/query?parents=LINE001
 ```
 
 #### Query parameters
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `line` | string | Limits results to vessels belonging to the specified production line. |
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `codes` | string or array of strings | no | Limits results to vessels with the specified business codes. |
+| `names` | string or array of strings | no | Limits results to vessels with the specified names. |
+| `parents` | string or array of strings | no | Limits results to vessels belonging to the specified production lines. |
 
 #### Example response
 
 ```json
 [
   {
+    "id": 123,
     "code": "TANK-3",
     "name": "Fermentation tank 3",
-    "line": "LINE001"
+    "parent": "LINE001"
   },
   {
+    "id": 124,
     "code": "TANK-4",
     "name": "Fermentation tank 4",
-    "line": "LINE001"
+    "parent": "LINE001"
   }
 ]
 ```
@@ -199,12 +214,18 @@ GET /services/pulse/food-beverage/vessels?line=LINE001
 
 ### Delete a vessel
 
-`DELETE /services/pulse/food-beverage/vessels/{code}`
+`DELETE /services/pulse/food-beverage/vessels/delete`
 
 Deletes the vessel identified by its business code.
 
 #### Request
 
 ```http
-DELETE /services/pulse/food-beverage/vessels/TANK-3
+DELETE /services/pulse/food-beverage/vessels/delete?id=TANK-3
 ```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the vessel to delete. |
