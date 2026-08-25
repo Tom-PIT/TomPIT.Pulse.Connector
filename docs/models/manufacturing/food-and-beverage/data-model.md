@@ -64,6 +64,6 @@ Register referenced records before submitting records that depend on them.
 - [Master data](master-data/index.md)
 - [Manufacturing](manufacturing/index.md)
 - [Maintenance](maintenance/index.md)
-- [Measurements](measurements.md)
+- [Measurements](definitions-and-rules/measurements.md)
 
 Individual resource pages document their specific dependencies and API paths.
