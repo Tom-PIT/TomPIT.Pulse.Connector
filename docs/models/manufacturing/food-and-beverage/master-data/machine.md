@@ -21,7 +21,7 @@ Machines can be organised hierarchically. A machine can belong to another machin
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Business code used to identify the machine in external systems and integrations. | `"EQ010-H06"` |
+| `code` | string | Unique business code used to identify the machine in external systems and integrations. | `"EQ010-H06"` |
 | `name` | string | Human-readable name of the machine. | `"Filler 1 head 6"` |
 | `parent` | string | Business code of the machine, production line, or site that contains this machine. | `"EQ010"` |
 | [`measures`](measurement.md) | string or null | Metric code produced by the machine when it represents a sensor or probe. | `"fill-weight"` |
@@ -29,7 +29,11 @@ Machines can be organised hierarchically. A machine can belong to another machin
 </div>
 
 > [!IMPORTANT]
+> `code` must be unique. Two machines cannot use the same code.
+>
 > The entity referenced by `parent` must already exist before the machine is submitted. `parent` can reference another machine, a production line, or a site.
+>
+> When `measures` is provided, the referenced metric must already exist.
 
 See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
 
@@ -77,14 +81,14 @@ For machines that do not produce measurements, `measures` can be omitted or set 
 
 ### Create a machine
 
-`POST /services/pulse/food-beverage/machines`
+`POST /services/pulse/food-beverage/machines/insert`
 
 Creates a new machine, component, or sensor.
 
 #### Request
 
 ```http
-POST /services/pulse/food-beverage/machines
+POST /services/pulse/food-beverage/machines/insert
 Content-Type: application/json
 ```
 
@@ -101,7 +105,7 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Business code of the machine. |
+| `code` | string | yes | Unique business code of the machine. |
 | `name` | string | yes | Human-readable name of the machine. |
 | `parent` | string | yes | Business code of the machine, production line, or site that contains the machine. |
 | `measures` | string or null | no | Metric code produced by the machine when it represents a sensor or probe. |
@@ -109,14 +113,14 @@ Content-Type: application/json
 
 ### Update a machine
 
-`PUT /services/pulse/food-beverage/machines`
+`PUT /services/pulse/food-beverage/machines/update`
 
 Updates an existing machine.
 
 #### Request
 
 ```http
-PUT /services/pulse/food-beverage/machines
+PUT /services/pulse/food-beverage/machines/update
 Content-Type: application/json
 ```
 
@@ -135,7 +139,7 @@ Changing `parent` moves the machine within the equipment hierarchy.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Business code of the machine to update. |
+| `code` | string | yes | Unique business code of the machine to update. |
 | `name` | string | yes | Human-readable name of the machine. |
 | `parent` | string | yes | Business code of the machine, production line, or site that contains the machine. |
 | `measures` | string or null | no | Metric code produced by the machine when it represents a sensor or probe. |
@@ -143,7 +147,7 @@ Changing `parent` moves the machine within the equipment hierarchy.
 
 ### Patch a machine
 
-`PATCH /services/pulse/food-beverage/machines`
+`PATCH /services/pulse/food-beverage/machines/patch`
 
 Partially updates an existing machine.
 
@@ -152,7 +156,7 @@ The fields to update are supplied in the `properties` object. The machine is ide
 #### Request
 
 ```http
-PATCH /services/pulse/food-beverage/machines
+PATCH /services/pulse/food-beverage/machines/patch
 Content-Type: application/json
 ```
 
@@ -172,7 +176,7 @@ Content-Type: application/json
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `properties` | object | yes | Fields included in the partial update. |
-| `properties.code` | string | yes | Business code of the machine to update. |
+| `properties.code` | string | yes | Unique business code of the machine to update. |
 | `properties.name` | string | no | New human-readable name of the machine. |
 | `properties.parent` | string | no | New parent machine, production line, or site code. |
 | `properties.measures` | string or null | no | New metric code produced by the machine. |
@@ -180,15 +184,21 @@ Content-Type: application/json
 
 ### Retrieve a machine
 
-`GET /services/pulse/food-beverage/machines/{code}`
+`GET /services/pulse/food-beverage/machines/select`
 
 Returns the machine identified by its business code.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/machines/EQ010-H06
+GET /services/pulse/food-beverage/machines/select?id=EQ010-H06
 ```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the machine to retrieve. |
 
 #### Example response
 
@@ -204,7 +214,7 @@ GET /services/pulse/food-beverage/machines/EQ010-H06
 
 ### List machines
 
-`GET /services/pulse/food-beverage/machines`
+`GET /services/pulse/food-beverage/machines/query`
 
 Returns machines matching the supplied filters.
 
@@ -213,16 +223,16 @@ Machines can be filtered by code, name, and parent.
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/machines?parent=EQ010
+GET /services/pulse/food-beverage/machines/query?parents=EQ010
 ```
 
 #### Query parameters
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `code` | string | Limits results to the specified machine code. |
-| `name` | string | Limits results to the specified machine name. |
-| `parent` | string | Limits results to machines with the specified parent. |
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `codes` | string or array of strings | no | Limits results to machines with the specified business codes. |
+| `names` | string or array of strings | no | Limits results to machines with the specified names. |
+| `parents` | string or array of strings | no | Limits results to machines with the specified parents. |
 
 #### Example response
 
@@ -246,12 +256,18 @@ GET /services/pulse/food-beverage/machines?parent=EQ010
 
 ### Delete a machine
 
-`DELETE /services/pulse/food-beverage/machines/{code}`
+`DELETE /services/pulse/food-beverage/machines/delete`
 
 Deletes the machine identified by its business code.
 
 #### Request
 
 ```http
-DELETE /services/pulse/food-beverage/machines/EQ010-H06
+DELETE /services/pulse/food-beverage/machines/delete?id=EQ010-H06
 ```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the machine to delete. |

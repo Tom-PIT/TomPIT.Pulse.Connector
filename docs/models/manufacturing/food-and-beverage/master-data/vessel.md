@@ -8,7 +8,6 @@ A vessel belongs to a production line and can act as a carryover scope between p
 
 ```json
 {
-  "id": 123,
   "code": "TANK-3",
   "name": "Fermentation tank 3",
   "parent": "LINE001"
@@ -21,7 +20,6 @@ A vessel belongs to a production line and can act as a carryover scope between p
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `id` | integer | Pulse identifier of the vessel. Returned by Pulse and used where an API method requires an internal identifier. | `123` |
 | `code` | string | Unique business code used to identify the vessel in external systems and integrations. | `"TANK-3"` |
 | `name` | string | Human-readable name of the vessel. | `"Fermentation tank 3"` |
 | [`parent`](production-line.md) | string | Business code of the production line the vessel belongs to or feeds. | `"LINE001"` |
@@ -162,7 +160,6 @@ GET /services/pulse/food-beverage/vessels/select?id=TANK-3
 
 ```json
 {
-  "id": 123,
   "code": "TANK-3",
   "name": "Fermentation tank 3",
   "parent": "LINE001"
@@ -197,13 +194,11 @@ GET /services/pulse/food-beverage/vessels/query?parents=LINE001
 ```json
 [
   {
-    "id": 123,
     "code": "TANK-3",
     "name": "Fermentation tank 3",
     "parent": "LINE001"
   },
   {
-    "id": 124,
     "code": "TANK-4",
     "name": "Fermentation tank 4",
     "parent": "LINE001"
