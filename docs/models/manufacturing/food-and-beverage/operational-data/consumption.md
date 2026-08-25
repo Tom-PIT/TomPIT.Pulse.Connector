@@ -1,21 +1,23 @@
 # Consumption
 
-Represents a resource consumed while production, cleaning, or maintenance work is performed.
+<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, batching behavior, and examples against the current code. -->
 
-Consumption records actual quantities and values for ingredients, packaging, chemicals, utilities, labor, equipment, and other costs through one common resource.
+Records resources actually used by a Run, Batch, or Clean.
+
+Consumption can represent ingredients, packaging, utilities, Labor, equipment, and other production or cleaning costs.
 
 ## The Consumption object
 
 ```json
 {
-  "run": "L03-260810-002",
+  "usedBy": "BULK-260810-07",
   "category": "ingredient",
-  "item": "MILK-RAW",
+  "item": "MAT0001",
   "lot": "IN-260807-441",
-  "quantity": 240,
+  "quantity": 940,
   "unit": "kg",
-  "unitValue": 0.68,
-  "at": "2026-08-10T22:30:00+02:00"
+  "unitValue": 3.12,
+  "at": "2026-08-10T18:20:00+02:00"
 }
 ```
 
@@ -25,183 +27,194 @@ Consumption records actual quantities and values for ingredients, packaging, che
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| [`run`](run.md) | string | Code of the production run that consumed the resource. Exactly one consumption subject must be provided. | `"L03-260810-002"` |
-| [`batch`](batch.md) | string | Code of the process batch that consumed the resource. Exactly one consumption subject must be provided. | `"BULK-260810-07"` |
-| [`clean`](clean.md) | string | Code of the cleaning activity that consumed the resource. Exactly one consumption subject must be provided. | `"CIP-260811-014"` |
-| [`maintenance`](../maintenance/maintenance.md) | string | Code of the maintenance activity that consumed the resource. Exactly one consumption subject must be provided. | `"WO-260811-17"` |
-| `category` | string | Category of resource consumed. | `"ingredient"` |
-| `item` | string | Code of the specific resource consumed. Its meaning depends on `category`. | `"MILK-RAW"` |
-| [`lot`](../master-data/lot.md) | string or null | Optional lot code identifying the specific material quantity consumed. Required when the referenced material is lot-tracked. | `"IN-260807-441"` |
-| `quantity` | number | Quantity consumed. | `240` |
+| `usedBy` | string | Business code of the [Run](../production-activities/run.md), [Batch](../production-activities/batch.md), or [Clean](../production-activities/clean.md) that used the resource. | `"BULK-260810-07"` |
+| `category` | string | Resource category. See the supported categories below. | `"ingredient"` |
+| `item` | string | Business code of the specific Material, Cost line, Crew, or Machine that was used. | `"MAT0001"` |
+| [`lot`](../production-activities/lot.md) | string or null | Optional lot code identifying the specific material quantity consumed. Required when the material is lot-tracked. | `"IN-260807-441"` |
+| `quantity` | number | Quantity actually consumed. | `940` |
 | `unit` | string | Unit in which the consumed quantity is expressed. | `"kg"` |
-| `unitValue` | number or null | Optional value per unit at the time of consumption. | `0.68` |
-| `at` | string | Timestamp when the consumption was recorded, in ISO 8601 format with an explicit offset. | `"2026-08-10T22:30:00+02:00"` |
+| `unitValue` | number or null | Optional cost per unit at the time the resource was used. | `3.12` |
+| `at` | string or null | Optional approximate date and time of the consumption. | `"2026-08-10T18:20:00+02:00"` |
 
 </div>
 
-Exactly one of `run`, `batch`, `clean`, or `maintenance` identifies the work to which the consumption belongs.
+> [!IMPORTANT]
+> `usedBy`, `item`, `lot`, and `at` together identify a consumption record.
+>
+> When the referenced material uses `lotTracked: true`, `lot` is required.
 
 ## Categories
 
-The `category` determines what type of resource `item` identifies.
+Consumption uses the same resource categories as [Planned use](../production-activities/planned-use.md).
 
-| Category | `item` identifies | Example |
-| --- | --- | --- |
-| `ingredient` | A [material](../master-data/material.md) used as an ingredient. | `"MILK-RAW"` |
-| `packaging` | A [material](../master-data/material.md) used for packaging. | `"CUP-150G"` |
-| `chemical` | A [material](../master-data/material.md) such as a cleaning chemical. | `"CAUSTIC-01"` |
-| `energy` | An energy source or utility. | `"ELECTRICITY"` |
-| `water` | A water source or utility. | `"MAINS-WATER"` |
-| `effluent` | An effluent stream or utility. | `"EFFLUENT"` |
-| `labour` | A [crew](../master-data/crew.md), never an individual person. | `"CREW-C"` |
-| `equipment` | A [machine](../master-data/machine.md). | `"L03-FILLER"` |
-| `expense` | A named cost line. | `"LAB-ANALYSIS"` |
+| Category | `item` identifies |
+| --- | --- |
+| `ingredient` | A [Material](../master-data/material.md) used as an ingredient. |
+| `packaging` | A [Material](../master-data/material.md) used for packaging. |
+| `chemical` | A [Material](../master-data/material.md) used as a chemical. |
+| `water` | A water resource. |
+| `energy` | An energy resource. |
+| `effluent` | An effluent resource. |
+| `labour` | A [Crew](../master-data/crew.md). |
+| `equipment` | A [Machine](../master-data/machine.md). |
+| `expense` | A [Cost line](../master-data/cost-line.md). |
 
-The category is intentionally broad while `item` identifies the specific resource.
-
-For example, these are two separate ingredient consumptions:
-
-```json
-[
-  {
-    "run": "L03-260810-002",
-    "category": "ingredient",
-    "item": "MILK-RAW",
-    "quantity": 940,
-    "unit": "kg",
-    "at": "2026-08-10T22:30:00+02:00"
-  },
-  {
-    "run": "L03-260810-002",
-    "category": "ingredient",
-    "item": "CULTURE-ST01",
-    "quantity": 120,
-    "unit": "g",
-    "at": "2026-08-10T22:31:00+02:00"
-  }
-]
-```
-
-Keeping the item on every record is important because resources within the same category can use different units and have different planned quantities and costs.
+The category identifies the kind of cost or resource, while `item` identifies the specific resource that was actually used.
 
 ## Lot traceability
 
-When material consumption references a lot, Pulse can preserve the connection between the work and the exact material quantity that was used.
+For lot-tracked materials, include the specific lot that was consumed:
 
 ```json
 {
-  "run": "L03-260810-002",
+  "usedBy": "BULK-260810-07",
   "category": "ingredient",
-  "item": "MILK-RAW",
+  "item": "MAT0001",
   "lot": "IN-260807-441",
   "quantity": 940,
-  "unit": "kg",
-  "at": "2026-08-10T22:30:00+02:00"
+  "unit": "kg"
 }
 ```
 
-If the material uses `lotTracked: true`, the consumption record must include `lot`.
+This preserves genealogy from the incoming lot to the production activity that consumed it.
 
-Materials that are not lot-tracked, such as some utilities, can be consumed without a lot reference.
+If analysis values were recorded for that lot, those properties can remain associated with the material as it moves through production.
 
-When analysis values such as fat, protein, or moisture have been recorded for the consumed lot, that composition can contribute context to analysis of the consuming production work.
+For materials that are not lot-tracked, `lot` can be omitted.
 
-## Planned and actual consumption
+## Planned and actual use
 
-Planned resource quantities are defined in the production plan, while `/consumption` records what was actually used.
+[Planned use](../production-activities/planned-use.md) describes what an activity was expected to consume.
 
-For example, a run may plan:
+Consumption records what was actually used.
 
-```json
-{
-  "category": "ingredient",
-  "item": "MILK-RAW",
-  "quantity": 1000,
-  "unit": "kg",
-  "unitValue": 0.68
-}
+For example:
+
+```text
+Planned use
+MAT0042 — 300 kg
+
+Actual consumption
+MAT0042 — 318 kg
 ```
 
-and actual consumption may later record:
-
-```json
-{
-  "run": "L03-260810-002",
-  "category": "ingredient",
-  "item": "MILK-RAW",
-  "quantity": 1040,
-  "unit": "kg",
-  "unitValue": 0.68,
-  "at": "2026-08-10T22:30:00+02:00"
-}
-```
-
-Because both records identify the same `category` and `item`, Pulse can compare planned and actual resource use.
+Because both records identify the same category and item, Pulse can compare planned and actual resource use.
 
 ## Labor consumption
 
-Labor is recorded at crew level.
+Labor is recorded at Crew level rather than for individual people.
 
 ```json
 {
-  "run": "L03-260810-002",
+  "usedBy": "L01-260810-002",
   "category": "labour",
   "item": "CREW-C",
   "quantity": 32,
   "unit": "h",
   "unitValue": 24.5,
-  "at": "2026-08-11T06:00:00+02:00"
+  "at": "2026-08-11T05:50:00+02:00"
 }
 ```
 
-Pulse does not require or expose individual people for labor consumption. The `item` identifies a registered [crew](../master-data/crew.md).
+The API category value remains `labour`.
 
 ## Cleaning consumption
 
-The same resource can record what a cleaning activity consumed:
+A Clean can have its own consumption records.
+
+For example:
 
 ```json
 {
-  "clean": "CIP-260811-014",
+  "usedBy": "CIP-260811-014",
   "category": "chemical",
   "item": "CAUSTIC-01",
-  "quantity": 40,
-  "unit": "l",
-  "unitValue": 0.62,
+  "quantity": 18,
+  "unit": "kg",
   "at": "2026-08-11T06:20:00+02:00"
 }
 ```
 
-Water, chemicals, labor, energy, and other cleaning costs therefore use the same consumption model as production work.
+This allows the actual cost of cleaning to be compared with the production changeover that required it.
 
 ## Batching
 
-The consumption resource accepts either one object or an array of objects.
+The specification shows Consumption accepting multiple records in one request:
 
-This allows individual records to be submitted as they occur or multiple captures to be sent together by a source system.
+```json
+[
+  {
+    "usedBy": "BULK-260810-07",
+    "category": "ingredient",
+    "item": "MAT0001",
+    "lot": "IN-260807-441",
+    "quantity": 940,
+    "unit": "kg",
+    "unitValue": 3.12,
+    "at": "2026-08-10T18:20:00+02:00"
+  },
+  {
+    "usedBy": "L01-260810-002",
+    "category": "labour",
+    "item": "CREW-C",
+    "quantity": 32,
+    "unit": "h",
+    "unitValue": 24.5,
+    "at": "2026-08-11T05:50:00+02:00"
+  }
+]
+```
+
+The exact batching behavior should be verified once the implementation is available.
 
 ## API resource
 
 | Resource | Base path |
 | --- | --- |
-| Consumption | `/services/pulse/food-beverage/consumption` |
+| `Consumption` | `/services/pulse/food-beverage/consumption` |
 
-See the [API reference](../api/index.md) for supported operations and complete request schemas.
+## API methods
 
-## Depends on
+> [!NOTE]
+> The API methods below are provisional until the Consumption implementation is available for verification.
 
-Consumption must reference exactly one work record:
+### Submit consumption
 
-- [Run](run.md)
-- [Batch](batch.md)
-- [Clean](clean.md)
-- [Maintenance](../maintenance/maintenance.md)
+`POST /services/pulse/food-beverage/consumption/insert`
 
-Depending on `category`, the record may also reference:
+Records actual resource consumption.
 
-- [Material](../master-data/material.md)
-- [Lot](../master-data/lot.md), when the material is lot-tracked
-- [Crew](../master-data/crew.md) for labor
-- [Machine](../master-data/machine.md) for equipment
+#### Request
 
-Referenced records must be available before submitting the consumption record.
+```http
+POST /services/pulse/food-beverage/consumption/insert
+Content-Type: application/json
+```
+
+```json
+[
+  {
+    "usedBy": "BULK-260810-07",
+    "category": "ingredient",
+    "item": "MAT0001",
+    "lot": "IN-260807-441",
+    "quantity": 940,
+    "unit": "kg",
+    "unitValue": 3.12,
+    "at": "2026-08-10T18:20:00+02:00"
+  }
+]
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `usedBy` | string | yes | Business code of the run, batch, or clean. |
+| `category` | string | yes | Resource category. |
+| `item` | string | yes | Business code of the resource consumed. |
+| `lot` | string or null | conditional | Required when the referenced material is lot-tracked. |
+| `quantity` | number | yes | Quantity actually consumed. |
+| `unit` | string | yes | Unit of the consumed quantity. |
+| `unitValue` | number or null | no | Cost per unit at the time of use. |
+| `at` | string or null | no | Approximate date and time of consumption. |

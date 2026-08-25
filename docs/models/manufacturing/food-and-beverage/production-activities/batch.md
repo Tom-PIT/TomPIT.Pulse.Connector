@@ -1,8 +1,10 @@
 # Batch
 
-Represents a process batch such as a cook, mix, fermentation, or other bulk-production step.
+<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
 
-A batch describes the process side of Food & Beverage production. It is typically associated with a vessel and recipe and produces a bulk lot that can later supply one or more production runs.
+Represents a bulk production batch such as a cook, fermentation, blend, or other vessel-based process step.
+
+A batch produces a bulk lot that can later supply one or more production runs.
 
 ## The Batch object
 
@@ -11,20 +13,10 @@ A batch describes the process side of Food & Beverage production. It is typicall
   "code": "BULK-260810-07",
   "vessel": "TANK-3",
   "recipe": "REC-BASE-v2",
-  "produces": "BULK-260810-07",
-  "at": "2026-08-10T18:00:00+02:00"
-}
-```
-
-When the batch finishes, submit the values that became known:
-
-```json
-{
-  "code": "BULK-260810-07",
+  "start": "2026-08-10T18:00:00+02:00",
   "end": "2026-08-10T21:30:00+02:00",
   "quantity": 4200,
-  "unit": "kg",
-  "expiresAt": "2026-08-17T00:00:00+02:00"
+  "unit": "kg"
 }
 ```
 
@@ -34,50 +26,42 @@ When the batch finishes, submit the values that became known:
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Business code used to identify the process batch in source systems and integrations. | `"BULK-260810-07"` |
-| [`vessel`](../master-data/vessel.md) | string | Code of the vessel in which the batch is processed. | `"TANK-3"` |
-| [`recipe`](../master-data/recipe.md) | string | Code of the recipe or formulation used for the batch. | `"REC-BASE-v2"` |
-| [`produces`](../master-data/lot.md) | string | Code of the bulk lot produced by the batch. | `"BULK-260810-07"` |
-| `at` | string | Timestamp when the batch started, in ISO 8601 format with an explicit offset. | `"2026-08-10T18:00:00+02:00"` |
-| `end` | string or null | Timestamp when the batch finished, in ISO 8601 format with an explicit offset. | `"2026-08-10T21:30:00+02:00"` |
-| `quantity` | number or null | Quantity of bulk material produced by the batch. | `4200` |
-| `unit` | string or null | Unit in which the produced quantity is expressed. | `"kg"` |
-| `expiresAt` | string or null | Optional expiry timestamp for the produced bulk lot. | `"2026-08-17T00:00:00+02:00"` |
+| `code` | string | Unique business code used to identify the batch. The same code identifies the bulk lot produced by the batch. | `"BULK-260810-07"` |
+| [`vessel`](../master-data/vessel.md) | string | Business code of the vessel in which the batch is processed. | `"TANK-3"` |
+| [`recipe`](../master-data/recipe.md) | string or null | Optional business code of the recipe used for the batch. | `"REC-BASE-v2"` |
+| `start` | string | Date and time when the batch started, in ISO 8601 format. | `"2026-08-10T18:00:00+02:00"` |
+| `end` | string or null | Optional date and time when the batch finished. | `"2026-08-10T21:30:00+02:00"` |
+| `quantity` | number or null | Optional quantity of bulk material produced. | `4200` |
+| `unit` | string or null | Unit in which `quantity` is expressed. | `"kg"` |
+| `expiresAt` | string or null | Optional expiry date or timestamp of the produced bulk lot. | `"2026-08-17"` |
 
 </div>
 
-## Batch lifecycle
+> [!IMPORTANT]
+> `code` must be unique. Two batches cannot use the same code.
+>
+> `vessel` must reference an existing Vessel.
+>
+> When `recipe` is provided, it must reference an existing Recipe.
 
-A batch can be submitted when processing starts:
+## Produced bulk lot
 
-```json
-{
-  "code": "BULK-260810-07",
-  "vessel": "TANK-3",
-  "recipe": "REC-BASE-v2",
-  "produces": "BULK-260810-07",
-  "at": "2026-08-10T18:00:00+02:00"
-}
+Each batch produces a bulk lot using the same business code as the batch.
+
+For example:
+
+```text
+Batch:    BULK-260810-07
+Bulk lot: BULK-260810-07
 ```
 
-When processing finishes, submit the same `code` with the fields that became known:
+That bulk lot can later be consumed by one or more production runs.
 
-```json
-{
-  "code": "BULK-260810-07",
-  "end": "2026-08-10T21:30:00+02:00",
-  "quantity": 4200,
-  "unit": "kg"
-}
-```
-
-Fields omitted from the second request remain unchanged.
-
-The produced quantity describes the bulk output of the process batch.
+If `quantity` is provided, it represents the quantity produced by the batch.
 
 ## Batch and run
 
-A batch and a [run](run.md) represent different parts of production.
+A batch and a [Run](run.md) represent different production activities.
 
 ```text
 Process
@@ -89,77 +73,189 @@ Packing
   Run
 ```
 
-A batch represents process production such as mixing, cooking, or fermentation.
+A batch represents bulk processing such as mixing, cooking, blending, or fermentation.
 
-A run represents production of a specific product on a production line.
+A run represents production of a product on a production line.
 
-The relationship is not necessarily one-to-one. One batch can supply several runs, and one run can draw from several batches.
-
-For example:
-
-```json
-{
-  "code": "L03-260810-002",
-  "from": [
-    "BULK-260810-07",
-    "BULK-260810-08"
-  ]
-}
-```
-
-This preserves the connection between the process conditions that produced the bulk material and the production runs that later consumed it.
-
-## Produced lot
-
-The value in `produces` identifies the bulk [lot](../master-data/lot.md) created by the batch.
-
-The bulk lot can carry measured composition through lot analysis, for example fat, protein, solids, or Brix.
-
-```text
-POST /services/pulse/food-beverage/lots/{code}/analysis
-```
-
-When a later run references that bulk batch, Pulse can preserve the composition and genealogy context from the process side of production.
-
-## Consumption
-
-Materials consumed while producing the batch are recorded through [consumption](consumption.md).
-
-For example:
-
-```json
-{
-  "batch": "BULK-260810-07",
-  "category": "ingredient",
-  "item": "MILK-RAW",
-  "lot": "MILK-2026-0717-A",
-  "quantity": 940,
-  "unit": "kg",
-  "unitValue": 0.68,
-  "at": "2026-08-10T18:20:00+02:00"
-}
-```
-
-This preserves the genealogy from incoming material lots through the process batch and its produced bulk lot.
+Keeping these activities separate preserves the connection between the process conditions that created the bulk material and the production activity that later used it.
 
 ## Expiry
 
-`expiresAt` can be supplied when the produced bulk lot has a known expiry time.
+`expiresAt` defines the expiry of the bulk lot produced by the batch.
 
-When it is not supplied, Pulse may derive the expiry from an applicable declared shelf-life expectation. When neither is available, the bulk lot has no declared expiry.
+When it is not provided, Pulse may derive the expiry from the shelf-life definition applicable to the product produced from the batch.
 
 ## API resource
 
 | Resource | Base path |
 | --- | --- |
-| Batch | `/services/pulse/food-beverage/batches` |
+| `Batch` | `/services/pulse/food-beverage/batches` |
 
-See the [API reference](../api/index.md) for supported operations and complete request schemas.
+## API methods
 
-## Depends on
+> [!NOTE]
+> The API methods below follow the current Food & Beverage service pattern and are provisional until the Batches implementation is available for verification.
 
-- [Vessel](../master-data/vessel.md)
-- [Recipe](../master-data/recipe.md)
-- [Lot](../master-data/lot.md)
+### Create a batch
 
-The referenced records must be available before submitting the batch.
+`POST /services/pulse/food-beverage/batches/insert`
+
+Creates a new production batch.
+
+#### Request
+
+```http
+POST /services/pulse/food-beverage/batches/insert
+Content-Type: application/json
+```
+
+```json
+{
+  "code": "BULK-260810-07",
+  "vessel": "TANK-3",
+  "recipe": "REC-BASE-v2",
+  "start": "2026-08-10T18:00:00+02:00",
+  "end": "2026-08-10T21:30:00+02:00",
+  "quantity": 4200,
+  "unit": "kg"
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | string | yes | Unique business code of the batch. |
+| `vessel` | string | yes | Business code of the vessel. |
+| `recipe` | string or null | no | Business code of the recipe used. |
+| `start` | string | yes | Date and time when the batch started. |
+| `end` | string or null | no | Date and time when the batch finished. |
+| `quantity` | number or null | no | Quantity produced by the batch. |
+| `unit` | string or null | no | Unit of the produced quantity. |
+| `expiresAt` | string or null | no | Expiry of the produced bulk lot. |
+
+
+### Update a batch
+
+`PUT /services/pulse/food-beverage/batches/update`
+
+Updates an existing batch.
+
+#### Request
+
+```http
+PUT /services/pulse/food-beverage/batches/update
+Content-Type: application/json
+```
+
+```json
+{
+  "code": "BULK-260810-07",
+  "vessel": "TANK-3",
+  "recipe": "REC-BASE-v2",
+  "start": "2026-08-10T18:00:00+02:00",
+  "end": "2026-08-10T21:45:00+02:00",
+  "quantity": 4200,
+  "unit": "kg"
+}
+```
+
+
+### Patch a batch
+
+`PATCH /services/pulse/food-beverage/batches/patch`
+
+Partially updates an existing batch.
+
+The fields to update are supplied in the `properties` object. The batch is identified by its business `code`.
+
+#### Request
+
+```http
+PATCH /services/pulse/food-beverage/batches/patch
+Content-Type: application/json
+```
+
+```json
+{
+  "properties": {
+    "code": "BULK-260810-07",
+    "end": "2026-08-10T21:45:00+02:00",
+    "quantity": 4200
+  }
+}
+```
+
+
+### Retrieve a batch
+
+`GET /services/pulse/food-beverage/batches/select`
+
+Returns the batch identified by its business code.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/batches/select?id=BULK-260810-07
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the batch to retrieve. |
+
+#### Example response
+
+```json
+{
+  "code": "BULK-260810-07",
+  "vessel": "TANK-3",
+  "recipe": "REC-BASE-v2",
+  "start": "2026-08-10T18:00:00+02:00",
+  "end": "2026-08-10T21:30:00+02:00",
+  "quantity": 4200,
+  "unit": "kg"
+}
+```
+
+
+### List batches
+
+`GET /services/pulse/food-beverage/batches/query`
+
+Returns batches matching the supplied filters.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/batches/query?vessel=TANK-3&recipe=REC-BASE-v2
+```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `vessel` | string | no | Limits results to batches processed in the specified vessel. |
+| `recipe` | string | no | Limits results to batches using the specified recipe. |
+| `from` | string | no | Limits results to batches starting on or after the specified date or time. |
+| `to` | string | no | Limits results to batches starting on or before the specified date or time. |
+
+
+### Delete a batch
+
+`DELETE /services/pulse/food-beverage/batches/delete`
+
+Deletes the batch identified by its business code.
+
+#### Request
+
+```http
+DELETE /services/pulse/food-beverage/batches/delete?id=BULK-260810-07
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the batch to delete. |

@@ -1,28 +1,32 @@
 # Output
 
-Represents a quantity produced during a production run.
+<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, batching behavior, correction rules, and examples against the current code. -->
 
-Output records both usable production and quantities that did not become good product, including waste, downgraded product, and specific reject types.
+Records quantities produced during a production Run.
+
+Output includes good production, waste, downgraded product, and specific reject types.
 
 ## The Output object
 
 ```json
 {
-  "run": "L03-260810-002",
-  "quantity": 1200,
+  "run": "L01-260810-002",
   "kind": "good",
+  "quantity": 1200,
+  "unit": "pcs",
   "at": "2026-08-10T23:00:00+02:00"
 }
 ```
 
-A rejected quantity is submitted through the same resource:
+Rejected quantities use the same resource:
 
 ```json
 {
-  "run": "L03-260810-002",
-  "quantity": 3,
-  "kind": "reject-weight",
-  "at": "2026-08-10T23:04:00+02:00"
+  "run": "L01-260810-002",
+  "kind": "reject-seal",
+  "quantity": 12,
+  "unit": "pcs",
+  "at": "2026-08-11T02:30:00+02:00"
 }
 ```
 
@@ -32,16 +36,22 @@ A rejected quantity is submitted through the same resource:
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| [`run`](run.md) | string | Code of the production run that produced the quantity. | `"L03-260810-002"` |
-| `quantity` | number | Quantity captured for this output record. | `1200` |
-| `kind` | string | Classification of the produced quantity. | `"good"` |
-| `at` | string | Timestamp of the capture, in ISO 8601 format with an explicit offset. | `"2026-08-10T23:00:00+02:00"` |
+| [`run`](../production-activities/run.md) | string | Business code of the production run that produced the quantity. | `"L01-260810-002"` |
+| `kind` | string | Classification of the output quantity. See the supported kinds below. | `"good"` |
+| `quantity` | number | Quantity counted in this output capture. | `1200` |
+| `unit` | string | Unit in which the quantity is expressed. | `"pcs"` |
+| `at` | string | Date and time when the quantity was counted, in ISO 8601 format. | `"2026-08-10T23:00:00+02:00"` |
 
 </div>
 
+> [!IMPORTANT]
+> `run`, `kind`, and `at` together identify an output record.
+>
+> The referenced Run must already exist.
+
 ## Output kinds
 
-The following values are supported for `kind`:
+Supported values for `kind` are:
 
 | Kind | Meaning |
 | --- | --- |
@@ -49,104 +59,151 @@ The following values are supported for `kind`:
 | `waste` | Product or material lost as waste. |
 | `downgrade` | Product retained at a lower grade or value. |
 | `reject-metal` | Product rejected by metal detection. |
+| `reject-xray` | Product rejected by X-ray inspection. |
 | `reject-weight` | Product rejected because of weight. |
 | `reject-seal` | Product rejected because of sealing. |
-| `reject-fill` | Product rejected because of filling. |
-| `reject-label` | Product rejected because of labelling. |
+| `reject-vision` | Product rejected by vision inspection. |
 
-The reject kinds remain separate because they represent different failure modes.
+Reject kinds remain separate because they represent different failure modes and may require different corrective actions.
 
-Do not collapse them into a single generic `reject` value.
+Do not combine them into a single generic reject category.
 
-## Good and total output
+## Submit individual captures
 
-Submit all produced quantities, not only good output.
+Each Output record represents what was counted at a particular point in time.
 
 For example:
 
 ```json
 [
   {
-    "run": "L03-260810-002",
-    "quantity": 1200,
+    "run": "L01-260810-002",
     "kind": "good",
+    "quantity": 1200,
+    "unit": "pcs",
     "at": "2026-08-10T23:00:00+02:00"
   },
   {
-    "run": "L03-260810-002",
-    "quantity": 3,
-    "kind": "reject-weight",
-    "at": "2026-08-10T23:04:00+02:00"
+    "run": "L01-260810-002",
+    "kind": "reject-seal",
+    "quantity": 12,
+    "unit": "pcs",
+    "at": "2026-08-11T02:30:00+02:00"
   }
 ]
 ```
 
-Keeping good and non-good quantities separately allows Pulse to calculate quality rates while retaining the underlying quantities.
+Submit individual captures rather than shift totals or cumulative counters.
 
-This is preferable to submitting a pre-calculated quality percentage because the absolute quantities can be aggregated correctly across different periods.
+This preserves when the output occurred and avoids counting the same quantity more than once.
 
-## Capture individual output
+## Good and non-good output
 
-Submit individual output captures rather than accumulated totals.
+Submit non-good quantities as well as good production.
 
-For example, if the source system records production by pallet, submit one record for each pallet rather than repeatedly submitting the running total for the shift.
+For example:
 
-Likewise, a reject counter should submit the quantity associated with the capture rather than the cumulative detector count.
+```text
+good          1200 pcs
+reject-seal     12 pcs
+```
 
-This prevents the same production quantity from being counted more than once.
+Keeping these quantities separately allows Pulse to calculate quality performance while retaining the underlying counts.
+
+Pre-calculated percentages should not replace the individual output quantities because percentages cannot be correctly re-aggregated across different time periods.
 
 ## Rejects
 
-Rejects use `/output`; there is no separate reject resource.
+Rejects are submitted through Output rather than through a separate reject resource.
 
 For example:
 
 ```json
 {
-  "run": "L03-260810-002",
-  "quantity": 1,
+  "run": "L01-260810-002",
   "kind": "reject-metal",
+  "quantity": 1,
+  "unit": "pcs",
   "at": "2026-08-10T23:07:00+02:00"
 }
 ```
 
-Keeping the specific reject kind allows Pulse to distinguish different sources of quality loss instead of treating all rejected product as one category.
+Keeping the specific reject kind allows Pulse to distinguish the source of the quality loss.
 
 ## Batching
 
-The output resource accepts either one object or an array of objects.
-
-For example:
+The specification shows Output accepting multiple captures in one request:
 
 ```json
 [
   {
-    "run": "L03-260810-002",
-    "quantity": 1200,
+    "run": "L01-260810-002",
     "kind": "good",
+    "quantity": 1200,
+    "unit": "pcs",
     "at": "2026-08-10T23:00:00+02:00"
   },
   {
-    "run": "L03-260810-002",
-    "quantity": 3,
-    "kind": "reject-weight",
-    "at": "2026-08-10T23:04:00+02:00"
+    "run": "L01-260810-002",
+    "kind": "reject-seal",
+    "quantity": 12,
+    "unit": "pcs",
+    "at": "2026-08-11T02:30:00+02:00"
   }
 ]
 ```
 
-This allows a live source to submit captures individually and a historian or file-based integration to submit several captures together.
+The exact batching behavior should be verified once the implementation is available.
 
 ## API resource
 
 | Resource | Base path |
 | --- | --- |
-| Output | `/services/pulse/food-beverage/output` |
+| `Output` | `/services/pulse/food-beverage/output` |
 
-See the [API reference](../api/index.md) for supported operations and complete request schemas.
+## API methods
 
-## Depends on
+> [!NOTE]
+> The API methods below are provisional until the Output implementation is available for verification.
 
-- [Run](run.md)
+### Submit output
 
-The referenced run must be available before submitting output records.
+`POST /services/pulse/food-beverage/output/insert`
+
+Records production output.
+
+#### Request
+
+```http
+POST /services/pulse/food-beverage/output/insert
+Content-Type: application/json
+```
+
+```json
+[
+  {
+    "run": "L01-260810-002",
+    "kind": "good",
+    "quantity": 1200,
+    "unit": "pcs",
+    "at": "2026-08-10T23:00:00+02:00"
+  },
+  {
+    "run": "L01-260810-002",
+    "kind": "reject-seal",
+    "quantity": 12,
+    "unit": "pcs",
+    "at": "2026-08-11T02:30:00+02:00"
+  }
+]
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `run` | string | yes | Business code of the production run. |
+| `kind` | string | yes | Output classification. |
+| `quantity` | number | yes | Quantity captured. |
+| `unit` | string | yes | Unit of the captured quantity. |
+| `at` | string | yes | Date and time when the quantity was counted. |

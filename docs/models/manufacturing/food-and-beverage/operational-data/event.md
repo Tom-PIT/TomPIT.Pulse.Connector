@@ -1,22 +1,22 @@
 # Event
 
-Represents a discrete occurrence that happened during Food & Beverage operations.
+<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, batching behavior, correction rules, and examples against the current code. -->
 
-Events are used for occurrences such as stoppages, deviations, waste, rework, and rejects when the occurrence itself is analytically meaningful.
+Records a discrete operational occurrence.
 
-Unlike lifecycle work such as a run or clean, an event does not represent work that consumes resources of its own.
+Events are used for things such as stoppages, waste, specification deviations, CCP deviations, changeovers, and complaints.
 
 ## The Event object
 
 ```json
 {
   "type": "stoppage",
-  "line": "L03",
-  "run": "L03-260810-002",
+  "line": "LINE001",
+  "run": "L01-260810-002",
   "reason": "DTCU010",
   "severity": 2,
-  "at": "2026-08-10T23:17:00+02:00",
-  "end": "2026-08-10T23:24:00+02:00"
+  "at": "2026-08-11T03:40:00+02:00",
+  "end": "2026-08-11T04:05:00+02:00"
 }
 ```
 
@@ -26,155 +26,195 @@ Unlike lifecycle work such as a run or clean, an event does not represent work t
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `type` | string | Declared event type describing what happened. | `"stoppage"` |
-| [`run`](run.md) | string or null | Optional code of the production run associated with the event. | `"L03-260810-002"` |
-| [`batch`](batch.md) | string or null | Optional code of the process batch associated with the event. | `"BULK-260810-07"` |
-| [`line`](../master-data/production-line.md) | string or null | Optional code of the production line on which the event occurred. | `"L03"` |
-| [`lot`](../master-data/lot.md) | string or null | Optional code of the lot associated with the event. | `"MILK-2026-0717-A"` |
-| [`reason`](../master-data/reason.md) | string or null | Optional reason code explaining why the event occurred. | `"DTCU010"` |
-| `severity` | number or null | Optional severity assigned to the occurrence. | `2` |
-| `at` | string | Timestamp when the event occurred or began, in ISO 8601 format with an explicit offset. | `"2026-08-10T23:17:00+02:00"` |
-| `end` | string or null | Optional timestamp when an interval event ended. | `"2026-08-10T23:24:00+02:00"` |
+| `type` | string | Type of event. See the supported values below. | `"stoppage"` |
+| [`line`](../master-data/production-line.md) | string | Business code of the production line on which the event occurred. | `"LINE001"` |
+| [`run`](../production-activities/run.md) | string or null | Optional business code of the production run associated with the event. | `"L01-260810-002"` |
+| [`batch`](../production-activities/batch.md) | string or null | Optional business code of the process batch associated with the event. | `"BULK-260810-07"` |
+| [`reason`](../definitions-and-rules/reason.md) | string or null | Optional business code of the reason associated with the event. | `"DTCU010"` |
+| `severity` | integer or null | Optional severity from `1` to `5`. | `2` |
+| `at` | string | Date and time when the event occurred or started, in ISO 8601 format. | `"2026-08-11T03:40:00+02:00"` |
+| `end` | string or null | Optional date and time when the event ended. | `"2026-08-11T04:05:00+02:00"` |
 
 </div>
 
-The context fields used depend on the type of event.
-
-For example, a stoppage can identify both the production run that was active and the line on which the interruption occurred.
-
-A waste event during bulk processing can reference a batch instead of a run.
+> [!IMPORTANT]
+> `type`, `line`, and `at` together identify an Event record.
+>
+> `run` and `batch` are mutually exclusive. Provide at most one of them.
 
 ## Event types
 
-The Food & Beverage profile includes event types such as:
+Supported values for `type` are:
 
-| Type | Typical meaning |
+| Type | Meaning |
 | --- | --- |
-| `waste` | Trim, flush, spillage, expired work in progress, or another lost quantity. |
-| `rework` | Product recovered into later production. |
-| `downgrade` | Product retained at a lower grade or value. |
-| `reject-metal` | Product rejected by metal detection. |
-| `reject-xray` | Product rejected by X-ray or foreign-body detection. |
-| `reject-weight` | Product rejected because its weight is outside the permitted range. |
-| `reject-seal` | Product rejected because of seal or closure integrity. |
-| `reject-vision` | Product rejected by a vision inspection such as label, code, or fill-level inspection. |
 | `stoppage` | A countable production interruption. |
-| `spec-deviation` | A measured value outside a declared specification. |
+| `waste` | A discrete waste occurrence. |
+| `spec-deviation` | A deviation from a declared product or process specification. |
 | `ccp-deviation` | A deviation at a critical control point. |
-| `complaint` | A customer-side quality occurrence. |
-
-The event types available to an integration are defined by the active Food & Beverage profile. :contentReference[oaicite:1]{index=1}
-
-## Events and line states
-
-An [Event](event.md) and a [Line state](line-state.md) can describe different aspects of the same occurrence.
-
-For example, consider a line that stops because of a mechanical fault.
-
-The event records that a stoppage happened:
-
-```json
-{
-  "type": "stoppage",
-  "line": "L03",
-  "run": "L03-260810-002",
-  "reason": "MECH-BEARING",
-  "severity": 2,
-  "at": "2026-08-10T23:17:00+02:00",
-  "end": "2026-08-10T23:24:00+02:00"
-}
-```
-
-The corresponding line state accounts for the line time:
-
-```json
-{
-  "state": "breakdown",
-  "reason": "MECH-BEARING",
-  "from": "2026-08-10T23:17:00+02:00",
-  "to": "2026-08-10T23:24:00+02:00"
-}
-```
-
-The distinction is:
-
-```text
-Event      → something happened
-Line state → how line time was spent
-```
-
-The event is countable and can carry severity and production context.
-
-The line state contributes to continuous time accounting.
-
-Keeping them separate allows Pulse to answer both questions:
-
-- How often did breakdowns occur?
-- How much production time was lost to breakdowns?
-
-Collapsing the two would lose either the event count or the line-time accounting. :contentReference[oaicite:2]{index=2}
+| `changeover` | A discrete production changeover occurrence. |
+| `complaint` | A customer complaint occurrence. |
 
 ## Run and batch context
 
-Events should be associated with the production context in which they actually occurred.
+Use `run` when the event belongs to line production.
 
-For example, waste during filling belongs to the run:
+For example:
 
 ```json
 {
   "type": "waste",
-  "run": "L03-260810-002",
-  "at": "2026-08-10T23:40:00+02:00"
+  "line": "LINE001",
+  "run": "L01-260810-002",
+  "at": "2026-08-11T01:20:00+02:00"
 }
 ```
 
-Waste during a cook or other bulk process can instead belong to the batch:
+Use `batch` when the event belongs to bulk processing.
+
+For example:
 
 ```json
 {
   "type": "waste",
+  "line": "LINE001",
   "batch": "BULK-260810-07",
   "at": "2026-08-10T19:20:00+02:00"
 }
 ```
 
-This distinction prevents a process loss from being incorrectly attributed to a later packing run, or a packing loss from being attributed back to the process batch. :contentReference[oaicite:3]{index=3}
+> [!IMPORTANT]
+> Do not provide both `run` and `batch` for the same event.
+>
+> One occurrence should belong to one production context so that its impact is not counted twice.
 
-## Interval events
+## Instant and interval events
 
-Some events happen at a single instant.
+An event may happen at a single moment:
 
-Others, such as a stoppage, may have a duration.
+```json
+{
+  "type": "spec-deviation",
+  "line": "LINE001",
+  "run": "L01-260810-002",
+  "at": "2026-08-11T02:15:00+02:00"
+}
+```
 
-For an interval event, use `at` for the beginning and `end` for the end:
+Or it may last for a period of time:
 
 ```json
 {
   "type": "stoppage",
-  "line": "L03",
-  "at": "2026-08-10T23:17:00+02:00",
-  "end": "2026-08-10T23:24:00+02:00"
+  "line": "LINE001",
+  "run": "L01-260810-002",
+  "reason": "DTCU010",
+  "at": "2026-08-11T03:40:00+02:00",
+  "end": "2026-08-11T04:05:00+02:00"
 }
 ```
 
-For an instantaneous occurrence, omit `end`.
+Use `end` only when the event has a meaningful duration.
+
+## Events and line time
+
+A stoppage can appear both as an Event and as [Line time](line-time.md).
+
+These resources describe different aspects of the same occurrence:
+
+```mermaid
+flowchart LR
+    A["Stoppage occurs"]
+    A --> B["Event<br/>count, cause, severity"]
+    A --> C["Line time<br/>duration, time accounting"]
+```
+
+The Event records that the stoppage happened and provides its cause and severity.
+
+Line time records how much production-line time the stoppage consumed.
+
+For example:
+
+```json
+{
+  "type": "stoppage",
+  "line": "LINE001",
+  "run": "L01-260810-002",
+  "reason": "DTCU010",
+  "severity": 2,
+  "at": "2026-08-11T03:40:00+02:00",
+  "end": "2026-08-11T04:05:00+02:00"
+}
+```
+
+and:
+
+```json
+{
+  "line": "LINE001",
+  "state": "breakdown",
+  "reason": "DTCU010",
+  "toldBy": "equipment",
+  "from": "2026-08-11T03:40:00+02:00",
+  "to": "2026-08-11T04:05:00+02:00"
+}
+```
+
+are complementary records.
+
+The Event makes the occurrence countable and attributable. Line time makes the lost time part of complete production-time accounting.
+
+## Batching
+
+The specification describes Events as individual records.
+
+Whether the endpoint accepts arrays should be verified against the implementation before documenting batch submission.
 
 ## API resource
 
 | Resource | Base path |
 | --- | --- |
-| Event | `/services/pulse/food-beverage/events` |
+| `Event` | `/services/pulse/food-beverage/events` |
 
-See the [API reference](../api/index.md) for supported operations and complete request schemas.
+## API methods
 
-## Depends on
+> [!NOTE]
+> The API methods below are provisional until the Events implementation is available for verification.
 
-Depending on the event context, the event may reference:
+### Submit an event
 
-- [Run](run.md)
-- [Batch](batch.md)
-- [Production line](../master-data/production-line.md)
-- [Lot](../master-data/lot.md)
-- [Reason](../master-data/reason.md), when provided
+`POST /services/pulse/food-beverage/events/insert`
 
-Referenced records must be available before submitting the event.
+Records a discrete operational event.
+
+#### Request
+
+```http
+POST /services/pulse/food-beverage/events/insert
+Content-Type: application/json
+```
+
+```json
+{
+  "type": "stoppage",
+  "line": "LINE001",
+  "run": "L01-260810-002",
+  "reason": "DTCU010",
+  "severity": 2,
+  "at": "2026-08-11T03:40:00+02:00",
+  "end": "2026-08-11T04:05:00+02:00"
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `type` | string | yes | Event type. |
+| `line` | string | yes | Business code of the production line. |
+| `run` | string or null | no | Business code of the associated production run. |
+| `batch` | string or null | no | Business code of the associated process batch. |
+| `reason` | string or null | no | Business code of the associated reason. |
+| `severity` | integer or null | no | Severity from `1` to `5`. |
+| `at` | string | yes | Date and time when the event occurred or started. |
+| `end` | string or null | no | Date and time when the event ended. |
