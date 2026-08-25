@@ -1,10 +1,10 @@
 # Hold
 
-Represents a quality hold placed on a specific lot.
+<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
 
-A hold records the period during which material or finished product is withheld from normal use while a quality issue is investigated or resolved.
+Represents a quality hold placed on a finished lot.
 
-When the hold is resolved, record what happened to the held quantity using a disposition such as release, rework, downgrade, concession, scrap, or destroy.
+A hold records which lot was withheld, why it was held, how much stock was affected, and what was decided when the hold was resolved.
 
 ## The Hold object
 
@@ -12,22 +12,14 @@ When the hold is resolved, record what happened to the held quantity using a dis
 {
   "code": "HOLD-2211",
   "lot": "FG-260810-113",
-  "reason": "Metal detector challenge failed",
+  "product": "PRD001",
+  "reason": "DTC03",
   "quantity": 4200,
   "unit": "pcs",
-  "start": "2026-08-11T07:15:00+02:00"
-}
-```
-
-When the hold is resolved, submit the same `code` with the disposition and end time:
-
-```json
-{
-  "code": "HOLD-2211",
-  "disposition": "downgrade",
-  "quantity": 4200,
-  "recoveredUnitValue": 0.41,
-  "end": "2026-08-12T11:00:00+02:00"
+  "start": "2026-08-11T07:15:00+02:00",
+  "end": "2026-08-12T11:00:00+02:00",
+  "decision": "downgraded",
+  "recoveredUnitValue": 0.41
 }
 ```
 
@@ -37,105 +29,273 @@ When the hold is resolved, submit the same `code` with the disposition and end t
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Business code used to identify the hold in source systems and integrations. | `"HOLD-2211"` |
-| [`lot`](../master-data/lot.md) | string | Code of the lot placed on hold. | `"FG-260810-113"` |
-| [`reason`](../master-data/reason.md) | string | Reason for placing the lot on hold. | `"Metal detector challenge failed"` |
-| `quantity` | number | Quantity affected by the hold or its disposition. | `4200` |
+| `code` | string | Unique business code used to identify the hold. | `"HOLD-2211"` |
+| [`lot`](lot.md) | string | Business code of the finished lot placed on hold. | `"FG-260810-113"` |
+| [`product`](../master-data/product.md) | string or null | Optional business code of the product associated with the held lot. | `"PRD001"` |
+| [`reason`](../definitions-and-rules/reason.md) | string | Business code of the reason for the hold. | `"DTC03"` |
+| `quantity` | number | Quantity affected by the hold. | `4200` |
 | `unit` | string | Unit in which the held quantity is expressed. | `"pcs"` |
-| `start` | string | Timestamp when the hold started, in ISO 8601 format with an explicit offset. | `"2026-08-11T07:15:00+02:00"` |
-| `end` | string or null | Timestamp when the hold was resolved, in ISO 8601 format with an explicit offset. | `"2026-08-12T11:00:00+02:00"` |
-| `disposition` | string or null | Outcome assigned when the hold is resolved. | `"downgrade"` |
-| `recoveredUnitValue` | number or null | Unit value recovered when the disposition retains some commercial value. | `0.41` |
+| `start` | string | Date and time when the hold started, in ISO 8601 format. | `"2026-08-11T07:15:00+02:00"` |
+| `end` | string or null | Optional date and time when the hold was resolved. Omit while the hold is still open. | `"2026-08-12T11:00:00+02:00"` |
+| `decision` | string or null | Outcome of the hold. Supported values are `released`, `downgraded`, and `scrapped`. | `"downgraded"` |
+| `recoveredUnitValue` | number or null | Optional unit value recovered when the held product retains commercial value. | `0.41` |
 
 </div>
 
+> [!IMPORTANT]
+> `code` must be unique. Two holds cannot use the same code.
+>
+> `lot` and `reason` must reference existing records.
+>
+> When `product` is provided, it must reference an existing Product.
+
 ## Hold lifecycle
 
-A hold can be submitted as soon as the affected lot is withheld:
-
-```json
-{
-  "code": "HOLD-2211",
-  "lot": "FG-260810-113",
-  "reason": "Metal detector challenge failed",
-  "quantity": 4200,
-  "unit": "pcs",
-  "start": "2026-08-11T07:15:00+02:00"
-}
-```
-
-When a decision is made, submit the same `code` with the fields that became known:
-
-```json
-{
-  "code": "HOLD-2211",
-  "disposition": "downgrade",
-  "quantity": 4200,
-  "recoveredUnitValue": 0.41,
-  "end": "2026-08-12T11:00:00+02:00"
-}
-```
-
-Fields omitted from the second request remain unchanged.
-
-The time between `start` and `end` represents how long the lot remained on hold.
-
-## Disposition
-
-A resolved hold uses one of six dispositions:
-
-| Disposition | Meaning |
-| --- | --- |
-| `release` | Return the held quantity to normal use. |
-| `rework` | Send the quantity through additional processing. |
-| `downgrade` | Retain the product at a lower grade or value. |
-| `concession` | Accept the quantity under an approved concession. |
-| `scrap` | Remove the quantity from usable production. |
-| `destroy` | Destroy the affected quantity. |
-
-These outcomes are kept separate because non-conforming product does not always represent a complete loss.
-
-For example, off-spec product may be downgraded and sold at a lower value, or recovered through rework rather than being scrapped. :contentReference[oaicite:1]{index=1}
-
-## Recovered value
-
-When a disposition retains commercial value, `recoveredUnitValue` records the value known when the disposition decision is made.
+A hold remains open while `end` is not provided.
 
 For example:
 
 ```json
 {
   "code": "HOLD-2211",
-  "disposition": "downgrade",
+  "lot": "FG-260810-113",
+  "product": "PRD001",
+  "reason": "DTC03",
   "quantity": 4200,
-  "recoveredUnitValue": 0.41,
-  "end": "2026-08-12T11:00:00+02:00"
+  "unit": "pcs",
+  "start": "2026-08-11T07:15:00+02:00"
 }
 ```
 
-Recording the recovered value allows Pulse to distinguish a partial loss from a complete loss.
+When the investigation is complete, close the hold with `end` and the resulting `decision`:
 
-The value belongs to the disposition decision rather than to the original hold because the recoverable value may not be known until the investigation is complete. :contentReference[oaicite:2]{index=2}
+```json
+{
+  "code": "HOLD-2211",
+  "end": "2026-08-12T11:00:00+02:00",
+  "decision": "downgraded",
+  "recoveredUnitValue": 0.41
+}
+```
+
+The time between `start` and `end` represents how long the finished stock remained on hold.
+
+## Decision
+
+A resolved hold can have one of these decisions:
+
+| Decision | Meaning |
+| --- | --- |
+| `released` | The held stock is released for normal use or sale. |
+| `downgraded` | The stock is retained but at a lower grade or value. |
+| `scrapped` | The held stock is discarded. |
+
+A hold with no decision is still unresolved.
+
+## Recovered value
+
+`recoveredUnitValue` records the actual unit value retained when held stock is downgraded or otherwise retains some commercial value.
+
+For example:
+
+```json
+{
+  "decision": "downgraded",
+  "recoveredUnitValue": 0.41
+}
+```
+
+The value should reflect what the unit was worth at the time the decision was made.
+
+This allows Pulse to distinguish partial loss from complete loss without recalculating historical value from a later price list.
 
 ## Why hold duration matters
 
-A hold is treated as work with a beginning and an end rather than as a single quality event.
+A hold is treated as an activity with a beginning and an end rather than as a single event.
 
-While a lot is on hold, stock is unavailable and quality work is required to reach a decision.
+While stock is held, it is unavailable and quality work is required to reach a decision.
 
-Pulse can therefore compare hold duration across products, causes, lines, or other production context and identify situations where quality deviations take unusually long to resolve.
+Recording `start` and `end` allows hold duration to be compared across products, reasons, and other production context.
 
 ## API resource
 
 | Resource | Base path |
 | --- | --- |
-| Hold | `/services/pulse/food-beverage/holds` |
+| `Hold` | `/services/pulse/food-beverage/holds` |
 
-See the [API reference](../api/index.md) for supported operations and complete request schemas.
+## API methods
 
-## Depends on
+> [!NOTE]
+> The API methods below follow the current Food & Beverage service pattern and are provisional until the Holds implementation is available for verification.
 
-- [Lot](../master-data/lot.md)
-- [Reason](../master-data/reason.md)
+### Create a hold
 
-The referenced lot and reason must be available before submitting the hold.
+`POST /services/pulse/food-beverage/holds/insert`
+
+Creates a new quality hold.
+
+#### Request
+
+```http
+POST /services/pulse/food-beverage/holds/insert
+Content-Type: application/json
+```
+
+```json
+{
+  "code": "HOLD-2211",
+  "lot": "FG-260810-113",
+  "product": "PRD001",
+  "reason": "DTC03",
+  "quantity": 4200,
+  "unit": "pcs",
+  "start": "2026-08-11T07:15:00+02:00"
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | string | yes | Unique business code of the hold. |
+| `lot` | string | yes | Business code of the finished lot. |
+| `product` | string or null | no | Business code of the associated product. |
+| `reason` | string | yes | Business code of the reason for the hold. |
+| `quantity` | number | yes | Quantity placed on hold. |
+| `unit` | string | yes | Unit of the held quantity. |
+| `start` | string | yes | Date and time when the hold started. |
+| `end` | string or null | no | Date and time when the hold was resolved. |
+| `decision` | string or null | no | `released`, `downgraded`, or `scrapped`. |
+| `recoveredUnitValue` | number or null | no | Recovered value per unit. |
+
+
+### Update a hold
+
+`PUT /services/pulse/food-beverage/holds/update`
+
+Updates an existing quality hold.
+
+#### Request
+
+```http
+PUT /services/pulse/food-beverage/holds/update
+Content-Type: application/json
+```
+
+```json
+{
+  "code": "HOLD-2211",
+  "lot": "FG-260810-113",
+  "product": "PRD001",
+  "reason": "DTC03",
+  "quantity": 4200,
+  "unit": "pcs",
+  "start": "2026-08-11T07:15:00+02:00",
+  "end": "2026-08-12T11:00:00+02:00",
+  "decision": "downgraded",
+  "recoveredUnitValue": 0.41
+}
+```
+
+
+### Patch a hold
+
+`PATCH /services/pulse/food-beverage/holds/patch`
+
+Partially updates an existing hold.
+
+The fields to update are supplied in the `properties` object. The hold is identified by its business `code`.
+
+#### Request
+
+```http
+PATCH /services/pulse/food-beverage/holds/patch
+Content-Type: application/json
+```
+
+```json
+{
+  "properties": {
+    "code": "HOLD-2211",
+    "end": "2026-08-12T11:00:00+02:00",
+    "decision": "downgraded",
+    "recoveredUnitValue": 0.41
+  }
+}
+```
+
+
+### Retrieve a hold
+
+`GET /services/pulse/food-beverage/holds/select`
+
+Returns the hold identified by its business code.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/holds/select?id=HOLD-2211
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the hold to retrieve. |
+
+#### Example response
+
+```json
+{
+  "code": "HOLD-2211",
+  "lot": "FG-260810-113",
+  "product": "PRD001",
+  "reason": "DTC03",
+  "quantity": 4200,
+  "unit": "pcs",
+  "start": "2026-08-11T07:15:00+02:00",
+  "end": "2026-08-12T11:00:00+02:00",
+  "decision": "downgraded",
+  "recoveredUnitValue": 0.41
+}
+```
+
+
+### List holds
+
+`GET /services/pulse/food-beverage/holds/query`
+
+Returns holds matching the supplied filters.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/holds/query?product=PRD001&decision=downgraded
+```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `product` | string | no | Limits results to holds for the specified product. |
+| `decision` | string | no | Limits results to holds with the specified decision. |
+| `open` | boolean | no | When `true`, returns holds that have not yet been resolved. |
+
+
+### Delete a hold
+
+`DELETE /services/pulse/food-beverage/holds/delete`
+
+Deletes the hold identified by its business code.
+
+#### Request
+
+```http
+DELETE /services/pulse/food-beverage/holds/delete?id=HOLD-2211
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the hold to delete. |
