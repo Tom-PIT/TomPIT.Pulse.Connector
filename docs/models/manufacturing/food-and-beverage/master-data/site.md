@@ -8,6 +8,7 @@ A site is the root of the manufacturing hierarchy. Production lines belong to a 
 
 ```json
 {
+  "id": 123,
   "code": "PLT001",
   "name": "Munich"
 }
@@ -19,6 +20,7 @@ A site is the root of the manufacturing hierarchy. Production lines belong to a 
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
+| `id` | integer | Pulse identifier of the site. Returned by Pulse and used where an API method requires an internal identifier. | `123` |
 | `code` | string | Unique business code used to identify the site in external systems and integrations. | `"PLT001"` |
 | `name` | string | Human-readable name of the site. | `"Munich"` |
 
@@ -148,6 +150,7 @@ GET /services/pulse/food-beverage/plants/select?id=PLT001
 
 ```json
 {
+  "id": 123,
   "code": "PLT001",
   "name": "Munich"
 }
@@ -180,6 +183,7 @@ GET /services/pulse/food-beverage/plants/query?codes=PLT001&names=Munich
 ```json
 [
   {
+    "id": 123,
     "code": "PLT001",
     "name": "Munich"
   }

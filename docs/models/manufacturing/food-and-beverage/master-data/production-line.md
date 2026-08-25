@@ -8,9 +8,10 @@ A production line belongs to exactly one site.
 
 ```json
 {
+  "id": 123,
   "code": "LINE001",
   "name": "Yogurt filling line 1",
-  "site": "PLT001"
+  "parent": "PLT001"
 }
 ```
 
@@ -20,14 +21,17 @@ A production line belongs to exactly one site.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Business code used to identify the production line in external systems and integrations. | `"LINE001"` |
+| `id` | integer | Pulse identifier of the production line. Returned by Pulse and used where an API method requires an internal identifier. | `123` |
+| `code` | string | Unique business code used to identify the production line in external systems and integrations. | `"LINE001"` |
 | `name` | string | Human-readable name of the production line. | `"Yogurt filling line 1"` |
-| [`site`](site.md) | string | Business code of the site the production line belongs to. | `"PLT001"` |
-
-> [!IMPORTANT]
-> The [`site`](site.md) reference must already exist before the vessel is submitted.
+| [`parent`](site.md) | string | Business code of the site the production line belongs to. | `"PLT001"` |
 
 </div>
+
+> [!IMPORTANT]
+> `code` must be unique. Two production lines cannot use the same code.
+>
+> The site referenced by `parent` must already exist before the production line is submitted.
 
 See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
 
@@ -41,14 +45,14 @@ See [Types and attributes](types-and-attributes.md) for guidance on extensible m
 
 ### Create a production line
 
-`POST /services/pulse/food-beverage/lines`
+`POST /services/pulse/food-beverage/lines/insert`
 
 Creates a new production line.
 
 #### Request
 
 ```http
-POST /services/pulse/food-beverage/lines
+POST /services/pulse/food-beverage/lines/insert
 Content-Type: application/json
 ```
 
@@ -56,7 +60,7 @@ Content-Type: application/json
 {
   "code": "LINE001",
   "name": "Yogurt filling line 1",
-  "site": "PLT001"
+  "parent": "PLT001"
 }
 ```
 
@@ -64,21 +68,21 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Business code of the production line. |
+| `code` | string | yes | Unique business code of the production line. |
 | `name` | string | yes | Human-readable name of the production line. |
-| `site` | string | yes | Business code of the site the production line belongs to. |
+| `parent` | string | yes | Business code of the site the production line belongs to. |
 
 
 ### Update a production line
 
-`PUT /services/pulse/food-beverage/lines`
+`PUT /services/pulse/food-beverage/lines/update`
 
 Updates an existing production line.
 
 #### Request
 
 ```http
-PUT /services/pulse/food-beverage/lines
+PUT /services/pulse/food-beverage/lines/update
 Content-Type: application/json
 ```
 
@@ -86,42 +90,42 @@ Content-Type: application/json
 {
   "code": "LINE001",
   "name": "Yogurt filling line 1",
-  "site": "PLT002"
+  "parent": "PLT002"
 }
 ```
 
-Changing `site` moves the production line to another site.
+Changing `parent` moves the production line to another site.
 
 #### Parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Business code of the production line to update. |
+| `code` | string | yes | Unique business code of the production line to update. |
 | `name` | string | yes | Human-readable name of the production line. |
-| `site` | string | yes | Business code of the site the production line belongs to. |
+| `parent` | string | yes | Business code of the site the production line belongs to. |
 
 
 ### Patch a production line
 
-`PATCH /services/pulse/food-beverage/lines`
+`PATCH /services/pulse/food-beverage/lines/patch`
 
 Partially updates an existing production line.
 
-The fields to update are supplied in the `properties` object.
+The production line is identified by its `id`. The fields to update are supplied in the `properties` object.
 
 #### Request
 
 ```http
-PATCH /services/pulse/food-beverage/lines
+PATCH /services/pulse/food-beverage/lines/patch
 Content-Type: application/json
 ```
 
 ```json
 {
+  "id": 123,
   "properties": {
-    "code": "LINE001",
     "name": "Yogurt filling line 1A",
-    "site": "PLT002"
+    "parent": "PLT002"
   }
 }
 ```
@@ -130,68 +134,80 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
+| `id` | integer | yes | Identifier of the production line to update. |
 | `properties` | object | yes | Fields included in the partial update. |
-| `properties.code` | string | yes | Business code of the production line to update. |
+| `properties.code` | string | no | New unique business code of the production line. |
 | `properties.name` | string | no | New human-readable name of the production line. |
-| `properties.site` | string | no | Business code of the site the production line should belong to. |
+| `properties.parent` | string | no | Business code of the site the production line should belong to. |
 
 
 ### Retrieve a production line
 
-`GET /services/pulse/food-beverage/lines/{code}`
+`GET /services/pulse/food-beverage/lines/select`
 
 Returns the production line identified by its business code.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/lines/LINE001
+GET /services/pulse/food-beverage/lines/select?id=LINE001
 ```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the production line to retrieve. |
 
 #### Example response
 
 ```json
 {
+  "id": 123,
   "code": "LINE001",
   "name": "Yogurt filling line 1",
-  "site": "PLT001"
+  "parent": "PLT001"
 }
 ```
 
 
 ### List production lines
 
-`GET /services/pulse/food-beverage/lines`
+`GET /services/pulse/food-beverage/lines/query`
 
 Returns production lines matching the supplied filters.
 
-Production lines can be filtered by site.
+Production lines can be filtered by code, name, and parent site.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/lines?site=PLT001
+GET /services/pulse/food-beverage/lines/query?parents=PLT001
 ```
 
 #### Query parameters
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `site` | string | Limits results to production lines belonging to the specified site. |
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `codes` | string or array of strings | no | Limits results to production lines with the specified business codes. |
+| `names` | string or array of strings | no | Limits results to production lines with the specified names. |
+| `parents` | string or array of strings | no | Limits results to production lines belonging to the specified sites. |
 
 #### Example response
 
 ```json
 [
   {
+    "id": 123,
     "code": "LINE001",
     "name": "Yogurt filling line 1",
-    "site": "PLT001"
+    "parent": "PLT001"
   },
   {
+    "id": 124,
     "code": "LINE002",
     "name": "Yogurt filling line 2",
-    "site": "PLT001"
+    "parent": "PLT001"
   }
 ]
 ```
@@ -199,12 +215,18 @@ GET /services/pulse/food-beverage/lines?site=PLT001
 
 ### Delete a production line
 
-`DELETE /services/pulse/food-beverage/lines/{code}`
+`DELETE /services/pulse/food-beverage/lines/delete`
 
 Deletes the production line identified by its business code.
 
 #### Request
 
 ```http
-DELETE /services/pulse/food-beverage/lines/LINE001
+DELETE /services/pulse/food-beverage/lines/delete?id=LINE001
 ```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the production line to delete. |
