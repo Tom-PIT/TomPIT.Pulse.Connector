@@ -1,17 +1,15 @@
 # Line time
 
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, batching behavior, correction rules, and examples against the current code. -->
+Records intervals when a Production line was in a declared non-running or constrained condition.
 
-Records intervals when a production line was not running normally.
-
-Line time is used to account for production losses such as breakdowns, micro-stops, waiting, or other non-running states.
+Line time is used to account for production losses such as breakdowns, micro-stops, waiting, or other non-running conditions.
 
 ## The Line time object
 
 ```json
 {
   "line": "LINE001",
-  "state": "breakdown",
+  "condition": "breakdown",
   "reason": "DTCU010",
   "toldBy": "equipment",
   "from": "2026-08-11T03:40:00+02:00",
@@ -25,25 +23,27 @@ Line time is used to account for production losses such as breakdowns, micro-sto
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| [`line`](../master-data/production-line.md) | string | Business code of the production line. | `"LINE001"` |
-| `state` | string | State code describing the non-running or constrained interval. Do not submit `running`. | `"breakdown"` |
+| [`line`](../master-data/production-line.md) | string | Business code of the Production line. | `"LINE001"` |
+| `condition` | string | Registered line-condition code. The productive `running` condition must not be submitted explicitly. | `"breakdown"` |
 | [`reason`](../definitions-and-rules/reason.md) | string or null | Optional registered Reason code or free-text explanation. | `"DTCU010"` |
-| `toldBy` | string | Source of the state information. Supported values are `equipment` and `operator`. | `"equipment"` |
+| `toldBy` | string | Source of the condition information. Supported values are `equipment` and `operator`. | `"equipment"` |
 | `from` | string | Date and time when the interval started, in ISO 8601 format. | `"2026-08-11T03:40:00+02:00"` |
-| `to` | string or null | Optional date and time when the interval ended. Omit while the interval is still open. | `"2026-08-11T04:05:00+02:00"` |
+| `to` | string or null | Date and time when the interval ended, or `null` while it remains open. | `"2026-08-11T04:05:00+02:00"` |
 
 </div>
 
 > [!IMPORTANT]
-> `line`, `state`, and `from` together identify a Line time record.
+> `line`, `condition`, and `from` together identify a Line time record.
 >
-> Intervals for the same line must not overlap.
+> `line` must reference an existing Production line.
 >
-> Do not submit `running` intervals.
+> `condition` must be a registered value of the `state` Type.
+>
+> Do not submit the `running` condition.
 
 ## Running time
 
-Only non-running or constrained states are submitted.
+The productive `running` condition is not recorded explicitly.
 
 For example:
 
@@ -56,9 +56,27 @@ flowchart LR
     A --> B --> C
 ```
 
-Only the `Breakdown` interval is submitted to `/line-time`. The gaps around it are interpreted as running time.
+Only the `breakdown` interval is submitted.
 
-Submitting explicit `running` intervals would duplicate that residual time and prevent the line-time accounting from closing correctly.
+When Line time is queried for a bounded time window and `running` is requested, Pulse can derive the productive intervals from gaps between the explicitly recorded conditions.
+
+For example:
+
+```http
+GET /services/pulse/food-beverage/line-time/query?lines=LINE001&conditions=running&from=2026-08-10T22:00:00%2B02:00&to=2026-08-11T00:00:00%2B02:00
+```
+
+may return the two running intervals surrounding the recorded breakdown.
+
+Derived `running` intervals have:
+
+```json
+{
+  "condition": "running",
+  "reason": null,
+  "toldBy": "equipment"
+}
+```
 
 ## Open intervals
 
@@ -67,19 +85,19 @@ An interval can be submitted before its end time is known:
 ```json
 {
   "line": "LINE001",
-  "state": "breakdown",
+  "condition": "breakdown",
   "reason": "DTCU010",
   "toldBy": "equipment",
   "from": "2026-08-11T03:40:00+02:00"
 }
 ```
 
-When the state ends, submit the same interval with `to`:
+When the condition ends, the existing interval can be corrected by submitting the same `line`, `condition`, and `from` with `to`:
 
 ```json
 {
   "line": "LINE001",
-  "state": "breakdown",
+  "condition": "breakdown",
   "reason": "DTCU010",
   "toldBy": "equipment",
   "from": "2026-08-11T03:40:00+02:00",
@@ -87,87 +105,54 @@ When the state ends, submit the same interval with `to`:
 }
 ```
 
-The record is identified by the same `line`, `state`, and `from`.
+```text
+to = null    → open
+to supplied  → closed
+```
 
-## Interval ordering and overlap
+## Condition identity and corrections
 
-Line time records may arrive in any order.
+A Line time interval is identified by:
 
-For example, a later import may contain an older interval that was entered after the fact.
-
-As long as the interval does not overlap another state for the same line, it can still be recorded.
-
-Two intervals covering the same time on the same line are not valid.
+```text
+line + condition + from
+```
 
 For example:
 
-```mermaid
-flowchart LR
-    A["Breakdown<br/>03:40–04:05"]
-    B["Micro-stop<br/>03:55–04:10"]
-
-    A -. "overlaps" .- B
+```text
+LINE001 / breakdown / 2026-08-11T03:40:00+02:00
 ```
-These intervals overlap and cannot both describe the line at the same time.
 
+Submitting `insert` again with the same composite key updates the existing interval rather than creating another one.
 
-> [!WARNING]
-> Two Line time records for the same production line must not cover the same period.
+This allows source systems to resend an interval later when its end time or other details become known.
 
+## Source of the condition
 
-## Source of the state
-
-`toldBy` records how the state was identified.
+`toldBy` records how the condition was identified.
 
 | Value | Meaning |
 | --- | --- |
-| `equipment` | The state was reported automatically by equipment or another production system. |
-| `operator` | The state was declared manually by an operator. |
-
-This allows Pulse to preserve the provenance of the operational state rather than treating automatically detected and manually entered states as equivalent evidence.
+| `equipment` | The condition was reported automatically by equipment or another production system. |
+| `operator` | The condition was declared manually by an operator. |
 
 ## Reasons
 
-`reason` can provide additional context for the state.
+`reason` can provide additional context for the condition.
 
-When the source system has a registered reason code, use the code:
+When the source system has a registered Reason code, use that code:
 
 ```json
 {
-  "state": "breakdown",
+  "condition": "breakdown",
   "reason": "DTCU010"
 }
 ```
 
-Free text may also be supplied where no registered reason exists.
+Free text may also be supplied when no registered Reason exists.
 
-Using registered [Reason](../definitions-and-rules/reason.md) codes provides more consistent grouping and analysis across intervals.
-
-## Batching
-
-The specification shows Line time accepting multiple intervals in one request:
-
-```json
-[
-  {
-    "line": "LINE001",
-    "state": "breakdown",
-    "reason": "DTCU010",
-    "toldBy": "equipment",
-    "from": "2026-08-11T03:40:00+02:00",
-    "to": "2026-08-11T04:05:00+02:00"
-  },
-  {
-    "line": "LINE001",
-    "state": "micro-stop",
-    "toldBy": "equipment",
-    "from": "2026-08-11T01:22:00+02:00",
-    "to": "2026-08-11T01:26:00+02:00"
-  }
-]
-```
-
-The exact batching behavior should be verified once the implementation is available.
+Using registered [Reason](../definitions-and-rules/reason.md) codes provides more consistent grouping and analysis.
 
 ## API resource
 
@@ -177,14 +162,13 @@ The exact batching behavior should be verified once the implementation is availa
 
 ## API methods
 
-> [!NOTE]
-> The API methods below are provisional until the Line time implementation is available for verification.
-
 ### Submit line time
 
 `POST /services/pulse/food-beverage/line-time/insert`
 
-Records one or more non-running or constrained line intervals.
+Records one non-running or constrained Line time interval.
+
+If an interval with the same `line`, `condition`, and `from` already exists, the existing interval is updated.
 
 #### Request
 
@@ -194,32 +178,157 @@ Content-Type: application/json
 ```
 
 ```json
-[
-  {
-    "line": "LINE001",
-    "state": "breakdown",
-    "reason": "DTCU010",
-    "toldBy": "equipment",
-    "from": "2026-08-11T03:40:00+02:00",
-    "to": "2026-08-11T04:05:00+02:00"
-  },
-  {
-    "line": "LINE001",
-    "state": "micro-stop",
-    "toldBy": "equipment",
-    "from": "2026-08-11T01:22:00+02:00",
-    "to": "2026-08-11T01:26:00+02:00"
-  }
-]
+{
+  "line": "LINE001",
+  "condition": "breakdown",
+  "reason": "DTCU010",
+  "toldBy": "equipment",
+  "from": "2026-08-11T03:40:00+02:00",
+  "to": "2026-08-11T04:05:00+02:00"
+}
 ```
 
 #### Parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `line` | string | yes | Business code of the production line. |
-| `state` | string | yes | Non-running or constrained line-state code. |
+| `line` | string | yes | Business code of the Production line. |
+| `condition` | string | yes | Registered line-condition code. `running` is not accepted. |
 | `reason` | string or null | no | Registered Reason code or free-text explanation. |
 | `toldBy` | string | yes | `equipment` or `operator`. |
 | `from` | string | yes | Date and time when the interval started. |
 | `to` | string or null | no | Date and time when the interval ended. |
+
+### Update line time
+
+`PUT /services/pulse/food-beverage/line-time/update`
+
+Updates the Line time interval identified by `line`, `condition`, and `from`.
+
+#### Request
+
+```http
+PUT /services/pulse/food-beverage/line-time/update
+Content-Type: application/json
+```
+
+```json
+{
+  "line": "LINE001",
+  "condition": "breakdown",
+  "reason": "DTCU010",
+  "toldBy": "equipment",
+  "from": "2026-08-11T03:40:00+02:00",
+  "to": "2026-08-11T04:10:00+02:00"
+}
+```
+
+### Patch line time
+
+`PATCH /services/pulse/food-beverage/line-time/patch`
+
+Partially updates an existing Line time interval.
+
+The interval is identified by `properties.line`, `properties.condition`, and `properties.from`. All three are required.
+
+`reason` and `to` can be explicitly cleared by including them with a null value.
+
+#### Request
+
+```http
+PATCH /services/pulse/food-beverage/line-time/patch
+Content-Type: application/json
+```
+
+```json
+{
+  "properties": {
+    "line": "LINE001",
+    "condition": "breakdown",
+    "from": "2026-08-11T03:40:00+02:00",
+    "to": "2026-08-11T04:10:00+02:00"
+  }
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.line` | string | yes | Production-line business code identifying the interval. |
+| `properties.condition` | string | yes | Condition code identifying the interval. |
+| `properties.from` | string | yes | Start time identifying the interval. |
+| `properties.reason` | string or null | no | New Reason or free-text explanation, or `null` to clear it. |
+| `properties.toldBy` | string | no | New reporter: `equipment` or `operator`. |
+| `properties.to` | string or null | no | New end time, or `null` to leave the interval open. |
+
+### Retrieve line time
+
+`GET /services/pulse/food-beverage/line-time/select`
+
+Returns the Line time interval identified by its composite business key.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/line-time/select?line=LINE001&condition=breakdown&from=2026-08-11T03:40:00%2B02:00
+```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `line` | string | yes | Business code of the Production line. |
+| `condition` | string | yes | Condition code. |
+| `from` | string | yes | Interval start date and time. |
+
+### List line time
+
+`GET /services/pulse/food-beverage/line-time/query`
+
+Returns Line time intervals matching the supplied filters.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/line-time/query?lines=LINE001&conditions=breakdown
+```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `lines` | string or array of strings | no | Limits results to the specified Production lines. |
+| `conditions` | string or array of strings | no | Limits results to the specified conditions. |
+| `reasons` | string or array of strings | no | Limits results to the specified Reasons or reason strings. |
+| `toldBy` | string or array of strings | no | Limits results to the specified reporters. |
+| `from` | string | no | Beginning of the requested time window. |
+| `to` | string | no | End of the requested time window. |
+| `open` | boolean | no | `true` returns open intervals; `false` returns closed intervals. |
+
+Multiple values can be supplied by repeating the query parameter:
+
+```http
+GET /services/pulse/food-beverage/line-time/query?conditions=breakdown&conditions=micro-stop
+```
+
+### Delete line time
+
+`DELETE /services/pulse/food-beverage/line-time/delete`
+
+Deletes the Line time interval identified by its composite business key.
+
+#### Request
+
+```http
+DELETE /services/pulse/food-beverage/line-time/delete?line=LINE001&condition=breakdown&from=2026-08-11T03:40:00%2B02:00
+```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `line` | string | yes | Business code of the Production line. |
+| `condition` | string | yes | Condition code. |
+| `from` | string | yes | Interval start date and time. |

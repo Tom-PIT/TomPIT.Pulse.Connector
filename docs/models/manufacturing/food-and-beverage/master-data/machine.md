@@ -1,6 +1,6 @@
 # Machine
 
-Represents a machine, equipment asset, component, or sensor in Pulse.
+Represents a machine, equipment asset, or component in Pulse.
 
 Machines can be organised hierarchically. A machine can belong to another machine, a production line, or a site.
 

@@ -1,10 +1,8 @@
 # Reading
 
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, batching behavior, correction rules, and examples against the current code. -->
-
 Records a measured value captured at a specific point in time.
 
-Readings can describe lines, machines, vessels, runs, batches, or lots, including individual pack weights and other high-frequency measurements.
+Readings can describe production resources and activities such as lines, machines, vessels, Runs, Batches, and Lots, including individual pack weights and other high-frequency measurements.
 
 ## The Reading object
 
@@ -24,24 +22,28 @@ Readings can describe lines, machines, vessels, runs, batches, or lots, includin
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `subject` | string | Business code of the line, machine, vessel, run, batch, or lot being measured. | `"EQ003"` |
+| `subject` | string | Business code of the resource or production activity being measured. | `"EQ003"` |
 | [`measure`](../definitions-and-rules/measurement.md) | string | Business code of the Measurement being captured. | `"product-temp-holding"` |
-| `value` | number, string, or boolean | Measured value. Its type must match the Measurement definition. | `74.2` |
-| [`sensor`](../master-data/machine.md) | string or null | Optional business code of the sensor, probe, or filling head that produced the reading. | `"EQ003-TT-HOLD"` |
+| `value` | number, string, or boolean | Measured value. Its interpretation is determined by the Measurement definition. | `74.2` |
+| `sensor` | string or null | Optional registered sensor, probe, filling-head, or other measurement-source code. | `"EQ003-TT-HOLD"` |
 | `at` | string | Date and time when the value was captured, in ISO 8601 format. | `"2026-08-10T22:11:00+02:00"` |
 
 </div>
 
 > [!IMPORTANT]
-> `measure`, `subject`, `sensor`, and `at` together identify a reading.
+> `subject`, `measure`, `sensor`, and `at` together identify a Reading.
 >
-> `sensor` is part of the key when provided and must not be omitted when several sensors can report the same measurement for the same subject and timestamp.
+> `subject` must identify an existing resource or production activity.
+>
+> `measure` must reference an existing Measurement.
+>
+> When `sensor` is provided, it must reference an existing registered measurement source.
 
 ## Choosing the subject
 
-`subject` identifies exactly one object or activity that the reading describes.
+`subject` identifies the object or production activity that the measured value describes.
 
-Supported subjects include:
+Typical subjects include:
 
 - Production line
 - Machine
@@ -53,60 +55,69 @@ Supported subjects include:
 For example:
 
 ```json
-[
-  {
-    "subject": "EQ003",
-    "measure": "product-temp-holding",
-    "value": 74.2,
-    "sensor": "EQ003-TT-HOLD",
-    "at": "2026-08-10T22:11:00+02:00"
-  },
-  {
-    "subject": "L01-260810-002",
-    "measure": "fill-weight",
-    "value": 128.4,
-    "sensor": "EQ010-H06",
-    "at": "2026-08-10T22:11:02+02:00"
-  }
-]
+{
+  "subject": "EQ003",
+  "measure": "product-temp-holding",
+  "value": 74.2,
+  "sensor": "EQ003-TT-HOLD",
+  "at": "2026-08-10T22:11:00+02:00"
+}
 ```
 
-Attach the reading to the subject the value actually describes.
+A Run-level reading could instead use:
 
-For example, a vessel temperature should use the Vessel as its subject rather than the production line it supplies.
+```json
+{
+  "subject": "L01-260810-002",
+  "measure": "fill-weight",
+  "value": 128.4,
+  "sensor": "EQ010-H06",
+  "at": "2026-08-10T22:11:02+02:00"
+}
+```
+
+Attach the Reading to the subject the value actually describes.
+
+For example, a Vessel temperature should use the Vessel as its subject rather than the Production line it supplies.
+
+> [!IMPORTANT]
+> A subject code must resolve unambiguously. The same code must not identify both a resource and a production activity.
 
 ## Sensors
 
-Use `sensor` when several measurement points can report the same measurement on the same subject.
+Use `sensor` when the source of the measurement needs to be preserved or when several measurement points can report the same Measurement for the same subject.
 
 For example:
 
 ```json
-[
-  {
-    "subject": "EQ003",
-    "measure": "product-temp",
-    "value": 74.2,
-    "sensor": "EQ003-TT-01",
-    "at": "2026-08-10T22:11:00+02:00"
-  },
-  {
-    "subject": "EQ003",
-    "measure": "product-temp",
-    "value": 74.4,
-    "sensor": "EQ003-TT-02",
-    "at": "2026-08-10T22:11:00+02:00"
-  }
-]
+{
+  "subject": "EQ003",
+  "measure": "product-temp",
+  "value": 74.2,
+  "sensor": "EQ003-TT-01",
+  "at": "2026-08-10T22:11:00+02:00"
+}
 ```
 
-Without the sensor code, these readings would otherwise have the same key.
+and:
 
-Sensors and filling heads are represented through the [Machine](../master-data/machine.md) resource.
+```json
+{
+  "subject": "EQ003",
+  "measure": "product-temp",
+  "value": 74.4,
+  "sensor": "EQ003-TT-02",
+  "at": "2026-08-10T22:11:00+02:00"
+}
+```
+
+represent two different Readings because `sensor` is part of the composite key.
+
+If no sensor needs to be distinguished, `sensor` can be omitted.
 
 ## Value type
 
-The type of `value` must match the value type declared by the Measurement.
+The Measurement definition determines how `value` is interpreted.
 
 Examples include:
 
@@ -116,7 +127,7 @@ Examples include:
 }
 ```
 
-for a continuous measurement,
+for a numeric Measurement,
 
 ```json
 {
@@ -124,7 +135,7 @@ for a continuous measurement,
 }
 ```
 
-for a Boolean measurement, or:
+for a Boolean Measurement, or:
 
 ```json
 {
@@ -132,13 +143,13 @@ for a Boolean measurement, or:
 }
 ```
 
-for a categorical measurement.
+for a categorical Measurement.
 
-A value that does not match the declared Measurement type is rejected.
+Values must be compatible with the Measurement's declared value type.
 
 ## Individual pack weights
 
-Individual pack weights are submitted as Readings.
+Individual pack weights can be submitted as Readings.
 
 For example:
 
@@ -152,55 +163,52 @@ For example:
 }
 ```
 
-The `sensor` identifies the filling head that produced the pack.
+The `sensor` can identify the filling head or measurement point that produced the value.
 
-Submit individual weighments rather than an average.
-
-Individual values preserve the variation needed to compare filling heads and identify systematic overfill, underfill, or instability.
+Submitting individual weighments rather than only averages preserves the variation needed to compare filling heads and identify systematic overfill, underfill, or instability.
 
 ## Plausibility
 
-Pulse can use the plausible bounds declared on the [Measurement](../definitions-and-rules/measurement.md) to identify readings that fall outside the expected sensor range.
+Numeric Measurements can define plausible bounds through `minValue` and `maxValue`.
 
-Such values can be retained as suspect data rather than silently discarded, allowing them to be excluded deliberately during analysis.
+When a Reading falls outside those bounds, Pulse retains the submitted value but marks it as bad-quality data internally.
+
+This allows suspicious measurements to remain traceable rather than being silently discarded.
 
 ## Measurements and settings
 
 Readings contain values that were actually measured.
 
-Commanded or configured values are submitted separately through [Settings](settings.md).
+Commanded or configured values are submitted separately through [Setting](setting.md).
 
 ```text
-Measured value  → Readings
-Commanded value → Settings
+Measured value  → Reading
+Commanded value → Setting
 ```
 
-The Measurement definition determines whether a code represents a Measurement or a Setpoint.
+## Corrections
 
-## Batching
+A Reading is identified by:
 
-The specification shows Readings accepting multiple records in one request:
-
-```json
-[
-  {
-    "subject": "EQ003",
-    "measure": "product-temp-holding",
-    "value": 74.2,
-    "sensor": "EQ003-TT-HOLD",
-    "at": "2026-08-10T22:11:00+02:00"
-  },
-  {
-    "subject": "L01-260810-002",
-    "measure": "fill-weight",
-    "value": 128.4,
-    "sensor": "EQ010-H06",
-    "at": "2026-08-10T22:11:02+02:00"
-  }
-]
+```text
+subject + measure + sensor + at
 ```
 
-The exact batching behavior should be verified once the implementation is available.
+When no sensor was supplied, the sensor component is null.
+
+Use `update` or `patch` to correct the measured value while keeping the same composite key.
+
+For example, to correct:
+
+```text
+EQ003 / product-temp-holding / EQ003-TT-HOLD / 2026-08-10T22:11:00+02:00
+```
+
+submit the same key and a new `value`.
+
+## Reference protection
+
+A resource, production activity, or registered sensor referenced by an existing Reading cannot be deleted while the Reading still references it.
 
 ## API resource
 
@@ -210,14 +218,11 @@ The exact batching behavior should be verified once the implementation is availa
 
 ## API methods
 
-> [!NOTE]
-> The API methods below are provisional until the Readings implementation is available for verification.
-
-### Submit readings
+### Submit a reading
 
 `POST /services/pulse/food-beverage/readings/insert`
 
-Records measured values.
+Records one measured value.
 
 #### Request
 
@@ -227,30 +232,170 @@ Content-Type: application/json
 ```
 
 ```json
-[
-  {
-    "subject": "EQ003",
-    "measure": "product-temp-holding",
-    "value": 74.2,
-    "sensor": "EQ003-TT-HOLD",
-    "at": "2026-08-10T22:11:00+02:00"
-  },
-  {
-    "subject": "L01-260810-002",
-    "measure": "fill-weight",
-    "value": 128.4,
-    "sensor": "EQ010-H06",
-    "at": "2026-08-10T22:11:02+02:00"
-  }
-]
+{
+  "subject": "EQ003",
+  "measure": "product-temp-holding",
+  "value": 74.2,
+  "sensor": "EQ003-TT-HOLD",
+  "at": "2026-08-10T22:11:00+02:00"
+}
 ```
 
 #### Parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `subject` | string | yes | Business code of the measured line, machine, vessel, run, batch, or lot. |
+| `subject` | string | yes | Business code of the measured resource or production activity. |
 | `measure` | string | yes | Business code of the Measurement. |
 | `value` | number, string, or boolean | yes | Captured value. |
-| `sensor` | string or null | no | Business code of the sensor or measurement point. |
+| `sensor` | string or null | no | Registered measurement-source code. |
 | `at` | string | yes | Date and time when the value was captured. |
+
+### Update a reading
+
+`PUT /services/pulse/food-beverage/readings/update`
+
+Updates the value of an existing Reading.
+
+The Reading is identified by `subject`, `measure`, `sensor`, and `at`.
+
+#### Request
+
+```http
+PUT /services/pulse/food-beverage/readings/update
+Content-Type: application/json
+```
+
+```json
+{
+  "subject": "EQ003",
+  "measure": "product-temp-holding",
+  "value": 74.6,
+  "sensor": "EQ003-TT-HOLD",
+  "at": "2026-08-10T22:11:00+02:00"
+}
+```
+
+### Patch a reading
+
+`PATCH /services/pulse/food-beverage/readings/patch`
+
+Partially updates an existing Reading.
+
+`properties.subject`, `properties.measure`, and `properties.at` are required to identify the Reading.
+
+When the Reading has a `sensor`, include `properties.sensor` as part of the key.
+
+PATCH changes the Reading's `value`; the composite key itself remains unchanged.
+
+#### Request
+
+```http
+PATCH /services/pulse/food-beverage/readings/patch
+Content-Type: application/json
+```
+
+```json
+{
+  "properties": {
+    "subject": "EQ003",
+    "measure": "product-temp-holding",
+    "sensor": "EQ003-TT-HOLD",
+    "at": "2026-08-10T22:11:00+02:00",
+    "value": 74.6
+  }
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.subject` | string | yes | Subject business code identifying the Reading. |
+| `properties.measure` | string | yes | Measurement business code identifying the Reading. |
+| `properties.sensor` | string or null | conditional | Sensor component of the Reading key. Include it when the Reading has a sensor. |
+| `properties.at` | string | yes | Timestamp identifying the Reading. |
+| `properties.value` | number, string, or boolean | no | New measured value. |
+
+### Retrieve a reading
+
+`GET /services/pulse/food-beverage/readings/select`
+
+Returns the Reading identified by its composite business key.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/readings/select?subject=EQ003&measure=product-temp-holding&sensor=EQ003-TT-HOLD&at=2026-08-10T22:11:00%2B02:00
+```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `subject` | string | yes | Business code of the measured subject. |
+| `measure` | string | yes | Business code of the Measurement. |
+| `sensor` | string | no | Sensor component of the Reading key. |
+| `at` | string | yes | Date and time of the Reading. |
+
+#### Example response
+
+```json
+{
+  "subject": "EQ003",
+  "measure": "product-temp-holding",
+  "value": 74.2,
+  "sensor": "EQ003-TT-HOLD",
+  "at": "2026-08-10T22:11:00+02:00"
+}
+```
+
+### List readings
+
+`GET /services/pulse/food-beverage/readings/query`
+
+Returns Readings matching the supplied filters.
+
+#### Request
+
+```http
+GET /services/pulse/food-beverage/readings/query?subjects=EQ003&measures=product-temp-holding
+```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `subjects` | string or array of strings | no | Limits results to the specified subject business codes. |
+| `measures` | string or array of strings | no | Limits results to the specified Measurements. |
+| `sensors` | string or array of strings | no | Limits results to the specified sensor codes. |
+| `from` | string | no | Limits results to Readings captured at or after the specified date and time. |
+| `to` | string | no | Limits results to Readings captured at or before the specified date and time. |
+
+Multiple values can be supplied by repeating the query parameter:
+
+```http
+GET /services/pulse/food-beverage/readings/query?sensors=EQ003-TT-01&sensors=EQ003-TT-02
+```
+
+### Delete a reading
+
+`DELETE /services/pulse/food-beverage/readings/delete`
+
+Deletes the Reading identified by its composite business key.
+
+#### Request
+
+```http
+DELETE /services/pulse/food-beverage/readings/delete?subject=EQ003&measure=product-temp-holding&sensor=EQ003-TT-HOLD&at=2026-08-10T22:11:00%2B02:00
+```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `subject` | string | yes | Business code of the measured subject. |
+| `measure` | string | yes | Business code of the Measurement. |
+| `sensor` | string | no | Sensor component of the Reading key. |
+| `at` | string | yes | Date and time of the Reading. |
