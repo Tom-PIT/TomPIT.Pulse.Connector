@@ -1,10 +1,8 @@
-# Cleaning rules
-
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
+# Cleaning rule
 
 Defines the cleaning regime required when production changes from one product to another.
 
-A cleaning rule also defines the expected duration of that changeover clean.
+A Cleaning rule also defines the expected duration of that changeover clean.
 
 ## The Cleaning rule object
 
@@ -23,19 +21,17 @@ A cleaning rule also defines the expected duration of that changeover clean.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| [`after`](../master-data/product.md) | string | Business code of the product that has just finished production. | `"PRD001"` |
-| [`before`](../master-data/product.md) | string | Business code of the product that will run next. | `"PRD044"` |
+| [`after`](../master-data/product.md) | string | Business code of the product that finishes before cleaning. | `"PRD001"` |
+| [`before`](../master-data/product.md) | string | Business code of the product that runs after cleaning. | `"PRD044"` |
 | [`regime`](clean-regime.md) | string | Business code of the cleaning regime required for the changeover. | `"allergen-cip"` |
-| `expectedMinutes` | number | Expected duration of the cleaning operation, in minutes. | `95` |
+| `expectedMinutes` | integer | Expected duration of the cleaning operation, in minutes. | `95` |
 
 </div>
 
 > [!IMPORTANT]
-> `after`, `before`, and `regime` must reference existing records.
+> `after` and `before` must reference existing products, and `regime` must reference an existing cleaning regime.
 >
-> A cleaning rule is directional. A rule from product A to product B does not automatically define the rule from product B to product A.
-
-See [Types and attributes](../master-data/types-and-attributes.md) for guidance on extensible master-data properties.
+> A Cleaning rule is directional. A rule from product A to product B does not automatically define the rule from product B to product A.
 
 ## Directional rules
 
@@ -55,7 +51,9 @@ and:
 PRD044 → PRD001
 ```
 
-are two separate cleaning rules.
+are two separate Cleaning rules.
+
+The combination of `after` and `before` identifies the rule.
 
 ## Expected duration
 
@@ -82,14 +80,13 @@ Actual cleaning duration can later be compared with this expected value.
 
 ## API methods
 
-> [!NOTE]
-> The API methods below follow the current Food & Beverage service pattern and are provisional until the Cleaning rules implementation is available for verification.
-
 ### Create a cleaning rule
 
 `POST /services/pulse/food-beverage/cleaning-rules/insert`
 
-Creates a new cleaning rule.
+Creates a Cleaning rule.
+
+If a rule with the same `after` and `before` values already exists, the existing rule is updated with the submitted `regime` and `expectedMinutes`.
 
 #### Request
 
@@ -111,19 +108,16 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `after` | string | yes | Business code of the product that has just finished. |
-| `before` | string | yes | Business code of the product that will run next. |
+| `after` | string | yes | Business code of the product that finishes before cleaning. |
+| `before` | string | yes | Business code of the product that runs after cleaning. |
 | `regime` | string | yes | Business code of the required cleaning regime. |
-| `expectedMinutes` | number | yes | Expected cleaning duration in minutes. |
-
+| `expectedMinutes` | integer | yes | Expected cleaning duration in minutes. |
 
 ### Update a cleaning rule
 
 `PUT /services/pulse/food-beverage/cleaning-rules/update`
 
-Updates an existing cleaning rule.
-
-The rule is identified by the combination of `after` and `before`.
+Updates an existing Cleaning rule identified by its `after` and `before` values.
 
 #### Request
 
@@ -141,14 +135,13 @@ Content-Type: application/json
 }
 ```
 
-
 ### Patch a cleaning rule
 
 `PATCH /services/pulse/food-beverage/cleaning-rules/patch`
 
-Partially updates an existing cleaning rule.
+Partially updates an existing Cleaning rule.
 
-The exact PATCH identification shape still needs to be verified against the implementation.
+The fields to update are supplied in the `properties` object. Both `after` and `before` are required to identify the rule.
 
 #### Request
 
@@ -167,14 +160,21 @@ Content-Type: application/json
 }
 ```
 
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.after` | string | yes | Business code of the product that finishes before cleaning. |
+| `properties.before` | string | yes | Business code of the product that runs after cleaning. |
+| `properties.regime` | string | no | New cleaning-regime business code. |
+| `properties.expectedMinutes` | integer | no | New expected cleaning duration in minutes. |
 
 ### Retrieve a cleaning rule
 
 `GET /services/pulse/food-beverage/cleaning-rules/select`
 
-Returns a cleaning rule.
-
-The facade specification defines the rule key as the combination of `after` and `before`.
+Returns the Cleaning rule identified by its `after` and `before` values.
 
 #### Request
 
@@ -186,8 +186,8 @@ GET /services/pulse/food-beverage/cleaning-rules/select?after=PRD001&before=PRD0
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `after` | string | yes | Business code of the product that has just finished. |
-| `before` | string | yes | Business code of the product that runs next. |
+| `after` | string | yes | Business code of the product that finishes before cleaning. |
+| `before` | string | yes | Business code of the product that runs after cleaning. |
 
 #### Example response
 
@@ -200,33 +200,44 @@ GET /services/pulse/food-beverage/cleaning-rules/select?after=PRD001&before=PRD0
 }
 ```
 
-
 ### List cleaning rules
 
 `GET /services/pulse/food-beverage/cleaning-rules/query`
 
-Returns cleaning rules matching the supplied filters.
+Returns Cleaning rules matching the supplied filters.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/cleaning-rules/query?after=PRD001&regime=allergen-cip
+GET /services/pulse/food-beverage/cleaning-rules/query?afters=PRD001&regimes=allergen-cip
 ```
 
 #### Query parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `after` | string | no | Limits results to rules starting from the specified product. |
-| `before` | string | no | Limits results to rules ending with the specified product. |
-| `regime` | string | no | Limits results to rules using the specified cleaning regime. |
+| `afters` | string or array of strings | no | Limits results to rules with the specified `after` product codes. |
+| `befores` | string or array of strings | no | Limits results to rules with the specified `before` product codes. |
+| `regimes` | string or array of strings | no | Limits results to rules using the specified cleaning-regime codes. |
 
+#### Example response
+
+```json
+[
+  {
+    "after": "PRD001",
+    "before": "PRD044",
+    "regime": "allergen-cip",
+    "expectedMinutes": 95
+  }
+]
+```
 
 ### Delete a cleaning rule
 
 `DELETE /services/pulse/food-beverage/cleaning-rules/delete`
 
-Deletes a cleaning rule.
+Deletes the Cleaning rule identified by its `after` and `before` values.
 
 #### Request
 
@@ -238,5 +249,5 @@ DELETE /services/pulse/food-beverage/cleaning-rules/delete?after=PRD001&before=P
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `after` | string | yes | Business code of the product that has just finished. |
-| `before` | string | yes | Business code of the product that runs next. |
+| `after` | string | yes | Business code of the product that finishes before cleaning. |
+| `before` | string | yes | Business code of the product that runs after cleaning. |

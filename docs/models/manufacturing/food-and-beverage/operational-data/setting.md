@@ -24,7 +24,7 @@ Settings are used for values such as target fill weight, speed setpoints, temper
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | [`machine`](../master-data/machine.md) | string | Business code of the machine whose setting changed. | `"EQ010"` |
-| [`measure`](../definitions-and-rules/measurements.md) | string | Business code of a Measurement declared with `parameterClass: "Setpoint"`. | `"fill-target"` |
+| [`measure`](../definitions-and-rules/measurement.md) | string | Business code of a Measurement declared with `parameterClass: "Setpoint"`. | `"fill-target"` |
 | `value` | number, string, or boolean | Configured value. Its type must match the Measurement definition. | `130` |
 | `at` | string | Date and time when the setting changed, in ISO 8601 format. | `"2026-08-10T22:10:00+02:00"` |
 

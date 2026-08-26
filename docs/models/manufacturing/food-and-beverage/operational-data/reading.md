@@ -25,7 +25,7 @@ Readings can describe lines, machines, vessels, runs, batches, or lots, includin
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | `subject` | string | Business code of the line, machine, vessel, run, batch, or lot being measured. | `"EQ003"` |
-| [`measure`](../definitions-and-rules/measurements.md) | string | Business code of the Measurement being captured. | `"product-temp-holding"` |
+| [`measure`](../definitions-and-rules/measurement.md) | string | Business code of the Measurement being captured. | `"product-temp-holding"` |
 | `value` | number, string, or boolean | Measured value. Its type must match the Measurement definition. | `74.2` |
 | [`sensor`](../master-data/machine.md) | string or null | Optional business code of the sensor, probe, or filling head that produced the reading. | `"EQ003-TT-HOLD"` |
 | `at` | string | Date and time when the value was captured, in ISO 8601 format. | `"2026-08-10T22:11:00+02:00"` |
@@ -160,7 +160,7 @@ Individual values preserve the variation needed to compare filling heads and ide
 
 ## Plausibility
 
-Pulse can use the plausible bounds declared on the [Measurement](../definitions-and-rules/measurements.md) to identify readings that fall outside the expected sensor range.
+Pulse can use the plausible bounds declared on the [Measurement](../definitions-and-rules/measurement.md) to identify readings that fall outside the expected sensor range.
 
 Such values can be retained as suspect data rather than silently discarded, allowing them to be excluded deliberately during analysis.
 

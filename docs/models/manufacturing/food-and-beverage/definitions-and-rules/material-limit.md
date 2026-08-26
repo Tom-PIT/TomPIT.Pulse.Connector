@@ -31,7 +31,7 @@ Material limits use the same general shape as [Product limits](product-limits.md
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
 | [`material`](../master-data/material.md) | string | Business code of the material to which the limit applies. | `"MAT0001"` |
-| [`measure`](measurements.md) | string | Measurement code that the limit applies to. | `"protein"` |
+| [`measure`](measurement.md) | string | Measurement code that the limit applies to. | `"protein"` |
 | `min` | number or null | Optional minimum permitted or expected value. | `3.1` |
 | `target` | number or null | Optional target value. | `3.3` |
 | `max` | number or null | Optional maximum permitted or expected value. | `3.5` |

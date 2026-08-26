@@ -124,9 +124,9 @@ See [Definitions and rules](../definitions-and-rules/index.md).
 
 | Resource | Description | Base path |
 | --- | --- | --- |
-| [**Measurements**](../definitions-and-rules/measurements.md) | Defines measurements and setpoints accepted by Pulse. | `/services/pulse/food-beverage/measurements` |
+| [**Measurements**](../definitions-and-rules/measurement.md) | Defines measurements and setpoints accepted by Pulse. | `/services/pulse/food-beverage/measurements` |
 | [**Product limits**](../definitions-and-rules/product-limit.md) | Defines time-effective product specification limits. | `/services/pulse/food-beverage/product-limits` |
-| [**Targets**](../definitions-and-rules/targets.md) | Defines expected operating ranges or target values. | `/services/pulse/food-beverage/targets` |
+| [**Targets**](../definitions-and-rules/target.md) | Defines expected operating ranges or target values. | `/services/pulse/food-beverage/targets` |
 | [**Clean regimes**](../definitions-and-rules/clean-regime.md) | Defines cleaning regimes used by cleaning activities and rules. | `/services/pulse/food-beverage/clean-regimes` |
 | [**Cleaning rules**](../definitions-and-rules/cleaning-rule.md) | Defines the cleaning required between two products. | `/services/pulse/food-beverage/cleaning-rules` |
 | [**Reasons**](../definitions-and-rules/reason.md) | Defines hierarchical reason codes used across operational records. | `/services/pulse/food-beverage/reasons` |

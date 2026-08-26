@@ -8,9 +8,9 @@ Register these definitions before submitting production or operational records t
 
 | Resource | Description |
 | --- | --- |
-| [Measurements](measurements.md) | Defines the measurements and setpoints that Pulse can receive. |
+| [Measurements](measurement.md) | Defines the measurements and setpoints that Pulse can receive. |
 | [Product limits](product-limit.md) | Defines time-effective specification limits for products. |
-| [Targets](targets.md) | Defines expected operating ranges or target values for production resources. |
+| [Targets](target.md) | Defines expected operating ranges or target values for production resources. |
 | [Clean regimes](clean-regime.md) | Defines the cleaning regimes used during production changeovers and cleaning operations. |
 | [Cleaning rules](cleaning-rule.md) | Defines which cleaning regime is required when changing from one product to another. |
 | [Reasons](reason.md) | Defines hierarchical reason codes for stoppages, deviations, complaints, and other operational events. |

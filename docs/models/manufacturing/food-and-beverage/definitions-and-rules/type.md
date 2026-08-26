@@ -1,10 +1,8 @@
 # Type
 
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
-
 Defines a controlled classification that can be applied to a Material or Product.
 
-Types are used for classifications such as allergens, storage conditions, origin, or pack format. Each type defines a set of allowed values that can then be referenced from supported master-data fields.
+Types are used for classifications such as allergens, storage conditions, origin, or pack format. Each Type defines a set of allowed values that can be referenced from supported master-data fields.
 
 ## The Type object
 
@@ -32,17 +30,19 @@ Types are used for classifications such as allergens, storage conditions, origin
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Unique business code used to identify the type. | `"allergen"` |
-| `name` | string | Human-readable name of the type. | `"Allergen"` |
+| `code` | string | Unique business code used to identify the Type. | `"allergen"` |
+| `name` | string | Human-readable name of the Type. | `"Allergen"` |
 | `appliesTo` | string | Resource the classification applies to. Supported values are `material` and `product`. | `"material"` |
-| `values` | array | Allowed classification values. At least one value is required. | |
-| `values[].code` | string | Unique business code of the value within the type. | `"ALG-MILK"` |
+| `values` | array | Classification values registered for the Type. | |
+| `values[].code` | string | Business code used to identify the value within the Type. | `"ALG-MILK"` |
 | `values[].name` | string | Human-readable name of the value. | `"Milk"` |
 
 </div>
 
 > [!IMPORTANT]
 > `code` must be unique.
+>
+> `appliesTo` supports only `material` and `product`.
 >
 > Classification values should use stable business codes because master-data records reference these codes directly.
 
@@ -52,7 +52,7 @@ See [Types and attributes](../master-data/types-and-attributes.md) for guidance 
 
 Types define the allowed values used by explicit classification fields on supported master-data resources.
 
-For example, this type:
+For example, this Type:
 
 ```json
 {
@@ -89,13 +89,31 @@ Supported classification fields currently include:
 
 Types are controlled classifications. They are different from `attributes`, which are free-form source-system metadata and are not used as analytical classifications.
 
-## Type size
+## Managing values
 
-Keep classification types relatively small and meaningful.
+Submitting a Type does not replace its complete list of values.
 
-The current model guidance recommends keeping a type below approximately 25 distinct values. Very high-cardinality classifications are too granular to be useful as analytical dimensions.
+Values included in the request are added when they do not exist or corrected when the same value code already exists. Values omitted from the request remain registered.
 
-For example, use a broader origin grouping rather than creating one value for every individual farm or supplier location.
+For example, submitting:
+
+```json
+{
+  "code": "allergen",
+  "name": "Allergen",
+  "appliesTo": "material",
+  "values": [
+    {
+      "code": "ALG-EGG",
+      "name": "Egg"
+    }
+  ]
+}
+```
+
+adds or corrects `ALG-EGG` without removing existing values such as `ALG-MILK`.
+
+To remove a value explicitly, use the value-delete operation described below.
 
 ## API resource
 
@@ -105,16 +123,13 @@ For example, use a broader origin grouping rather than creating one value for ev
 
 ## API methods
 
-> [!NOTE]
-> The API methods below are based on ApiSurfaceRevised and are provisional until the Types implementation is available for verification.
-
 ### Create or extend a type
 
 `POST /services/pulse/food-beverage/types/insert`
 
-Creates a type and its allowed values.
+Creates a Type or extends an existing Type.
 
-The current specification also describes repeated submissions as additive: new values are added and existing names may be corrected without removing previously registered values.
+If the Type already exists, its name and `appliesTo` value are updated and the supplied classification values are added or corrected. Existing values that are not included in the request are not removed.
 
 #### Request
 
@@ -145,18 +160,93 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Unique business code of the type. |
-| `name` | string | yes | Human-readable name of the type. |
-| `appliesTo` | string | yes | Resource the type applies to: `material` or `product`. |
-| `values` | array | yes | Classification values. At least one value is required. |
+| `code` | string | yes | Unique business code of the Type. |
+| `name` | string | yes | Human-readable name of the Type. |
+| `appliesTo` | string | yes | Resource the Type applies to: `material` or `product`. |
+| `values` | array | yes | Classification values to add or correct. |
 | `values[].code` | string | yes | Business code of the value. |
 | `values[].name` | string | yes | Human-readable name of the value. |
+
+### Update a type
+
+`PUT /services/pulse/food-beverage/types/update`
+
+Updates an existing Type and adds or corrects the supplied values.
+
+Values omitted from `values` are not removed.
+
+#### Request
+
+```http
+PUT /services/pulse/food-beverage/types/update
+Content-Type: application/json
+```
+
+```json
+{
+  "code": "allergen",
+  "name": "Allergen classification",
+  "appliesTo": "material",
+  "values": [
+    {
+      "code": "ALG-MILK",
+      "name": "Milk"
+    },
+    {
+      "code": "ALG-EGG",
+      "name": "Egg"
+    }
+  ]
+}
+```
+
+### Patch a type
+
+`PATCH /services/pulse/food-beverage/types/patch`
+
+Partially updates an existing Type.
+
+The Type is identified by `properties.code`. The supplied `values` are added or corrected; values not included in the patch remain unchanged.
+
+#### Request
+
+```http
+PATCH /services/pulse/food-beverage/types/patch
+Content-Type: application/json
+```
+
+```json
+{
+  "properties": {
+    "code": "allergen",
+    "name": "Allergen classification",
+    "values": [
+      {
+        "code": "ALG-EGG",
+        "name": "Egg"
+      }
+    ]
+  }
+}
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.code` | string | yes | Business code of the Type to update. |
+| `properties.name` | string | no | New human-readable name. |
+| `properties.appliesTo` | string | no | New target resource: `material` or `product`. |
+| `properties.values` | array | no | Classification values to add or correct. |
+| `properties.values[].code` | string | yes | Business code of the supplied value. |
+| `properties.values[].name` | string | yes | Human-readable name of the supplied value. |
 
 ### Retrieve a type
 
 `GET /services/pulse/food-beverage/types/select`
 
-Returns the type identified by its business code.
+Returns the Type identified by its business code, including its registered values.
 
 #### Request
 
@@ -168,7 +258,7 @@ GET /services/pulse/food-beverage/types/select?id=allergen
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | string | yes | Business code of the type to retrieve. |
+| `id` | string | yes | Business code of the Type to retrieve. |
 
 #### Example response
 
@@ -194,7 +284,7 @@ GET /services/pulse/food-beverage/types/select?id=allergen
 
 `GET /services/pulse/food-beverage/types/query`
 
-Returns types matching the supplied filters.
+Returns Types matching the supplied filters, including their registered values.
 
 #### Request
 
@@ -206,14 +296,65 @@ GET /services/pulse/food-beverage/types/query?appliesTo=material
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `codes` | string or array of strings | no | Limits results to the specified type codes. |
+| `codes` | string or array of strings | no | Limits results to the specified Type business codes. |
 | `names` | string or array of strings | no | Limits results to the specified names. |
-| `appliesTo` | string | no | Limits results to types that apply to `material` or `product`. |
+| `appliesTo` | string or array of strings | no | Limits results to Types that apply to the specified resources. Supported values are `material` and `product`. |
+
+#### Example response
+
+```json
+[
+  {
+    "code": "allergen",
+    "name": "Allergen",
+    "appliesTo": "material",
+    "values": [
+      {
+        "code": "ALG-MILK",
+        "name": "Milk"
+      },
+      {
+        "code": "ALG-NONE",
+        "name": "None"
+      }
+    ]
+  }
+]
+```
 
 ### Remove a type value
 
-The specification defines removal of individual values separately from the type itself.
+`DELETE /services/pulse/food-beverage/types/values`
 
-A value that is already referenced by master data cannot be removed.
+Removes a classification value from a Type.
 
-The exact route and request shape should be verified once the implementation is available.
+#### Request
+
+```http
+DELETE /services/pulse/food-beverage/types/values?code=allergen&value=ALG-EGG
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | string | yes | Business code of the Type. |
+| `value` | string | yes | Business code of the value to remove. |
+
+### Delete a type
+
+`DELETE /services/pulse/food-beverage/types/delete`
+
+Deletes the Type identified by its business code.
+
+#### Request
+
+```http
+DELETE /services/pulse/food-beverage/types/delete?id=allergen
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the Type to delete. |

@@ -1,8 +1,6 @@
 # Reason
 
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
-
-Represents a reason used to explain stoppages, deviations, complaints, and other operational events.
+Represents a hierarchical reason used to explain operational stops, deviations, complaints, and other operational events.
 
 Reasons can be organised hierarchically with no fixed depth.
 
@@ -24,7 +22,7 @@ Reasons can be organised hierarchically with no fixed depth.
 | --- | --- | --- | --- |
 | `code` | string | Unique business code used to identify the reason. | `"CMP-FOREIGN-BODY"` |
 | `name` | string | Human-readable name of the reason. | `"Foreign body"` |
-| `parent` | string or null | Business code of the parent reason. Omit for a top-level reason family. | `"CMP-SAFETY"` |
+| `parent` | string or null | Business code of the parent reason. Omit for a top-level reason. | `"CMP-SAFETY"` |
 
 </div>
 
@@ -32,8 +30,8 @@ Reasons can be organised hierarchically with no fixed depth.
 > `code` must be unique. Two reasons cannot use the same code.
 >
 > When `parent` is provided, the referenced parent reason must already exist.
-
-See [Types and attributes](../master-data/types-and-attributes.md) for guidance on extensible master-data properties.
+>
+> A reason cannot be assigned a parent that would create a cycle in the hierarchy.
 
 ## Reason hierarchy
 
@@ -49,7 +47,9 @@ Complaint
 
 A reason references the level directly above it through `parent`.
 
-The same reason hierarchy can be used across stoppages, deviations, complaints, and other operational records.
+The same hierarchy can be used across stoppages, deviations, complaints, and other operational records.
+
+A reason that has child reasons cannot be deleted until those child references are removed or reassigned.
 
 ## API resource
 
@@ -58,9 +58,6 @@ The same reason hierarchy can be used across stoppages, deviations, complaints, 
 | `Reason` | `/services/pulse/food-beverage/reasons` |
 
 ## API methods
-
-> [!NOTE]
-> The API methods below follow the current Food & Beverage service pattern and are provisional until the Reasons implementation is available for verification.
 
 ### Create a reason
 
@@ -91,12 +88,11 @@ Content-Type: application/json
 | `name` | string | yes | Human-readable name of the reason. |
 | `parent` | string or null | no | Business code of the parent reason. |
 
-
 ### Update a reason
 
 `PUT /services/pulse/food-beverage/reasons/update`
 
-Updates an existing reason.
+Updates an existing reason identified by its business `code`.
 
 #### Request
 
@@ -113,14 +109,13 @@ Content-Type: application/json
 }
 ```
 
-
 ### Patch a reason
 
 `PATCH /services/pulse/food-beverage/reasons/patch`
 
 Partially updates an existing reason.
 
-The fields to update are supplied in the `properties` object. The reason is identified by its business `code`.
+The reason is identified by `properties.code`. The current implementation also requires `properties.name`. The `parent` field can be supplied when the hierarchy should change.
 
 #### Request
 
@@ -143,10 +138,9 @@ Content-Type: application/json
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `properties` | object | yes | Fields included in the partial update. |
-| `properties.code` | string | yes | Unique business code of the reason to update. |
-| `properties.name` | string | no | New human-readable name of the reason. |
-| `properties.parent` | string or null | no | New parent reason. |
-
+| `properties.code` | string | yes | Business code of the reason to update. |
+| `properties.name` | string | yes | Human-readable name of the reason. |
+| `properties.parent` | string or null | no | New parent reason. Use `null` to make the reason top-level. |
 
 ### Retrieve a reason
 
@@ -176,7 +170,6 @@ GET /services/pulse/food-beverage/reasons/select?id=CMP-FOREIGN-BODY
 }
 ```
 
-
 ### List reasons
 
 `GET /services/pulse/food-beverage/reasons/query`
@@ -195,7 +188,7 @@ GET /services/pulse/food-beverage/reasons/query?parents=CMP-SAFETY
 | --- | --- | --- | --- |
 | `codes` | string or array of strings | no | Limits results to reasons with the specified business codes. |
 | `names` | string or array of strings | no | Limits results to reasons with the specified names. |
-| `parents` | string or array of strings | no | Limits results to reasons with the specified parent reasons. |
+| `parents` | string or array of strings | no | Limits results to reasons with the specified parent reason codes. An empty value can be used to include top-level reasons. |
 
 #### Example response
 
@@ -209,12 +202,13 @@ GET /services/pulse/food-beverage/reasons/query?parents=CMP-SAFETY
 ]
 ```
 
-
 ### Delete a reason
 
 `DELETE /services/pulse/food-beverage/reasons/delete`
 
 Deletes the reason identified by its business code.
+
+A reason cannot be deleted while child reasons still reference it.
 
 #### Request
 

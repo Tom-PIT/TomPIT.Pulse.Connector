@@ -1,12 +1,10 @@
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
-
-# Measurements
+# Measurement
 
 Defines the measurable or commanded values that can be recorded in Food & Beverage operations.
 
 A measurement definition describes what a value means, how Pulse should interpret it, and whether the value represents an observed measurement or a commanded setpoint.
 
-Measurement definitions must exist before values are submitted through [Readings](../operational-data/readings.md) or [Settings](../operational-data/settings.md).
+Measurement definitions must exist before values are submitted through [Readings](../operational-data/reading.md) or [Settings](../operational-data/setting.md).
 
 ## The Measurement object
 
@@ -20,9 +18,9 @@ Measurement definitions must exist before values are submitted through [Readings
   "parameterClass": "Measurement",
   "aggregation": "Mode",
   "capture": "EventOnChange",
-  "cadenceMinutes": null,
-  "plausibleMin": null,
-  "plausibleMax": null
+  "intervalSeconds": null,
+  "minValue": null,
+  "maxValue": null
 }
 ```
 
@@ -34,15 +32,15 @@ Measurement definitions must exist before values are submitted through [Readings
 | --- | --- | --- | --- |
 | `code` | string | Unique business code used when recording values for the measurement. | `"freezer-door"` |
 | `name` | string | Human-readable name of the measurement. | `"Freezer door open"` |
-| `unit` | string | Unit in which values are expressed. Can be empty for Boolean or categorical values. | `""` |
+| `unit` | string or null | Unit in which values are expressed. Can be empty or omitted for Boolean or categorical values. | `""` |
 | `valueType` | string | Defines the kind of value carried by the measurement. Supported values are `Continuous`, `Ordinal`, `Categorical`, and `Boolean`. | `"Boolean"` |
 | `aggregation` | string | Defines how multiple values are aggregated. | `"Mode"` |
 | `semanticType` | string | Describes the business meaning of the measurement. | `"Ambient"` |
 | `parameterClass` | string | Indicates whether values represent measurements or commanded setpoints. Supported values are `Measurement` and `Setpoint`. | `"Measurement"` |
 | `capture` | string | Defines how values are captured. Supported values are `Sampled` and `EventOnChange`. | `"EventOnChange"` |
-| `cadenceMinutes` | number or null | Expected interval, in minutes, between sampled values. Omit when values are recorded only when they change. | `5` |
-| `plausibleMin` | number or null | Optional lower bound below which a captured value is considered implausible. | `-40` |
-| `plausibleMax` | number or null | Optional upper bound above which a captured value is considered implausible. | `60` |
+| `intervalSeconds` | integer or null | Optional expected interval, in seconds, between sampled values. | `300` |
+| `minValue` | number or null | Optional lowest physically plausible value. | `-40` |
+| `maxValue` | number or null | Optional highest physically plausible value. | `60` |
 
 </div>
 
@@ -50,8 +48,6 @@ Measurement definitions must exist before values are submitted through [Readings
 > `code` must be unique.
 >
 > Enumerated values must use the supported value exactly. For example, use `Measurement`, not `Measured`.
-
-See [Types and attributes](../master-data/types-and-attributes.md) for guidance on extensible master-data properties.
 
 ## Value types
 
@@ -85,7 +81,7 @@ For example:
 }
 ```
 
-Values for these definitions are submitted through [Readings](../operational-data/readings.md).
+Values for these definitions are submitted through [Readings](../operational-data/reading.md).
 
 `Setpoint` represents a value commanded by a person or control system.
 
@@ -104,27 +100,27 @@ For example:
 }
 ```
 
-Values for these definitions are submitted through [Settings](../operational-data/settings.md).
+Values for these definitions are submitted through [Settings](../operational-data/setting.md).
 
 Measured values and setpoints are kept separate because what a machine was commanded to do and what it actually did are different facts.
 
 ## Capture modes
 
-`Sampled` measurements are recorded repeatedly on a cadence, such as a temperature reading every five minutes.
+`Sampled` measurements are recorded repeatedly on an interval, such as a temperature reading every 120 seconds.
 
 `EventOnChange` measurements are recorded only when their value changes, such as a door opening or a setpoint being changed.
 
 There is no `Derived` capture mode. Values calculated from other measurements are produced by Pulse rather than submitted as captured values.
 
-## Plausible bounds
+## Value bounds
 
-`plausibleMin` and `plausibleMax` identify values that are physically or technically implausible.
+`minValue` and `maxValue` identify values that are physically or technically implausible.
 
 For example, a temperature sensor reporting `900 C` may indicate a broken instrument rather than a valid process measurement.
 
 Plausible bounds are not process targets or product specification limits.
 
-Use [Product limits](product-limits.md) or [Targets](targets.md) for expected or permitted operating ranges.
+Use [Product limits](product-limit.md) or [Targets](target.md) for expected or permitted operating ranges.
 
 ## API resource
 
@@ -133,9 +129,6 @@ Use [Product limits](product-limits.md) or [Targets](targets.md) for expected or
 | `Measurement` | `/services/pulse/food-beverage/measurements` |
 
 ## API methods
-
-> [!NOTE]
-> The API methods below follow the current Food & Beverage service pattern and are provisional until the Measurements implementation is available for verification.
 
 ### Create a measurement
 
@@ -160,9 +153,9 @@ Content-Type: application/json
   "parameterClass": "Measurement",
   "aggregation": "Mode",
   "capture": "EventOnChange",
-  "cadenceMinutes": null,
-  "plausibleMin": null,
-  "plausibleMax": null
+  "intervalSeconds": null,
+  "minValue": null,
+  "maxValue": null
 }
 ```
 
@@ -178,9 +171,9 @@ Content-Type: application/json
 | `parameterClass` | string | yes | `Measurement` or `Setpoint`. |
 | `aggregation` | string | yes | Aggregation method used for multiple values. |
 | `capture` | string | yes | `Sampled` or `EventOnChange`. |
-| `cadenceMinutes` | number or null | no | Expected interval between sampled values. |
-| `plausibleMin` | number or null | no | Optional lower plausible bound. |
-| `plausibleMax` | number or null | no | Optional upper plausible bound. |
+| `intervalSeconds` | integer or null | no | Expected interval between sampled values, in seconds. |
+| `minValue` | number or null | no | Optional lower plausible bound. |
+| `maxValue` | number or null | no | Optional upper plausible bound. |
 
 
 ### Update a measurement
@@ -206,9 +199,9 @@ Content-Type: application/json
   "parameterClass": "Measurement",
   "aggregation": "Mode",
   "capture": "EventOnChange",
-  "cadenceMinutes": null,
-  "plausibleMin": null,
-  "plausibleMax": null
+  "intervalSeconds": null,
+  "minValue": null,
+  "maxValue": null
 }
 ```
 
@@ -251,9 +244,9 @@ Content-Type: application/json
 | `properties.parameterClass` | string | no | New parameter class. |
 | `properties.aggregation` | string | no | New aggregation method. |
 | `properties.capture` | string | no | New capture mode. |
-| `properties.cadenceMinutes` | number or null | no | New expected cadence. |
-| `properties.plausibleMin` | number or null | no | New lower plausible bound. |
-| `properties.plausibleMax` | number or null | no | New upper plausible bound. |
+| `properties.intervalSeconds` | integer or null | no | New expected interval in seconds. |
+| `properties.minValue` | number or null | no | New lower plausible bound. |
+| `properties.maxValue` | number or null | no | New upper plausible bound. |
 
 
 ### Retrieve a measurement
@@ -286,9 +279,9 @@ GET /services/pulse/food-beverage/measurements/select?id=freezer-door
   "parameterClass": "Measurement",
   "aggregation": "Mode",
   "capture": "EventOnChange",
-  "cadenceMinutes": null,
-  "plausibleMin": null,
-  "plausibleMax": null
+  "intervalSeconds": null,
+  "minValue": null,
+  "maxValue": null
 }
 ```
 
@@ -310,7 +303,6 @@ GET /services/pulse/food-beverage/measurements/query?parameterClasses=Measuremen
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `codes` | string or array of strings | no | Limits results to measurements with the specified business codes. |
-| `names` | string or array of strings | no | Limits results to measurements with the specified names. |
 | `parameterClasses` | string or array of strings | no | Limits results to measurements with the specified parameter classes. |
 | `semanticTypes` | string or array of strings | no | Limits results to measurements with the specified semantic types. |
 
@@ -327,9 +319,9 @@ GET /services/pulse/food-beverage/measurements/query?parameterClasses=Measuremen
     "parameterClass": "Measurement",
     "aggregation": "Mode",
     "capture": "EventOnChange",
-    "cadenceMinutes": null,
-    "plausibleMin": null,
-    "plausibleMax": null
+    "intervalSeconds": null,
+    "minValue": null,
+    "maxValue": null
   }
 ]
 ```

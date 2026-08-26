@@ -1,8 +1,6 @@
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
-
 # Clean regime
 
-Represents a defined cleaning regime used in Food & Beverage operations.
+Represents a defined cleaning regime used to classify comparable cleaning work in Food & Beverage operations.
 
 Examples include allergen cleaning, full CIP, dry cleaning, or other repeatable cleaning procedures.
 
@@ -29,8 +27,6 @@ Examples include allergen cleaning, full CIP, dry cleaning, or other repeatable 
 > [!IMPORTANT]
 > `code` must be unique. Two cleaning regimes cannot use the same code.
 
-See [Types and attributes](../master-data/types-and-attributes.md) for guidance on extensible master-data properties.
-
 ## API resource
 
 | Resource | Base path |
@@ -38,9 +34,6 @@ See [Types and attributes](../master-data/types-and-attributes.md) for guidance 
 | `Clean regime` | `/services/pulse/food-beverage/clean-regimes` |
 
 ## API methods
-
-> [!NOTE]
-> The API methods below follow the current Food & Beverage service pattern and are provisional until the Cleaning regimes implementation is available for verification.
 
 ### Create a clean regime
 
@@ -69,7 +62,6 @@ Content-Type: application/json
 | `code` | string | yes | Unique business code of the cleaning regime. |
 | `name` | string | yes | Human-readable name of the cleaning regime. |
 
-
 ### Update a clean regime
 
 `PUT /services/pulse/food-beverage/clean-regimes/update`
@@ -89,7 +81,6 @@ Content-Type: application/json
   "name": "Validated allergen CIP"
 }
 ```
-
 
 ### Patch a clean regime
 
@@ -123,7 +114,6 @@ Content-Type: application/json
 | `properties.code` | string | yes | Unique business code of the cleaning regime to update. |
 | `properties.name` | string | no | New human-readable name of the cleaning regime. |
 
-
 ### Retrieve a clean regime
 
 `GET /services/pulse/food-beverage/clean-regimes/select`
@@ -150,7 +140,6 @@ GET /services/pulse/food-beverage/clean-regimes/select?id=allergen-cip
   "name": "Allergen CIP"
 }
 ```
-
 
 ### List clean regimes
 
@@ -181,7 +170,6 @@ GET /services/pulse/food-beverage/clean-regimes/query?names=Allergen%20CIP
   }
 ]
 ```
-
 
 ### Delete a clean regime
 

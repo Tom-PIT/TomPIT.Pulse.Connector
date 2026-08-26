@@ -55,7 +55,7 @@ A lot records what arrived, when it arrived, how much was received, and optional
 
 Analysis values describe measured properties of the received lot, such as fat, protein, pH, moisture, or Brix.
 
-Each key in `analysis` references a declared [Measurement](../definitions-and-rules/measurements.md):
+Each key in `analysis` references a declared [Measurement](../definitions-and-rules/measurement.md):
 
 ```json
 {
