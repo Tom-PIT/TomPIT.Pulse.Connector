@@ -3,12 +3,11 @@
 The **Pulse API** is a REST API for submitting Food & Beverage integration data and retrieving Pulse results.
 
 This page provides an index of the public API resource groups. Use Scalar for the complete operation-level reference, including request fields, parameters, schemas, responses, and the exact operations supported by each resource.
+<!-- <div class="grid cards" markdown>
 
-<div class="grid cards" markdown>
+ - [**Open the complete API reference in Scalar**](https://scalar.com/) 
 
-<!-- - [**Open the complete API reference in Scalar**](https://scalar.com/) -->
-
-</div>
+</div> -->
 
 ## API groups
 
