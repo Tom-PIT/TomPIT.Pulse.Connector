@@ -1,10 +1,8 @@
 # Work order
 
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
-
 Represents preventive or corrective maintenance work performed on equipment.
 
-A work order records what equipment was maintained, whether the work addressed a failure, the planned and actual maintenance window, and any associated reason.
+A Work order records what equipment was maintained, whether the work addressed a failure, the planned and actual maintenance window, and any associated reason.
 
 ## The Work order object
 
@@ -13,7 +11,7 @@ A work order records what equipment was maintained, whether the work addressed a
   "code": "WO-8842",
   "equipment": "EQ010",
   "fixingFailure": true,
-  "reason": "Worn filler seal, deferred to shutdown",
+  "reason": "MNT-SEAL-WEAR",
   "plannedStart": "2026-08-23T06:00:00+02:00",
   "plannedEnd": "2026-08-23T09:00:00+02:00",
   "start": "2026-08-23T06:05:00+02:00",
@@ -28,22 +26,24 @@ A work order records what equipment was maintained, whether the work addressed a
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Unique business code used to identify the work order. | `"WO-8842"` |
-| [`equipment`](../master-data/machine.md) | string | Business code of the machine, component, or wear part being maintained. | `"EQ010"` |
-| `fixingFailure` | boolean | `true` when the work fixes an existing or imminent failure; otherwise `false`. | `true` |
+| `code` | string | Unique business code used to identify the Work order. | `"WO-8842"` |
+| [`equipment`](../master-data/machine.md) | string | Business code of the Machine or equipment component being maintained. | `"EQ010"` |
+| `fixingFailure` | boolean | `true` for corrective work that addresses an existing or imminent failure; otherwise `false`. | `true` |
 | [`reason`](../definitions-and-rules/reason.md) | string or null | Optional registered Reason code or free-text explanation. | `"MNT-SEAL-WEAR"` |
 | `plannedStart` | string or null | Optional planned start of the maintenance window. | `"2026-08-23T06:00:00+02:00"` |
 | `plannedEnd` | string or null | Optional planned end of the maintenance window. | `"2026-08-23T09:00:00+02:00"` |
-| `start` | string | Date and time when maintenance actually started. | `"2026-08-23T06:05:00+02:00"` |
-| `end` | string or null | Optional date and time when maintenance actually finished. | `"2026-08-23T08:40:00+02:00"` |
-| `lineState` | string or null | Optional Line time state that the connector should submit if this work stopped the production line. | `"planned-maintenance"` |
+| `start` | string | Date and time when maintenance actually started, in ISO 8601 format. | `"2026-08-23T06:05:00+02:00"` |
+| `end` | string or null | Date and time when maintenance actually finished, or `null` while the Work order remains open. | `"2026-08-23T08:40:00+02:00"` |
+| `lineState` | string or null | Optional Line time condition to record for the owning Production line while this maintenance work is active. | `"planned-maintenance"` |
 
 </div>
 
 > [!IMPORTANT]
-> `code` must be unique.
+> `code` must be unique. Two Work orders cannot use the same code.
 >
 > `equipment` must reference an existing Machine or equipment component.
+>
+> Once created, a Work order cannot be changed from corrective to preventive or vice versa.
 
 ## Corrective and preventive work
 
@@ -54,9 +54,9 @@ A work order records what equipment was maintained, whether the work addressed a
 | `true` | Corrective work that addresses an existing or imminent failure. |
 | `false` | Preventive work intended to avoid failure. |
 
-This is independent of whether the maintenance was planned.
+This is independent of whether the work was scheduled in advance.
 
-For example, a known failed seal may be repaired during a scheduled shutdown:
+For example:
 
 ```json
 {
@@ -66,19 +66,27 @@ For example, a known failed seal may be repaired during a scheduled shutdown:
 }
 ```
 
-The work is corrective because it fixes a failure, but planned because it has a planned maintenance window.
+describes corrective work that was planned into a maintenance window.
+
+> [!IMPORTANT]
+> `fixingFailure` defines the maintenance kind when the Work order is created and cannot later be changed.
 
 ## Planned and unplanned work
 
-The presence of a planned window determines whether the work was planned.
+`plannedStart` and `plannedEnd` preserve the original planned maintenance window.
 
-```text
-plannedStart + plannedEnd present
-→ planned work
+Both are optional and can be supplied independently.
 
-no planned window
-→ unplanned work
+For example, a complete planned window can be represented as:
+
+```json
+{
+  "plannedStart": "2026-08-23T06:00:00+02:00",
+  "plannedEnd": "2026-08-23T09:00:00+02:00"
+}
 ```
+
+A Work order with neither value has no planned maintenance window recorded.
 
 There is no separate `planned` or `unplanned` flag.
 
@@ -88,51 +96,116 @@ This keeps two different questions separate:
 What kind of work was it?
 → fixingFailure
 
-Was it scheduled in advance?
-→ planned window
+Was there a planned window?
+→ plannedStart / plannedEnd
 ```
 
-## Equipment
+## Equipment hierarchy
 
-Where possible, `equipment` should identify the specific component or wear part being maintained rather than only its parent machine.
+`equipment` can identify a Machine or one of its child equipment components.
+
+Where possible, use the most specific maintained component.
 
 For example:
 
 ```text
 Filler
 └── Filling head
-    └── Seal
+    └── Seal assembly
 ```
 
-Identifying the most specific maintained component allows maintenance history to be associated with the part whose operating life is actually affected.
+Using the most specific available equipment code makes maintenance history more closely reflect the asset that was actually worked on.
+
+## Work order status
+
+A Work order without `end` remains open.
+
+When `end` is supplied, the Work order is completed.
+
+```text
+end = null    → running
+end supplied  → completed
+```
 
 ## Work order and line time
 
-A Work order describes maintenance activity.
+A Work order describes the maintenance activity itself.
 
-[Line time](../operational-data/line-time.md) describes how that activity affected production-line availability.
-
-`lineState` does not itself create a Line time record.
+When `lineState` is supplied, Pulse also records the corresponding [Line time](../operational-data/line-time.md) interval for the Production line that owns the maintained equipment.
 
 For example:
 
 ```json
 {
+  "equipment": "EQ010",
+  "reason": "MNT-SEAL-WEAR",
+  "start": "2026-08-23T06:05:00+02:00",
+  "end": "2026-08-23T08:40:00+02:00",
   "lineState": "planned-maintenance"
 }
 ```
 
-tells the connector which state should be submitted separately to `/line-time` when the maintenance stopped production.
+produces a Line time interval equivalent to:
+
+```json
+{
+  "line": "LINE001",
+  "condition": "planned-maintenance",
+  "reason": "MNT-SEAL-WEAR",
+  "toldBy": "operator",
+  "from": "2026-08-23T06:05:00+02:00",
+  "to": "2026-08-23T08:40:00+02:00"
+}
+```
+
+Pulse determines the Production line by following the equipment hierarchy until it reaches the owning line.
 
 ```mermaid
 flowchart LR
-    A["Work order<br/>what maintenance was done"]
-    B["Line time<br/>how production time was affected"]
+    A["Work order"]
+    B["Equipment"]
+    C["Owning Production line"]
+    D["Line time"]
 
-    A -. "lineState provides context" .-> B
+    A --> B --> C --> D
 ```
 
-A maintenance activity may therefore exist without any corresponding Line time interval if production continued normally.
+> [!IMPORTANT]
+> Do not submit a duplicate Line time interval separately when `lineState` is supplied on the Work order.
+
+If `lineState`, `equipment`, or `start` changes, Pulse removes the previously generated interval and synchronizes the new one.
+
+Clearing `lineState` removes the Line time interval created for the Work order.
+
+Deleting the Work order also removes that generated Line time interval.
+
+## Reasons
+
+`reason` can contain either a registered [Reason](../definitions-and-rules/reason.md) code or free text.
+
+For example, a registered code:
+
+```json
+{
+  "reason": "MNT-SEAL-WEAR"
+}
+```
+
+or a free-text explanation:
+
+```json
+{
+  "reason": "Worn filler seal, deferred to shutdown"
+}
+```
+
+When the value matches a registered Reason, Pulse preserves the registered reference. Otherwise, it remains available as free-text maintenance context.
+
+## Reference protection
+
+A Machine referenced by an existing Work order cannot be deleted while the Work order still references it.
+
+A registered Reason referenced by a Work order is also protected from deletion.
 
 ## API resource
 
@@ -142,14 +215,11 @@ A maintenance activity may therefore exist without any corresponding Line time i
 
 ## API methods
 
-> [!NOTE]
-> The API methods below follow the current Food & Beverage service pattern and are provisional until the Work orders implementation is available for verification.
-
 ### Create a work order
 
 `POST /services/pulse/food-beverage/work-orders/insert`
 
-Creates a maintenance work order.
+Creates a maintenance Work order.
 
 #### Request
 
@@ -163,7 +233,7 @@ Content-Type: application/json
   "code": "WO-8842",
   "equipment": "EQ010",
   "fixingFailure": true,
-  "reason": "Worn filler seal, deferred to shutdown",
+  "reason": "MNT-SEAL-WEAR",
   "plannedStart": "2026-08-23T06:00:00+02:00",
   "plannedEnd": "2026-08-23T09:00:00+02:00",
   "start": "2026-08-23T06:05:00+02:00",
@@ -176,22 +246,25 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Unique business code of the work order. |
-| `equipment` | string | yes | Business code of the maintained equipment. |
-| `fixingFailure` | boolean | yes | Whether the work addresses an existing or imminent failure. |
+| `code` | string | yes | Unique business code of the Work order. |
+| `equipment` | string | yes | Business code of the maintained Machine or component. |
+| `fixingFailure` | boolean | yes | Whether the work is corrective (`true`) or preventive (`false`). |
 | `reason` | string or null | no | Registered Reason code or free-text explanation. |
 | `plannedStart` | string or null | no | Planned maintenance start. |
 | `plannedEnd` | string or null | no | Planned maintenance end. |
 | `start` | string | yes | Actual maintenance start. |
 | `end` | string or null | no | Actual maintenance end. |
-| `lineState` | string or null | no | Line time state to submit separately when production was stopped. |
-
+| `lineState` | string or null | no | Line time condition to create for the owning Production line. |
 
 ### Update a work order
 
 `PUT /services/pulse/food-beverage/work-orders/update`
 
-Updates an existing work order.
+Updates an existing Work order.
+
+The Work order is identified by its `code`.
+
+`fixingFailure` must remain the same as when the Work order was created.
 
 #### Request
 
@@ -205,7 +278,7 @@ Content-Type: application/json
   "code": "WO-8842",
   "equipment": "EQ010",
   "fixingFailure": true,
-  "reason": "Worn filler seal, deferred to shutdown",
+  "reason": "MNT-SEAL-WEAR",
   "plannedStart": "2026-08-23T06:00:00+02:00",
   "plannedEnd": "2026-08-23T09:00:00+02:00",
   "start": "2026-08-23T06:05:00+02:00",
@@ -214,14 +287,15 @@ Content-Type: application/json
 }
 ```
 
-
 ### Patch a work order
 
 `PATCH /services/pulse/food-beverage/work-orders/patch`
 
-Partially updates an existing work order.
+Partially updates an existing Work order.
 
-The fields to update are supplied in the `properties` object. The work order is identified by its business `code`.
+The Work order is identified by `properties.code`. Fields omitted from `properties` keep their current values.
+
+`reason`, `plannedStart`, `plannedEnd`, `end`, and `lineState` can be explicitly cleared by including them with a null value.
 
 #### Request
 
@@ -239,12 +313,26 @@ Content-Type: application/json
 }
 ```
 
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.code` | string | yes | Business code of the Work order to update. |
+| `properties.equipment` | string | no | New maintained equipment business code. |
+| `properties.fixingFailure` | boolean | no | Existing corrective/preventive value. It cannot be changed. |
+| `properties.reason` | string or null | no | New Reason or free-text explanation, or `null` to clear it. |
+| `properties.plannedStart` | string or null | no | New planned start, or `null` to clear it. |
+| `properties.plannedEnd` | string or null | no | New planned end, or `null` to clear it. |
+| `properties.start` | string | no | New actual maintenance start. |
+| `properties.end` | string or null | no | New actual end, or `null` to reopen the Work order. |
+| `properties.lineState` | string or null | no | New Line time condition, or `null` to remove the generated Line time interval. |
 
 ### Retrieve a work order
 
 `GET /services/pulse/food-beverage/work-orders/select`
 
-Returns the work order identified by its business code.
+Returns the Work order identified by its business code.
 
 #### Request
 
@@ -256,14 +344,29 @@ GET /services/pulse/food-beverage/work-orders/select?id=WO-8842
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | string | yes | Business code of the work order to retrieve. |
+| `id` | string | yes | Business code of the Work order to retrieve. |
 
+#### Example response
+
+```json
+{
+  "code": "WO-8842",
+  "equipment": "EQ010",
+  "fixingFailure": true,
+  "reason": "MNT-SEAL-WEAR",
+  "plannedStart": "2026-08-23T06:00:00+02:00",
+  "plannedEnd": "2026-08-23T09:00:00+02:00",
+  "start": "2026-08-23T06:05:00+02:00",
+  "end": "2026-08-23T08:40:00+02:00",
+  "lineState": "planned-maintenance"
+}
+```
 
 ### List work orders
 
 `GET /services/pulse/food-beverage/work-orders/query`
 
-Returns work orders matching the supplied filters.
+Returns Work orders matching the supplied filters.
 
 #### Request
 
@@ -275,17 +378,25 @@ GET /services/pulse/food-beverage/work-orders/query?equipment=EQ010&fixingFailur
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `equipment` | string | no | Limits results to work orders for the specified equipment. |
-| `fixingFailure` | boolean | no | Limits results to corrective or preventive work. |
-| `from` | string | no | Limits results to work orders starting on or after the specified date or time. |
-| `to` | string | no | Limits results to work orders starting on or before the specified date or time. |
+| `codes` | string or array of strings | no | Limits results to the specified Work order business codes. |
+| `equipment` | string or array of strings | no | Limits results to Work orders for the specified equipment codes. |
+| `fixingFailure` | boolean | no | `true` returns corrective Work orders; `false` returns preventive Work orders. |
+| `from` | string | no | Limits results to Work orders starting at or after the specified date and time. |
+| `to` | string | no | Limits results to Work orders starting at or before the specified date and time. |
 
+Multiple equipment values can be supplied by repeating the query parameter:
+
+```http
+GET /services/pulse/food-beverage/work-orders/query?equipment=EQ010&equipment=EQ011
+```
 
 ### Delete a work order
 
 `DELETE /services/pulse/food-beverage/work-orders/delete`
 
-Deletes the work order identified by its business code.
+Deletes the Work order identified by its business code.
+
+Deleting a Work order also removes its associated maintenance plan and any Line time interval generated through `lineState`.
 
 #### Request
 
@@ -297,4 +408,4 @@ DELETE /services/pulse/food-beverage/work-orders/delete?id=WO-8842
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | string | yes | Business code of the work order to delete. |
+| `id` | string | yes | Business code of the Work order to delete. |
