@@ -1,12 +1,12 @@
 # First API request
 
-Use the [Plant](master-data/plant.md) resource for your first test request.
+Use the [Site](master-data/site.md) resource for your first test request.
 
-A Plant is a simple master-data record and does not depend on another Pulse resource.
+A Site is a simple master-data record and does not depend on another Pulse resource, making it a good way to verify authentication, routing, and the basic request format.
 
 ## 1. Open the API reference
 
-Open the Plant resource in [Scalar](https://scalar.com/) under:
+Open the Site resource in the API reference under:
 
 ```text
 /services/pulse/food-beverage/plants
@@ -14,53 +14,124 @@ Open the Plant resource in [Scalar](https://scalar.com/) under:
 
 Use the API reference to confirm the supported operations and request schema.
 
-## 2. Submit a test plant
+## 2. Create a test site
 
-Submit a Plant with a unique business `code`.
+Create a Site with a unique business `code`.
+
+```http
+POST /services/pulse/food-beverage/plants/insert
+Content-Type: application/json
+```
 
 ```json
 {
-  "code": "TEST-PLANT-001",
-  "name": "Test plant"
+  "code": "TEST-SITE-001",
+  "name": "Test site"
 }
 ```
 
-Use a code reserved for test data so the record can be identified easily later.
+Use a code reserved for test data so the record can be identified and removed easily later.
+
+> [!IMPORTANT]
+> `code` is the business identifier used throughout the Food & Beverage API.
+>
+> References between resources use business codes rather than internal Pulse identifiers.
 
 ## 3. Verify the response
 
-Confirm that Pulse accepted the record and returned the submitted Plant.
-
-Pulse may include an internal `id` in the response, but Food & Beverage requests do not use that identifier as an input.
-
-The business `code` is the identifier used by integrations.
-
-## 4. Retrieve the plant
-
-Retrieve the Plant by its `code` and confirm that the returned record matches the submitted values.
-
-## 5. Test a correction
-
-Submit the same `code` with a corrected value:
+Confirm that Pulse accepted the record and returned the Site:
 
 ```json
 {
-  "code": "TEST-PLANT-001",
-  "name": "Updated test plant"
+  "code": "TEST-SITE-001",
+  "name": "Test site"
 }
 ```
 
-The existing Plant is corrected rather than duplicated.
+The same `code` is used later when another resource needs to reference this Site.
 
-Fields omitted from partial updates remain unchanged where the operation supports partial updates.
+For example, a Production line can reference:
+
+```json
+{
+  "site": "TEST-SITE-001"
+}
+```
+
+## 4. Retrieve the site
+
+Retrieve the Site by its business code:
+
+```http
+GET /services/pulse/food-beverage/plants/select?id=TEST-SITE-001
+```
+
+The `id` query parameter contains the Site's business `code`.
+
+Confirm that the returned record matches the values submitted earlier.
+
+## 5. Test an update
+
+Update the existing Site:
+
+```http
+PUT /services/pulse/food-beverage/plants/update
+Content-Type: application/json
+```
+
+```json
+{
+  "code": "TEST-SITE-001",
+  "name": "Updated test site"
+}
+```
+
+Retrieve the Site again and confirm that the new name is returned.
+
+## 6. Test a partial update
+
+The Site resource also supports PATCH.
+
+```http
+PATCH /services/pulse/food-beverage/plants/patch
+Content-Type: application/json
+```
+
+```json
+{
+  "properties": {
+    "code": "TEST-SITE-001",
+    "name": "Patched test site"
+  }
+}
+```
+
+The Site is identified by `properties.code`.
+
+For Site PATCH requests, both `code` and `name` are required by the current API.
+
+## 7. Delete the test record
+
+After testing, remove the temporary Site:
+
+```http
+DELETE /services/pulse/food-beverage/plants/delete?id=TEST-SITE-001
+```
+
+Use delete only for records that should no longer exist.
 
 ## Next steps
 
-After the Plant request succeeds:
+After the first request succeeds, a typical integration proceeds by synchronizing foundational data before submitting operational records.
 
-1. Synchronize the remaining required [master data](master-data/index.md).
-2. Submit a [Run](manufacturing/run.md) or [Batch](manufacturing/batch.md), depending on the production process.
-3. Submit related [Consumption](manufacturing/consumption.md), [Output](manufacturing/output.md), and [Readings](manufacturing/reading.md).
-4. Add [Line states](manufacturing/line-state.md), [Events](manufacturing/event.md), maintenance, quality holds, and complaints when applicable.
+A practical sequence is:
 
-See the [API reference](api/index.md) for API conventions, corrections, validation, and supported operations.
+1. Synchronize the required [Master data](master-data/index.md), such as Sites, Production lines, Machines, Products, Materials, Suppliers, Shifts, and Crews.
+2. Register the required [Definitions and rules](definitions-and-rules/index.md), such as Measurements, Product limits, Targets, Reasons, Clean regimes, and Types.
+3. Submit [Production activities](production-activities/index.md), such as Lots, Batches, Runs, Planned use, Stages, Cleans, and Holds.
+4. Submit [Operational data](operational-data/index.md), including Consumption, Output, Readings, Settings, Line time, and Events.
+5. Add [Maintenance and quality](maintenance-and-quality/index.md) data, including Work orders, Parts and Labor, and Complaints.
+
+For a complete example of how these resources fit together, see the [End-to-end integration example](end-to-end-integration.md).
+
+See the [API reference](api/index.md) for supported resources, operations, query parameters, and request conventions.

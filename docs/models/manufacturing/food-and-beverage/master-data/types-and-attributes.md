@@ -1,6 +1,6 @@
 # Types and attributes
 
-Food & Beverage master data can include extensible classification and metadata.
+Food & Beverage master data can include controlled classifications and additional source-system metadata.
 
 Use **types** to define controlled classifications that Pulse can use in analysis.
 
@@ -8,9 +8,9 @@ Use **attributes** for additional source-system metadata that should be stored b
 
 ## Types
 
-Types define controlled classifications such as allergen, storage class, origin, region, or pack format.
+Types define controlled classifications that can be referenced by supported master-data fields.
 
-A type is declared before its values are referenced by master data.
+A type is declared before its values are referenced.
 
 For example:
 
@@ -32,19 +32,9 @@ For example:
 }
 ```
 
-Master-data resources reference declared type values through fields defined by that resource.
+Master-data records do not use a generic `types` object. Classification values are referenced through explicit fields supported by the resource.
 
-For example, a material can reference a storage classification:
-
-```json
-{
-  "code": "MILK-RAW",
-  "name": "Raw milk",
-  "storage": "CHILLED"
-}
-```
-
-A resource can reference several independent classifications when its API defines the corresponding fields:
+For example:
 
 ```json
 {
@@ -56,10 +46,46 @@ A resource can reference several independent classifications when its API define
 }
 ```
 
+## Supported classification fields
+
+The current Food & Beverage master-data resources support these classification fields:
+
+| Resource | Field | Purpose |
+| --- | --- | --- |
+| [Material](material.md) | `allergen` | Allergen classification of the material. |
+| [Material](material.md) | `storage` | Storage classification of the material. |
+| [Material](material.md) | `origin` | Country or origin classification of the material. |
+| [Product](product.md) | `packFormat` | Packaging format classification of the product. |
+
+The value supplied in each field is the code of a value declared through the Types resource.
+
+For example:
+
+```json
+{
+  "code": "PRD001",
+  "name": "Yogurt Strawberry 125g",
+  "packFormat": "CUP"
+}
+```
+
+and:
+
+```json
+{
+  "code": "MAT0001",
+  "name": "Raw milk 3.8% fat",
+  "allergen": "ALG-MILK",
+  "storage": "CHILLED",
+  "origin": "SI"
+}
+```
+
 Pulse can use these classifications when comparing and analysing records.
 
-> [!IMPORTANT]
-> Master-data records do not use a generic `types` object. Each resource defines the classification fields it supports.
+Controlled classifications are declared through the [Types](../definitions-and-rules/type.md) resource. A type defines the classification itself and the allowed value codes that supported master-data fields can reference.
+
+For example, the `allergen` type can define values such as `ALG-MILK`, which can then be referenced by the `allergen` field on a Material.
 
 ## Attributes
 
@@ -84,33 +110,27 @@ Pulse stores these values with the record but does not use them for analysis.
 
 ## Choosing between types and attributes
 
-Ask whether the property could help explain why one production run performs differently from another.
+Use a classification field when the property should participate in analysis and the resource exposes a field for it.
 
-If yes, use a classification field supported by that resource and reference a value declared through the Types resource.
-
-If no, use an attribute.
+Use an attribute when the property is additional source-system metadata that should be stored but not analysed.
 
 For example:
 
 | Property | Use |
 | --- | --- |
-| Allergen group | Classification field |
-| Storage class | Classification field |
-| Origin region | Classification field |
-| Pack format | Classification field |
+| Material allergen | `allergen` classification field |
+| Material storage class | `storage` classification field |
+| Material origin | `origin` classification field |
+| Product pack format | `packFormat` classification field |
 | ERP reference | `attributes` |
 | Drawing revision | `attributes` |
 | Serial number | `attributes` |
 | Internal notes | `attributes` |
 
-Not every classification applies to every resource. Check the resource documentation for the classification fields it supports.
-
-Measured values that vary over time, such as temperature, protein, or moisture, are neither classifications nor attributes. They should be submitted as measurements.
+Measured values that vary over time, such as temperature, protein, or moisture, are neither classifications nor attributes. They should be submitted through the appropriate measurement APIs.
 
 ## API resource
 
 Types are declared through:
 
 `/services/pulse/food-beverage/types`
-
-See the individual master-data resource documentation for the classification fields supported by each resource.

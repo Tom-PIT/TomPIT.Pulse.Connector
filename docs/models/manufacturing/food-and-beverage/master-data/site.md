@@ -19,10 +19,13 @@ A site is the root of the manufacturing hierarchy. Production lines belong to a 
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Business code used to identify the site in external systems and integrations. | `"PLT001"` |
+| `code` | string | Unique business code used to identify the site in external systems and integrations. | `"PLT001"` |
 | `name` | string | Human-readable name of the site. | `"Munich"` |
 
 </div>
+
+> [!IMPORTANT]
+> `code` must be unique. Two sites cannot use the same code.
 
 See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
 
@@ -36,14 +39,14 @@ See [Types and attributes](types-and-attributes.md) for guidance on extensible m
 
 ### Create a site
 
-`POST /services/pulse/food-beverage/plants`
+`POST /services/pulse/food-beverage/plants/insert`
 
 Creates a new site.
 
 #### Request
 
 ```http
-POST /services/pulse/food-beverage/plants
+POST /services/pulse/food-beverage/plants/insert
 Content-Type: application/json
 ```
 
@@ -58,20 +61,20 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Business code of the site. |
+| `code` | string | yes | Unique business code of the site. |
 | `name` | string | yes | Human-readable name of the site. |
 
 
 ### Update a site
 
-`PUT /services/pulse/food-beverage/plants`
+`PUT /services/pulse/food-beverage/plants/update`
 
 Updates an existing site.
 
 #### Request
 
 ```http
-PUT /services/pulse/food-beverage/plants
+PUT /services/pulse/food-beverage/plants/update
 Content-Type: application/json
 ```
 
@@ -86,13 +89,13 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Business code of the site to update. |
+| `code` | string | yes | Unique business code of the site to update. |
 | `name` | string | yes | Human-readable name of the site. |
 
 
 ### Patch a site
 
-`PATCH /services/pulse/food-beverage/plants`
+`PATCH /services/pulse/food-beverage/plants/patch`
 
 Partially updates an existing site.
 
@@ -101,7 +104,7 @@ The fields to update are supplied in the `properties` object. The site is identi
 #### Request
 
 ```http
-PATCH /services/pulse/food-beverage/plants
+PATCH /services/pulse/food-beverage/plants/patch
 Content-Type: application/json
 ```
 
@@ -119,20 +122,27 @@ Content-Type: application/json
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `properties` | object | yes | Fields included in the partial update. |
-| `properties.code` | string | yes | Business code of the site to update. |
-| `properties.name` | string | no | New human-readable name of the site. |
+| `properties.code` | string | yes | Unique business code of the site to update. |
+| `properties.name` | string | yes | Human-readable name of the site. |
+
 
 ### Retrieve a site
 
-`GET /services/pulse/food-beverage/plants/{code}`
+`GET /services/pulse/food-beverage/plants/select`
 
 Returns the site identified by its business code.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/plants/PLT001
+GET /services/pulse/food-beverage/plants/select?id=PLT001
 ```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the site to retrieve. |
 
 #### Example response
 
@@ -146,7 +156,7 @@ GET /services/pulse/food-beverage/plants/PLT001
 
 ### List sites
 
-`GET /services/pulse/food-beverage/plants`
+`GET /services/pulse/food-beverage/plants/query`
 
 Returns sites matching the supplied filters.
 
@@ -155,8 +165,15 @@ Sites can be filtered by code and name.
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/plants
+GET /services/pulse/food-beverage/plants/query?codes=PLT001&names=Munich
 ```
+
+#### Query parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `codes` | string or array of strings | no | Limits results to sites with the specified business codes. |
+| `names` | string or array of strings | no | Limits results to sites with the specified names. |
 
 #### Example response
 
@@ -165,10 +182,6 @@ GET /services/pulse/food-beverage/plants
   {
     "code": "PLT001",
     "name": "Munich"
-  },
-  {
-    "code": "PLT002",
-    "name": "Ljubljana"
   }
 ]
 ```
@@ -176,12 +189,18 @@ GET /services/pulse/food-beverage/plants
 
 ### Delete a site
 
-`DELETE /services/pulse/food-beverage/plants/{code}`
+`DELETE /services/pulse/food-beverage/plants/delete`
 
 Deletes the site identified by its business code.
 
 #### Request
 
 ```http
-DELETE /services/pulse/food-beverage/plants/PLT001
+DELETE /services/pulse/food-beverage/plants/delete?id=PLT001
 ```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | yes | Business code of the site to delete. |

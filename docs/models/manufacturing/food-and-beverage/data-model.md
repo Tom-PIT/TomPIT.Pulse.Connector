@@ -62,8 +62,9 @@ Register referenced records before submitting records that depend on them.
 ## Explore the model
 
 - [Master data](master-data/index.md)
-- [Manufacturing](manufacturing/index.md)
-- [Maintenance](maintenance/index.md)
-- [Measurements](measurements.md)
+- [Production activities](production-activities/index.md)
+- [Operational data](operational-data/index.md)
+- [Maintenance and quality](maintenance-and-quality/index.md)
+- [Definitions and rules](definitions-and-rules/index.md)
 
 Individual resource pages document their specific dependencies and API paths.
