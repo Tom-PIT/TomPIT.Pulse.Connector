@@ -71,61 +71,66 @@ nav:
       - Authentication: getting-started/authentication.md
 
   - Models:
-      - Overview: models/index.md
-      - Manufacturing:
-          - Food & Beverage:
-              - Overview: models/manufacturing/food-and-beverage/index.md
-              - First API request: models/manufacturing/food-and-beverage/first-api-request.md
-              - Measurements: models/manufacturing/food-and-beverage/measurements.md
-              - Data model: models/manufacturing/food-and-beverage/data-model.md
-              - Expected values: models/manufacturing/food-and-beverage/expected.md
-              - Excel integration template: models/manufacturing/food-and-beverage/excel-template.md
+    - Overview: models/index.md
+    - Manufacturing:
+        - Food & Beverage:
+            - Overview: models/manufacturing/food-and-beverage/index.md
+            - First API request: models/manufacturing/food-and-beverage/first-api-request.md
+            - Data model: models/manufacturing/food-and-beverage/data-model.md
+            - Excel integration template: models/manufacturing/food-and-beverage/excel-template.md
 
-              - Master data:
-                  - Overview: models/manufacturing/food-and-beverage/master-data/index.md
-                  - Types and attributes: models/manufacturing/food-and-beverage/master-data/types-and-attributes.md
-                  - Site: models/manufacturing/food-and-beverage/master-data/site.md
-                  - Production line: models/manufacturing/food-and-beverage/master-data/production-line.md
-                  - Machine: models/manufacturing/food-and-beverage/master-data/machine.md
-                  - Vessel: models/manufacturing/food-and-beverage/master-data/vessel.md
-                  - Product: models/manufacturing/food-and-beverage/master-data/product.md
-                  - Recipe: models/manufacturing/food-and-beverage/master-data/recipe.md
-                  - Material: models/manufacturing/food-and-beverage/master-data/material.md
-                  - Supplier: models/manufacturing/food-and-beverage/master-data/supplier.md
-                  - Customer: models/manufacturing/food-and-beverage/master-data/customer.md
-                  - Shift: models/manufacturing/food-and-beverage/master-data/shift.md
-                  - Crew: models/manufacturing/food-and-beverage/master-data/crew.md
-                  - Lot: models/manufacturing/food-and-beverage/master-data/lot.md
-                  - Clean regime: models/manufacturing/food-and-beverage/master-data/clean-regime.md
-                  - Reason: models/manufacturing/food-and-beverage/master-data/reason.md
-                  - Metric: models/manufacturing/food-and-beverage/master-data/metric.md
+            - Master data:
+                - Overview: models/manufacturing/food-and-beverage/master-data/index.md
+                - Types and attributes: models/manufacturing/food-and-beverage/master-data/types-and-attributes.md
+                - Site: models/manufacturing/food-and-beverage/master-data/site.md
+                - Production line: models/manufacturing/food-and-beverage/master-data/production-line.md
+                - Machine: models/manufacturing/food-and-beverage/master-data/machine.md
+                - Vessel: models/manufacturing/food-and-beverage/master-data/vessel.md
+                - Product: models/manufacturing/food-and-beverage/master-data/product.md
+                - Recipe: models/manufacturing/food-and-beverage/master-data/recipe.md
+                - Material: models/manufacturing/food-and-beverage/master-data/material.md
+                - Cost line: models/manufacturing/food-and-beverage/master-data/cost-line.md
+                - Supplier: models/manufacturing/food-and-beverage/master-data/supplier.md
+                - Customer: models/manufacturing/food-and-beverage/master-data/customer.md
+                - Shift: models/manufacturing/food-and-beverage/master-data/shift.md
+                - Crew: models/manufacturing/food-and-beverage/master-data/crew.md
 
-              - Manufacturing:
-                  - Overview: models/manufacturing/food-and-beverage/manufacturing/index.md
-                  - Production work:
-                      - Run: models/manufacturing/food-and-beverage/manufacturing/run.md
-                      - Batch: models/manufacturing/food-and-beverage/manufacturing/batch.md
-                      - Stage: models/manufacturing/food-and-beverage/manufacturing/stage.md
-                      - Clean: models/manufacturing/food-and-beverage/manufacturing/clean.md
-                  - Quality lifecycle:
-                      - Hold: models/manufacturing/food-and-beverage/manufacturing/hold.md
-                      - Complaint: models/manufacturing/food-and-beverage/manufacturing/complaint.md
-                  - Operational records:
-                      - Consumption: models/manufacturing/food-and-beverage/manufacturing/consumption.md
-                      - Output: models/manufacturing/food-and-beverage/manufacturing/output.md
-                      - Reading: models/manufacturing/food-and-beverage/manufacturing/reading.md
-                      - Line state: models/manufacturing/food-and-beverage/manufacturing/line-state.md
-                      - Event: models/manufacturing/food-and-beverage/manufacturing/event.md
+            - Definitions and rules:
+                - Measurement: models/manufacturing/food-and-beverage/definitions-and-rules/measurement.md
+                - Product limit: models/manufacturing/food-and-beverage/definitions-and-rules/product-limit.md
+                - Target: models/manufacturing/food-and-beverage/definitions-and-rules/target.md
+                - Clean regime: models/manufacturing/food-and-beverage/definitions-and-rules/clean-regime.md
+                - Cleaning rule: models/manufacturing/food-and-beverage/definitions-and-rules/cleaning-rule.md
+                - Reason: models/manufacturing/food-and-beverage/definitions-and-rules/reason.md
+                - Type: models/manufacturing/food-and-beverage/definitions-and-rules/type.md
 
-              - Maintenance:
-                  - Overview: models/manufacturing/food-and-beverage/maintenance/index.md
-                  - Maintenance: models/manufacturing/food-and-beverage/maintenance/maintenance.md
+            - Production activities:
+                - Lot: models/manufacturing/food-and-beverage/production-activities/lot.md
+                - Batch: models/manufacturing/food-and-beverage/production-activities/batch.md
+                - Run: models/manufacturing/food-and-beverage/production-activities/run.md
+                - Planned use: models/manufacturing/food-and-beverage/production-activities/planned-use.md
+                - Stage: models/manufacturing/food-and-beverage/production-activities/stage.md
+                - Clean: models/manufacturing/food-and-beverage/production-activities/clean.md
+                - Hold: models/manufacturing/food-and-beverage/production-activities/hold.md
 
-              - End-to-end integration example: models/manufacturing/food-and-beverage/end-to-end-integration.md
-              - API reference: models/manufacturing/food-and-beverage/api/index.md
+            - Operational data:
+                - Consumption: models/manufacturing/food-and-beverage/operational-data/consumption.md
+                - Output: models/manufacturing/food-and-beverage/operational-data/output.md
+                - Reading: models/manufacturing/food-and-beverage/operational-data/reading.md
+                - Setting: models/manufacturing/food-and-beverage/operational-data/setting.md
+                - Line time: models/manufacturing/food-and-beverage/operational-data/line-time.md
+                - Event: models/manufacturing/food-and-beverage/operational-data/event.md
 
-          - Metal and Machining:
-              - Overview: models/manufacturing/metal-and-machining/index.md
+            - Maintenance and quality:
+                - Work order: models/manufacturing/food-and-beverage/maintenance-and-quality/work-order.md
+                - Parts and Labor: models/manufacturing/food-and-beverage/maintenance-and-quality/parts-and-labor.md
+                - Complaint: models/manufacturing/food-and-beverage/maintenance-and-quality/complaint.md
+
+            - End-to-end integration example: models/manufacturing/food-and-beverage/end-to-end-integration.md
+            - API reference: models/manufacturing/food-and-beverage/api/index.md
+
+        - Metal and Machining:
+            - Overview: models/manufacturing/metal-and-machining/index.md
 
   - Validation: validation.md
   - Troubleshooting: troubleshooting.md
