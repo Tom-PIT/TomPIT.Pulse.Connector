@@ -59,8 +59,8 @@ Fields omitted from partial updates remain unchanged where the operation support
 After the Plant request succeeds:
 
 1. Synchronize the remaining required [master data](master-data/index.md).
-2. Submit a [Run](manufacturing/run.md) or [Batch](manufacturing/batch.md), depending on the production process.
-3. Submit related [Consumption](manufacturing/consumption.md), [Output](manufacturing/output.md), and [Readings](manufacturing/reading.md).
-4. Add [Line states](manufacturing/line-state.md), [Events](manufacturing/event.md), maintenance, quality holds, and complaints when applicable.
+2. Submit a [Run](production-activities/run.md) or [Batch](production-activities/batch.md), depending on the production process.
+3. Submit related [Consumption](operational-data/consumption.md), [Output](manufacturing/output.md), and [Readings](operational-data/reading.md).
+4. Add [Line states](manufacturing/line-state.md), [Events](operational-data/event.md), maintenance, quality holds, and complaints when applicable.
 
 See the [API reference](api/index.md) for API conventions, corrections, validation, and supported operations.

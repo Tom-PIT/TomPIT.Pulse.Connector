@@ -1,8 +1,8 @@
 # API reference
 
-The **Pulse API** is a REST API for submitting operational data and retrieving Pulse results.
+The **Pulse API** is a REST API for submitting Food & Beverage integration data and retrieving Pulse results.
 
-This page provides an index of the public API families and resources. Use [Scalar](https://scalar.com/) for the complete operation-level reference, including request fields, parameters, schemas, responses, and the exact operations supported by each resource.
+This page provides an index of the public API resource groups. Use Scalar for the complete operation-level reference, including request fields, parameters, schemas, responses, and the exact operations supported by each resource.
 
 <div class="grid cards" markdown>
 
@@ -10,34 +10,25 @@ This page provides an index of the public API families and resources. Use [Scala
 
 </div>
 
-## API families
+## API groups
 
 <div class="grid cards" markdown>
 
 - [**Master data**](#master-data)
-- [**Manufacturing**](#manufacturing)
-- [**Maintenance**](#maintenance)
+- [**Definitions and rules**](#definitions-and-rules)
+- [**Production activities**](#production-activities)
+- [**Operational data**](#operational-data)
+- [**Maintenance and quality**](#maintenance-and-quality)
 
 </div>
 
 ## Using this reference
 
-Use this page to identify the relevant API family and resources.
+Use this page to identify the relevant API resource and its base path.
 
-Open the resource in Scalar to inspect:
-
-- Available operations.
-- Request fields and data types.
-- Query parameters.
-- Allowed values.
-- Response schemas.
-- Example requests, when available.
-
-Use [Scalar](https://scalar.com/) to inspect and test individual requests. Use integration code for continuous or high-volume data exchange.
+Open the resource documentation for integration guidance and examples. Use Scalar to inspect the complete generated API contract.
 
 ## API conventions
-
-The Food & Beverage facade uses domain-shaped resources and business codes.
 
 ### Base route
 
@@ -57,7 +48,7 @@ For example:
 
 ### Business codes
 
-Integrator-facing requests use business codes rather than Pulse numeric identifiers.
+Food & Beverage integrations use business codes rather than Pulse internal numeric identifiers.
 
 For example:
 
@@ -69,11 +60,26 @@ For example:
 }
 ```
 
-Pulse may return an internal `id` in a response for support or log correlation, but Food & Beverage API requests do not use that `id` as an input.
+References to related records also use their business codes.
+
+### Operations
+
+Resources implemented through the current Food & Beverage service pattern use operation-specific paths such as:
+
+```text
+POST   /{resource}/insert
+PUT    /{resource}/update
+PATCH  /{resource}/patch
+GET    /{resource}/select
+GET    /{resource}/query
+DELETE /{resource}/delete
+```
+
+The operations available for individual resources may differ. See the resource documentation and Scalar for the exact contract.
 
 ### Timestamps
 
-Timestamps sent to the API must use ISO 8601 format with an explicit UTC offset.
+Use ISO 8601 timestamps with an explicit UTC offset where a date and time is required.
 
 For example:
 
@@ -81,170 +87,96 @@ For example:
 2026-08-10T22:00:00+02:00
 ```
 
-The API does not assume a local time zone.
+Some fields may also accept a date where the resource explicitly defines one.
 
-### Partial updates
-
-Lifecycle and other code-addressed resources support partial updates.
-
-A field that is omitted means that its current value is unchanged.
-
-An explicit `null` clears the value when the field supports clearing.
-
-For example, a run can be submitted when it starts:
-
-```json
-{
-  "code": "YOG-RUN-001",
-  "line": "YOGURT-LINE-01",
-  "product": "YOG-STRAWBERRY-150G",
-  "at": "2026-08-10T22:00:00+02:00"
-}
-```
-
-and submitted again later when its end is known:
-
-```json
-{
-  "code": "YOG-RUN-001",
-  "end": "2026-08-11T06:00:00+02:00",
-  "status": "completed"
-}
-```
-
-### Idempotency and corrections
-
-Writes are idempotent on a key already owned by the source system.
-
-For master-data and lifecycle resources, this is normally the record's `code`.
-
-Replaying the same key with the same values does not create a duplicate.
-
-Submitting the same key with corrected values supersedes the previous version rather than overwriting it.
-
-### Stream resources
-
-Stream resources such as readings, output, consumption, and line states can accept repeated operational records.
-
-Stream endpoints accept either a single object or an array of objects.
-
-When an array contains both accepted and rejected records, the API can return partial success with a result for each submitted item.
-
-### Retraction
-
-Correction and retraction are different operations.
-
-A correction submits the same record key with updated values.
-
-A retraction indicates that the record should not exist and is performed using `DELETE`.
-
-Code-addressed resources can be retracted by their `code`. Stream records are retracted using the fields that form their record key.
-
-### Validation without writing
-
-Supported write resources can be validated without changing data by using:
-
-```text
-?dryRun=true
-```
-
-This validates the submitted payload and reports errors without persisting the record.
-
-### Errors
-
-API errors use stable error codes and include details about the field or relationship that caused the problem.
-
-For example:
-
-```json
-{
-  "error": "unknown-entity",
-  "detail": "no line with code 'L07'",
-  "path": "line"
-}
-```
-
-See the complete API reference in Scalar for operation-specific schemas, allowed values, responses, and errors.
+---
 
 ## Master data
 
-Create and maintain the relatively stable business records referenced by Food & Beverage operational data.
+Master data contains the relatively stable business records referenced by Food & Beverage integrations.
 
-All Food & Beverage master-data resources are addressed by business codes rather than Pulse numeric identifiers.
-
-| Resource | Description | Base path |
-| --- | --- | --- |
-| [**Plant**](../master-data/site.md) | Register a physical operating location. | `/services/pulse/food-beverage/plants` |
-| [**Production line**](../master-data/production-line.md) | Register a production line within a plant. | `/services/pulse/food-beverage/lines` |
-| [**Machine**](../master-data/machine.md) | Register a machine, component, or wear part associated with a production line. | `/services/pulse/food-beverage/machines` |
-| [**Vessel**](../master-data/vessel.md) | Register a tank, silo, or other process vessel associated with a production line. | `/services/pulse/food-beverage/vessels` |
-| [**Product**](../master-data/product.md) | Register a finished product or other output tracked in Pulse. | `/services/pulse/food-beverage/products` |
-| [**Recipe**](../master-data/recipe.md) | Register a formulation version used during production. | `/services/pulse/food-beverage/recipes` |
-| [**Material**](../master-data/material.md) | Register an ingredient, packaging material, chemical, or other material used in production. | `/services/pulse/food-beverage/materials` |
-| [**Supplier**](../master-data/supplier.md) | Register a supplier associated with materials and other inputs. | `/services/pulse/food-beverage/suppliers` |
-| [**Customer**](../master-data/customer.md) | Register a customer associated with Food & Beverage operations. | `/services/pulse/food-beverage/customers` |
-| [**Shift**](../master-data/shift.md) | Register a work period used as production context. | `/services/pulse/food-beverage/shifts` |
-| [**Crew**](../master-data/crew.md) | Register a team or operator group used to attribute work and labor consumption. | `/services/pulse/food-beverage/crews` |
-| [**Lot**](../master-data/lot.md) | Register a traceable quantity of material received or produced. | `/services/pulse/food-beverage/lots` |
-| [**Clean regime**](../master-data/clean-regime.md) | Register a cleaning regime such as dry clean, wet clean, full CIP, or allergen clean. | `/services/pulse/food-beverage/clean-regimes` |
-| [**Reason**](../master-data/reason.md) | Register hierarchical causes used by stoppages, maintenance, holds, complaints, and other operational records. | `/services/pulse/food-beverage/reasons` |
-| [**Metric**](../master-data/metric.md) | Declare a measurable or commanded signal used by readings and expected values. | `/services/pulse/food-beverage/metrics` |
-| [**Types and attributes**](../master-data/types-and-attributes.md) | Declare analysable classifications and understand how they differ from additional source-system metadata. | `/services/pulse/food-beverage/types` |
-
-### Lot analysis
-
-Measured properties associated with a lot, such as fat, protein, moisture, or other composition values, are submitted through the lot analysis resource:
-
-`POST /services/pulse/food-beverage/lots/{code}/analysis`
-
-See [Lot](../master-data/lot.md) for details.
-
-## Manufacturing
-
-Submit Food & Beverage production work, resource consumption, output, measurements, line conditions, quality lifecycle records, and operational events.
-
-### Production work
+See [Master data](../master-data/index.md).
 
 | Resource | Description | Base path |
 | --- | --- | --- |
-| [**Run**](../manufacturing/run.md) | Submit a production episode for a product on a production line. | `/services/pulse/food-beverage/runs` |
-| [**Batch**](../manufacturing/batch.md) | Submit a process batch such as a cook, mix, fermentation, or other bulk-production step. | `/services/pulse/food-beverage/batches` |
-| [**Stage**](../manufacturing/stage.md) | Submit an execution step within a production run. | `/services/pulse/food-beverage/stages` |
-| [**Clean**](../manufacturing/clean.md) | Submit a cleaning activity on a production line. | `/services/pulse/food-beverage/cleans` |
+| [**Site**](../master-data/site.md) | Physical operating location. | `/services/pulse/food-beverage/plants` |
+| [**Production line**](../master-data/production-line.md) | Production line within a site. | `/services/pulse/food-beverage/lines` |
+| [**Machine**](../master-data/machine.md) | Machine, component, sensor, or wear part. | `/services/pulse/food-beverage/machines` |
+| [**Vessel**](../master-data/vessel.md) | Tank, silo, or other process vessel. | `/services/pulse/food-beverage/vessels` |
+| [**Product**](../master-data/product.md) | Finished product or other tracked production output. | `/services/pulse/food-beverage/products` |
+| [**Recipe**](../master-data/recipe.md) | Recipe or formulation version used during production. | `/services/pulse/food-beverage/recipes` |
+| [**Material**](../master-data/material.md) | Ingredient, packaging material, chemical, or other production material. | `/services/pulse/food-beverage/materials` |
+| [**Cost line**](../master-data/cost-line.md) | Non-material cost used in production or maintenance. | `/services/pulse/food-beverage/cost-lines` |
+| [**Supplier**](../master-data/supplier.md) | Supplier associated with materials and incoming lots. | `/services/pulse/food-beverage/suppliers` |
+| [**Customer**](../master-data/customer.md) | Customer associated with Food & Beverage operations. | `/services/pulse/food-beverage/customers` |
+| [**Shift**](../master-data/shift.md) | Work period used as production context. | `/services/pulse/food-beverage/shifts` |
+| [**Crew**](../master-data/crew.md) | Team used as Labor and production context. | `/services/pulse/food-beverage/crews` |
 
-### Quality lifecycle
+See [Types and attributes](../master-data/types-and-attributes.md) for guidance on controlled classifications and extensible master-data properties.
 
-| Resource | Description | Base path |
-| --- | --- | --- |
-| [**Hold**](../manufacturing/hold.md) | Submit a quality hold placed on a specific lot. | `/services/pulse/food-beverage/holds` |
-| [**Complaint**](../manufacturing/complaint.md) | Submit a customer complaint associated with a product and traceable lot. | `/services/pulse/food-beverage/complaints` |
+---
 
-### Operational records
+## Definitions and rules
 
-| Resource | Description | Base path |
-| --- | --- | --- |
-| [**Consumption**](../manufacturing/consumption.md) | Submit actual ingredients, packaging, chemicals, utilities, labor, equipment, and other resources consumed by work. | `/services/pulse/food-beverage/consumption` |
-| [**Output**](../manufacturing/output.md) | Submit good output, waste, downgrade, and reject quantities produced during a run. | `/services/pulse/food-beverage/output` |
-| [**Reading**](../manufacturing/reading.md) | Submit measured or commanded values associated with production entities and activities. | `/services/pulse/food-beverage/readings` |
-| [**Line state**](../manufacturing/line-state.md) | Submit non-running or constrained production-line intervals for time accounting. | `/services/pulse/food-beverage/lines/{code}/states` |
-| [**Event**](../manufacturing/event.md) | Submit discrete operational occurrences such as stoppages, deviations, waste, rework, or rejects. | `/services/pulse/food-beverage/events` |
+Definitions and rules describe measurements, limits, classifications, and operational rules used by other Food & Beverage resources.
 
-### Run plans
-
-Planned production quantity and planned resource items can be submitted as part of the Run object or separately through:
-
-`POST /services/pulse/food-beverage/runs/{code}/plan`
-
-See [Run](../manufacturing/run.md) for details.
-
-## Maintenance
-
-Submit preventive or corrective maintenance work performed on machines.
+See [Definitions and rules](../definitions-and-rules/index.md).
 
 | Resource | Description | Base path |
 | --- | --- | --- |
-| [**Maintenance**](../maintenance/maintenance.md) | Submit maintenance work, including planned and actual timing, maintenance kind, machine, and reason. | `/services/pulse/food-beverage/maintenance` |
+| [**Measurements**](../definitions-and-rules/measurements.md) | Defines measurements and setpoints accepted by Pulse. | `/services/pulse/food-beverage/measurements` |
+| [**Product limits**](../definitions-and-rules/product-limit.md) | Defines time-effective product specification limits. | `/services/pulse/food-beverage/product-limits` |
+| [**Targets**](../definitions-and-rules/targets.md) | Defines expected operating ranges or target values. | `/services/pulse/food-beverage/targets` |
+| [**Clean regimes**](../definitions-and-rules/clean-regime.md) | Defines cleaning regimes used by cleaning activities and rules. | `/services/pulse/food-beverage/clean-regimes` |
+| [**Cleaning rules**](../definitions-and-rules/cleaning-rule.md) | Defines the cleaning required between two products. | `/services/pulse/food-beverage/cleaning-rules` |
+| [**Reasons**](../definitions-and-rules/reason.md) | Defines hierarchical reason codes used across operational records. | `/services/pulse/food-beverage/reasons` |
+| [**Types**](../definitions-and-rules/type.md) | Defines controlled classifications and their allowed values. | `/services/pulse/food-beverage/types` |
 
-Actual materials, labor, equipment, energy, and other resources used during maintenance are submitted through [Consumption](../manufacturing/consumption.md) with the maintenance activity as the subject.
+---
 
-When maintenance affects production-line availability, submit the corresponding [Line state](../manufacturing/line-state.md) separately.
+## Production activities
+
+Production activities describe the work performed during production, from incoming material lots through bulk processing, filling, packing, cleaning, and quality holds.
+
+See [Production activities](../production-activities/index.md).
+
+| Resource | Description | Base path |
+| --- | --- | --- |
+| [**Lot**](../production-activities/lot.md) | Records a traceable quantity of material received from a supplier. | `/services/pulse/food-beverage/lots` |
+| [**Batch**](../production-activities/batch.md) | Records bulk production such as cooking, fermentation, or blending. | `/services/pulse/food-beverage/batches` |
+| [**Run**](../production-activities/run.md) | Records filling or packing production on a production line. | `/services/pulse/food-beverage/runs` |
+| [**Planned use**](../production-activities/planned-use.md) | Defines resources a run, batch, or clean is expected to use. | `/services/pulse/food-beverage/planned-use` |
+| [**Stage**](../production-activities/stage.md) | Records an execution step within a production run. | `/services/pulse/food-beverage/stages` |
+| [**Clean**](../production-activities/clean.md) | Records cleaning work between two products. | `/services/pulse/food-beverage/cleans` |
+| [**Hold**](../production-activities/hold.md) | Records a quality hold placed on finished stock. | `/services/pulse/food-beverage/holds` |
+
+---
+
+## Operational data
+
+Operational data records what actually happened during production.
+
+See [Operational data](../operational-data/index.md).
+
+| Resource | Description | Base path |
+| --- | --- | --- |
+| [**Consumption**](../operational-data/consumption.md) | Records resources actually used by a run, batch, or clean. | `/services/pulse/food-beverage/consumption` |
+| [**Output**](../operational-data/output.md) | Records good output, waste, downgrade, and reject quantities. | `/services/pulse/food-beverage/output` |
+| [**Readings**](../operational-data/reading.md) | Records measured values captured during production. | `/services/pulse/food-beverage/readings` |
+| [**Settings**](../operational-data/settings.md) | Records commanded or configured machine values. | `/services/pulse/food-beverage/settings` |
+| [**Line time**](../operational-data/line-time.md) | Records non-running or constrained production-line intervals. | `/services/pulse/food-beverage/line-time` |
+| [**Events**](../operational-data/event.md) | Records discrete operational occurrences. | `/services/pulse/food-beverage/events` |
+
+---
+
+## Maintenance and quality
+
+Maintenance and quality resources cover maintenance work, resources used during maintenance, and customer complaints linked back to production.
+
+See [Maintenance and quality](../maintenance-and-quality/index.md).
+
+| Resource | Description | Base path |
+| --- | --- | --- |
+| [**Work orders**](../maintenance-and-quality/work-order.md) | Records preventive or corrective maintenance work. | `/services/pulse/food-beverage/work-orders` |
+| [**Parts and Labor**](../maintenance-and-quality/parts-and-labour.md) | Records planned and actual maintenance resource use. | `/services/pulse/food-beverage/parts-and-labour` |
+| [**Complaints**](../maintenance-and-quality/complaint.md) | Records customer complaints linked to products and traceable finished lots. | `/services/pulse/food-beverage/complaints` |
