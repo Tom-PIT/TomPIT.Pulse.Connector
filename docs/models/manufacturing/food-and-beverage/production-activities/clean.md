@@ -1,10 +1,8 @@
 # Clean
 
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
+Represents a cleaning activity performed on a Production line between two Products.
 
-Represents a cleaning activity performed on a production line between two products.
-
-A clean records which cleaning regime was used, the product transition it applied to, and how long the cleaning activity took.
+A Clean records which cleaning regime was used, the Product transition it applied to, and how long the cleaning activity took.
 
 ## The Clean object
 
@@ -26,24 +24,24 @@ A clean records which cleaning regime was used, the product transition it applie
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Unique business code used to identify the cleaning activity. | `"CIP-260811-014"` |
-| [`line`](../master-data/production-line.md) | string | Business code of the production line being cleaned. | `"LINE001"` |
-| [`regime`](../definitions-and-rules/clean-regime.md) | string | Business code of the cleaning regime used. | `"allergen-cip"` |
-| [`productBefore`](../master-data/product.md) | string | Business code of the product produced before the clean. | `"PRD001"` |
-| [`productAfter`](../master-data/product.md) | string | Business code of the product produced after the clean. | `"PRD044"` |
-| `start` | string | Date and time when the clean started, in ISO 8601 format. | `"2026-08-11T06:00:00+02:00"` |
-| `end` | string or null | Optional date and time when the clean ended. | `"2026-08-11T07:50:00+02:00"` |
+| `code` | string | Unique business code used to identify the Clean. | `"CIP-260811-014"` |
+| [`line`](../master-data/production-line.md) | string | Business code of the Production line being cleaned. | `"LINE001"` |
+| [`regime`](../definitions-and-rules/clean-regime.md) | string | Business code of the Clean regime used. | `"allergen-cip"` |
+| [`productBefore`](../master-data/product.md) | string | Business code of the Product produced before the Clean. | `"PRD001"` |
+| [`productAfter`](../master-data/product.md) | string | Business code of the Product produced after the Clean. | `"PRD044"` |
+| `start` | string | Date and time when the Clean started, in ISO 8601 format. | `"2026-08-11T06:00:00+02:00"` |
+| `end` | string or null | Date and time when the Clean ended, or `null` while it remains open. | `"2026-08-11T07:50:00+02:00"` |
 
 </div>
 
 > [!IMPORTANT]
-> `code` must be unique. Two cleans cannot use the same code.
+> `code` must be unique. Two Cleans cannot use the same code.
 >
 > `line`, `regime`, `productBefore`, and `productAfter` must reference existing records.
 
 ## Product transition
 
-The product pair defines the changeover that the clean belongs to.
+The Product pair defines the changeover that the Clean belongs to.
 
 ```text
 PRD001
@@ -53,9 +51,9 @@ PRD001
 PRD044
 ```
 
-This is important because cleaning requirements can depend on the direction of the product transition.
+This is important because cleaning requirements can depend on the direction of the Product transition.
 
-For example, cleaning from:
+For example:
 
 ```text
 PRD001 → PRD044
@@ -67,7 +65,18 @@ may require a different regime or expected duration than:
 PRD044 → PRD001
 ```
 
-The actual clean can therefore be compared with the corresponding [Cleaning rule](../definitions-and-rules/cleaning-rule.md).
+The actual Clean can therefore be compared with the corresponding [Cleaning rule](../definitions-and-rules/cleaning-rule.md).
+
+## Clean status
+
+A Clean without `end` remains open.
+
+When `end` is supplied, the Clean is treated as completed.
+
+```text
+end = null    → running
+end supplied  → completed
+```
 
 ## Cleaning duration
 
@@ -82,7 +91,7 @@ For example:
 }
 ```
 
-records a clean that took 110 minutes.
+records a Clean that took 110 minutes.
 
 This actual duration can be compared with `expectedMinutes` from the applicable Cleaning rule.
 
@@ -96,6 +105,10 @@ Actual resource use is recorded separately through [Consumption](../operational-
 
 This keeps the cleaning activity itself separate from the resources consumed while performing it.
 
+## Reference protection
+
+A Production line, Clean regime, or Product referenced by an existing Clean cannot be deleted until the Clean reference is removed.
+
 ## API resource
 
 | Resource | Base path |
@@ -103,9 +116,6 @@ This keeps the cleaning activity itself separate from the resources consumed whi
 | `Clean` | `/services/pulse/food-beverage/cleans` |
 
 ## API methods
-
-> [!NOTE]
-> The API methods below follow the current Food & Beverage service pattern and are provisional until the Cleans implementation is available for verification.
 
 ### Create a clean
 
@@ -136,14 +146,13 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Unique business code of the clean. |
-| `line` | string | yes | Business code of the production line. |
-| `regime` | string | yes | Business code of the cleaning regime. |
-| `productBefore` | string | yes | Business code of the product produced before the clean. |
-| `productAfter` | string | yes | Business code of the product produced after the clean. |
-| `start` | string | yes | Date and time when the clean started. |
-| `end` | string or null | no | Date and time when the clean ended. |
-
+| `code` | string | yes | Unique business code of the Clean. |
+| `line` | string | yes | Business code of the Production line. |
+| `regime` | string | yes | Business code of the Clean regime. |
+| `productBefore` | string | yes | Business code of the Product produced before the Clean. |
+| `productAfter` | string | yes | Business code of the Product produced after the Clean. |
+| `start` | string | yes | Date and time when the Clean started. |
+| `end` | string or null | no | Date and time when the Clean ended. |
 
 ### Update a clean
 
@@ -170,14 +179,15 @@ Content-Type: application/json
 }
 ```
 
-
 ### Patch a clean
 
 `PATCH /services/pulse/food-beverage/cleans/patch`
 
-Partially updates an existing clean.
+Partially updates an existing Clean.
 
-The fields to update are supplied in the `properties` object. The clean is identified by its business `code`.
+The Clean is identified by `properties.code`. Fields omitted from `properties` keep their current values.
+
+`end` can be explicitly cleared by including it with a null value.
 
 #### Request
 
@@ -195,12 +205,24 @@ Content-Type: application/json
 }
 ```
 
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.code` | string | yes | Business code of the Clean to update. |
+| `properties.line` | string | no | New Production line business code. |
+| `properties.regime` | string | no | New Clean regime business code. |
+| `properties.productBefore` | string | no | New preceding Product business code. |
+| `properties.productAfter` | string | no | New following Product business code. |
+| `properties.start` | string | no | New Clean start date and time. |
+| `properties.end` | string or null | no | New Clean end date and time, or `null` to leave the Clean open. |
 
 ### Retrieve a clean
 
 `GET /services/pulse/food-beverage/cleans/select`
 
-Returns the clean identified by its business code.
+Returns the Clean identified by its business code.
 
 #### Request
 
@@ -212,7 +234,7 @@ GET /services/pulse/food-beverage/cleans/select?id=CIP-260811-014
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | string | yes | Business code of the clean to retrieve. |
+| `id` | string | yes | Business code of the Clean to retrieve. |
 
 #### Example response
 
@@ -228,34 +250,41 @@ GET /services/pulse/food-beverage/cleans/select?id=CIP-260811-014
 }
 ```
 
-
 ### List cleans
 
 `GET /services/pulse/food-beverage/cleans/query`
 
-Returns cleans matching the supplied filters.
+Returns Cleans matching the supplied filters.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/cleans/query?line=LINE001&regime=allergen-cip
+GET /services/pulse/food-beverage/cleans/query?lines=LINE001&regimes=allergen-cip
 ```
 
 #### Query parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `line` | string | no | Limits results to cleans on the specified production line. |
-| `regime` | string | no | Limits results to the specified cleaning regime. |
-| `from` | string | no | Limits results to cleans starting on or after the specified date or time. |
-| `to` | string | no | Limits results to cleans starting on or before the specified date or time. |
+| `codes` | string or array of strings | no | Limits results to the specified Clean business codes. |
+| `lines` | string or array of strings | no | Limits results to Cleans on the specified Production lines. |
+| `regimes` | string or array of strings | no | Limits results to the specified Clean regimes. |
+| `from` | string | no | Limits results to Cleans starting at or after the specified date and time. |
+| `to` | string | no | Limits results to Cleans starting at or before the specified date and time. |
 
+Multiple values can be supplied by repeating the query parameter:
+
+```http
+GET /services/pulse/food-beverage/cleans/query?lines=LINE001&lines=LINE002
+```
 
 ### Delete a clean
 
 `DELETE /services/pulse/food-beverage/cleans/delete`
 
-Deletes the clean identified by its business code.
+Deletes the Clean identified by its business code.
+
+Use delete only when the cleaning activity should not exist as a recorded activity.
 
 #### Request
 
@@ -267,4 +296,4 @@ DELETE /services/pulse/food-beverage/cleans/delete?id=CIP-260811-014
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | string | yes | Business code of the clean to delete. |
+| `id` | string | yes | Business code of the Clean to delete. |

@@ -1,10 +1,8 @@
 # Stage
 
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
-
 Represents a defined execution step within a production [Run](run.md).
 
-A stage records when a specific part of the run was active and which machine performed that step.
+A Stage records when a specific part of the Run was active and which Machine performed that step.
 
 Examples include filling, capping, labelling, or case packing.
 
@@ -26,22 +24,22 @@ Examples include filling, capping, labelling, or case packing.
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| [`run`](run.md) | string | Business code of the production run to which the stage belongs. | `"L01-260810-002"` |
-| `stage` | string | Stage code that identifies the production step within the run. | `"fill"` |
-| [`machine`](../master-data/machine.md) | string | Business code of the machine performing the stage. | `"EQ010"` |
-| `start` | string | Date and time when the stage started, in ISO 8601 format. | `"2026-08-10T22:10:00+02:00"` |
-| `end` | string or null | Optional date and time when the stage ended. | `"2026-08-11T05:50:00+02:00"` |
+| [`run`](run.md) | string | Business code of the production Run to which the Stage belongs. | `"L01-260810-002"` |
+| `stage` | string | Stage code that identifies the production step within the Run. | `"fill"` |
+| [`machine`](../master-data/machine.md) | string | Business code of the Machine performing the Stage. | `"EQ010"` |
+| `start` | string | Date and time when the Stage started, in ISO 8601 format. | `"2026-08-10T22:10:00+02:00"` |
+| `end` | string or null | Date and time when the Stage ended, or `null` while it remains open. | `"2026-08-11T05:50:00+02:00"` |
 
 </div>
 
 > [!IMPORTANT]
-> `run` and `stage` together identify the stage.
+> `run` and `stage` together identify the Stage.
 >
 > `run` and `machine` must reference existing records.
 
 ## Stage identity
 
-A stage is identified within its run by the combination of `run` and `stage`.
+A Stage is identified within its Run by the combination of `run` and `stage`.
 
 For example:
 
@@ -55,11 +53,22 @@ and:
 L01-260810-003/fill
 ```
 
-represent different stage executions even though both use the `fill` stage code.
+represent different Stage executions even though both use the `fill` Stage code.
+
+## Stage status
+
+A Stage without `end` remains open.
+
+When `end` is supplied, the Stage is treated as completed.
+
+```text
+end = null    → running
+end supplied  → completed
+```
 
 ## Stages and machines
 
-The machine is associated with the stage during which it operates rather than with the entire run.
+The Machine is associated with the Stage during which it operates rather than with the entire Run.
 
 For example:
 
@@ -71,9 +80,13 @@ Run
 └── case   → EQ040
 ```
 
-This allows Pulse to preserve the actual operating period of each machine.
+This allows Pulse to preserve the actual operating period of each Machine.
 
-A production run may last eight hours while a particular machine operates for only part of that time. Recording the machine on the stage preserves that distinction.
+A production Run may last eight hours while a particular Machine operates for only part of that time. Recording the Machine on the Stage preserves that distinction.
+
+## Reference protection
+
+A Run or Machine referenced by an existing Stage cannot be deleted until the Stage reference is removed.
 
 ## API resource
 
@@ -83,14 +96,11 @@ A production run may last eight hours while a particular machine operates for on
 
 ## API methods
 
-> [!NOTE]
-> The API methods below follow the current Food & Beverage service pattern and are provisional until the Stages implementation is available for verification.
-
 ### Create a stage
 
 `POST /services/pulse/food-beverage/stages/insert`
 
-Creates a stage within a production run.
+Creates a Stage within a production Run.
 
 #### Request
 
@@ -113,20 +123,19 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `run` | string | yes | Business code of the production run. |
-| `stage` | string | yes | Stage code within the run. |
-| `machine` | string | yes | Business code of the machine performing the stage. |
-| `start` | string | yes | Date and time when the stage started. |
-| `end` | string or null | no | Date and time when the stage ended. |
-
+| `run` | string | yes | Business code of the production Run. |
+| `stage` | string | yes | Stage code within the Run. |
+| `machine` | string | yes | Business code of the Machine performing the Stage. |
+| `start` | string | yes | Date and time when the Stage started. |
+| `end` | string or null | no | Date and time when the Stage ended. |
 
 ### Update a stage
 
 `PUT /services/pulse/food-beverage/stages/update`
 
-Updates an existing stage.
+Updates an existing Stage.
 
-The stage is identified by the combination of `run` and `stage`.
+The Stage is identified by the combination of `run` and `stage`.
 
 #### Request
 
@@ -145,14 +154,15 @@ Content-Type: application/json
 }
 ```
 
-
 ### Patch a stage
 
 `PATCH /services/pulse/food-beverage/stages/patch`
 
-Partially updates an existing stage.
+Partially updates an existing Stage.
 
-The exact PATCH identification shape still needs to be verified against the implementation.
+The Stage is identified by `properties.run` and `properties.stage`. Fields omitted from `properties` keep their current values.
+
+`end` can be explicitly cleared by including it with a null value.
 
 #### Request
 
@@ -171,12 +181,22 @@ Content-Type: application/json
 }
 ```
 
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.run` | string | yes | Business code of the Run containing the Stage. |
+| `properties.stage` | string | yes | Stage code identifying the Stage within the Run. |
+| `properties.machine` | string | no | New Machine business code. |
+| `properties.start` | string | no | New Stage start date and time. |
+| `properties.end` | string or null | no | New Stage end date and time, or `null` to leave the Stage open. |
 
 ### Retrieve a stage
 
 `GET /services/pulse/food-beverage/stages/select`
 
-Returns a stage identified by its run and stage code.
+Returns the Stage identified by its Run and Stage code.
 
 #### Request
 
@@ -188,36 +208,42 @@ GET /services/pulse/food-beverage/stages/select?run=L01-260810-002&stage=fill
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `run` | string | yes | Business code of the production run. |
-| `stage` | string | yes | Stage code within the run. |
-
+| `run` | string | yes | Business code of the production Run. |
+| `stage` | string | yes | Stage code within the Run. |
 
 ### List stages
 
 `GET /services/pulse/food-beverage/stages/query`
 
-Returns stages matching the supplied filters.
+Returns Stages matching the supplied filters.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/stages/query?run=L01-260810-002&machine=EQ010
+GET /services/pulse/food-beverage/stages/query?runs=L01-260810-002&machines=EQ010
 ```
 
 #### Query parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `run` | string | no | Limits results to stages belonging to the specified run. |
-| `stage` | string | no | Limits results to the specified stage code. |
-| `machine` | string | no | Limits results to stages performed by the specified machine. |
+| `runs` | string or array of strings | no | Limits results to Stages belonging to the specified Runs. |
+| `stages` | string or array of strings | no | Limits results to the specified Stage codes. |
+| `machines` | string or array of strings | no | Limits results to Stages performed by the specified Machines. |
+| `from` | string | no | Limits results to Stages starting at or after the specified date and time. |
+| `to` | string | no | Limits results to Stages starting at or before the specified date and time. |
 
+Multiple values can be supplied by repeating the query parameter:
+
+```http
+GET /services/pulse/food-beverage/stages/query?stages=fill&stages=cap
+```
 
 ### Delete a stage
 
 `DELETE /services/pulse/food-beverage/stages/delete`
 
-Deletes a stage.
+Deletes the Stage identified by its Run and Stage code.
 
 #### Request
 
@@ -229,5 +255,5 @@ DELETE /services/pulse/food-beverage/stages/delete?run=L01-260810-002&stage=fill
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `run` | string | yes | Business code of the production run. |
-| `stage` | string | yes | Stage code within the run. |
+| `run` | string | yes | Business code of the production Run. |
+| `stage` | string | yes | Stage code within the Run. |

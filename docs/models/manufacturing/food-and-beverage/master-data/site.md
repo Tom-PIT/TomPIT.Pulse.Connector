@@ -123,7 +123,7 @@ Content-Type: application/json
 | --- | --- | --- | --- |
 | `properties` | object | yes | Fields included in the partial update. |
 | `properties.code` | string | yes | Unique business code of the site to update. |
-| `properties.name` | string | no | New human-readable name of the site. |
+| `properties.name` | string | yes | Human-readable name of the site. |
 
 
 ### Retrieve a site

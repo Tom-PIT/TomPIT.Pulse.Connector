@@ -1,10 +1,8 @@
 # Run
 
-<!-- TODO: This page is currently based on ApiSurfaceRevised. Revisit it once the implementation is available and verify fields, routes, query parameters, PATCH behavior, and examples against the current code. -->
+Represents a filling or packing production run for a Product on a Production line.
 
-Represents a filling or packing production run for a product on a production line.
-
-A run is the main unit used to connect production output, consumption, process measurements, line states, events, and stages.
+A Run is the main production activity used to connect production output, consumption, process measurements, line time, events, and stages.
 
 ## The Run object
 
@@ -32,22 +30,22 @@ A run is the main unit used to connect production output, consumption, process m
 
 | Field | Type | Description | Example |
 | --- | --- | --- | --- |
-| `code` | string | Unique business code used to identify the run. | `"L01-260810-002"` |
-| [`line`](../master-data/production-line.md) | string | Business code of the production line on which the run takes place. | `"LINE001"` |
-| [`product`](../master-data/product.md) | string | Business code of the product produced during the run. | `"PRD001"` |
-| [`recipe`](../master-data/recipe.md) | string or null | Optional business code of the recipe used during the run. | `"REC-PRD001-v3"` |
-| [`shift`](../master-data/shift.md) | string or null | Optional business code of the shift associated with the run. | `"SHIFT_C"` |
-| [`crew`](../master-data/crew.md) | string or null | Optional business code of the crew associated with the run. | `"CREW-C"` |
-| [`fromLots`](lot.md) | array of strings or null | Optional business codes of bulk lots consumed by the run. | `["BULK-260810-07"]` |
-| `plannedQuantity` | number or null | Optional planned output quantity, expressed in the product's own unit. | `24000` |
-| `start` | string | Date and time when the run started, in ISO 8601 format. | `"2026-08-10T22:00:00+02:00"` |
-| `end` | string or null | Optional date and time when the run ended. | `"2026-08-11T06:00:00+02:00"` |
-| `status` | string or null | How the run ended. Supported values are `completed` and `cancelled`. | `"completed"` |
+| `code` | string | Unique business code used to identify the Run. | `"L01-260810-002"` |
+| [`line`](../master-data/production-line.md) | string | Business code of the Production line on which the Run takes place. | `"LINE001"` |
+| [`product`](../master-data/product.md) | string | Business code of the Product produced during the Run. | `"PRD001"` |
+| [`recipe`](../master-data/recipe.md) | string or null | Optional business code of the Recipe used during the Run. | `"REC-PRD001-v3"` |
+| [`shift`](../master-data/shift.md) | string or null | Optional business code of the Shift associated with the Run. | `"SHIFT_C"` |
+| [`crew`](../master-data/crew.md) | string or null | Optional business code of the Crew assigned to the Run. | `"CREW-C"` |
+| [`fromLots`](lot.md) | array of strings | Business codes of Lots consumed by the Run. Empty when no source Lots are specified. | `["BULK-260810-07"]` |
+| `plannedQuantity` | number or null | Optional planned output quantity, expressed in the Product's unit. | `24000` |
+| `start` | string | Date and time when the Run started, in ISO 8601 format. | `"2026-08-10T22:00:00+02:00"` |
+| `end` | string or null | Date and time when the Run ended, or `null` while it remains open. | `"2026-08-11T06:00:00+02:00"` |
+| `status` | string or null | Declared Run outcome. Supported values are `completed` and `cancelled`. | `"completed"` |
 
 </div>
 
 > [!IMPORTANT]
-> `code` must be unique. Two runs cannot use the same code.
+> `code` must be unique. Two Runs cannot use the same code.
 >
 > `line` and `product` must reference existing records.
 >
@@ -55,7 +53,7 @@ A run is the main unit used to connect production output, consumption, process m
 
 ## Run and batch
 
-A run and a [Batch](batch.md) represent different production activities.
+A Run and a [Batch](batch.md) represent different production activities.
 
 ```text
 Bulk processing
@@ -67,11 +65,11 @@ Filling / packing
   Run
 ```
 
-A batch produces bulk material.
+A Batch produces bulk material.
 
-A run turns that bulk material into a specific product on a production line.
+A Run turns that material into a specific Product on a Production line.
 
-The optional `fromLots` field preserves the connection between the run and the bulk lots it consumed.
+The optional `fromLots` field preserves the connection between the Run and the Lots it consumed:
 
 ```json
 {
@@ -83,13 +81,13 @@ The optional `fromLots` field preserves the connection between the run and the b
 }
 ```
 
-A run can consume more than one bulk lot, and one bulk lot can supply more than one run.
+A Run can consume more than one Lot, and the same Lot can supply more than one Run.
 
 ## Planned quantity
 
-`plannedQuantity` defines how much product the run was expected to produce.
+`plannedQuantity` defines how much Product the Run was expected to produce.
 
-The quantity is expressed in the unit defined by the Product.
+The quantity is expressed in the unit defined by the referenced Product.
 
 For example:
 
@@ -100,13 +98,15 @@ For example:
 }
 ```
 
-Providing the planned quantity allows actual production output to be compared with what the run was intended to produce.
+Providing a planned quantity allows actual production output to be compared with the original Run plan.
 
-Without a planned quantity, Pulse can still record output, but it cannot determine how much production was lost relative to the run plan.
+When `plannedQuantity` is removed, the corresponding output plan for the Run is removed as well.
 
 ## Run status
 
-A completed run uses:
+`status` describes the declared outcome of the Run.
+
+A normally completed Run uses:
 
 ```json
 {
@@ -114,7 +114,7 @@ A completed run uses:
 }
 ```
 
-A run that started but was stopped before normal completion uses:
+A Run that started but stopped before normal completion uses:
 
 ```json
 {
@@ -122,10 +122,16 @@ A run that started but was stopped before normal completion uses:
 }
 ```
 
+When no outcome has been declared, `status` is null.
+
 > [!IMPORTANT]
-> `cancelled` is different from deleting a run.
+> `cancelled` is different from deleting a Run.
 >
-> Use `cancelled` when production actually started but was stopped early. Delete a run only when the run record itself should not exist.
+> Use `cancelled` when production actually started but was stopped early. Delete a Run only when the Run record itself should not exist.
+
+## Reference protection
+
+A Production line, Product, Recipe, Shift, or Crew referenced by an existing Run cannot be deleted until the Run reference is removed.
 
 ## API resource
 
@@ -135,14 +141,11 @@ A run that started but was stopped before normal completion uses:
 
 ## API methods
 
-> [!NOTE]
-> The API methods below follow the current Food & Beverage service pattern and are provisional until the Runs implementation is available for verification.
-
 ### Create a run
 
 `POST /services/pulse/food-beverage/runs/insert`
 
-Creates a new production run.
+Creates a new production Run.
 
 #### Request
 
@@ -173,24 +176,25 @@ Content-Type: application/json
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | string | yes | Unique business code of the run. |
-| `line` | string | yes | Business code of the production line. |
-| `product` | string | yes | Business code of the product. |
-| `recipe` | string or null | no | Business code of the recipe used. |
-| `shift` | string or null | no | Business code of the shift. |
-| `crew` | string or null | no | Business code of the crew. |
-| `fromLots` | array of strings or null | no | Bulk lot codes consumed by the run. |
-| `plannedQuantity` | number or null | no | Planned output quantity in the product's unit. |
-| `start` | string | yes | Date and time when the run started. |
-| `end` | string or null | no | Date and time when the run ended. |
-| `status` | string or null | no | `completed` or `cancelled`. |
-
+| `code` | string | yes | Unique business code of the Run. |
+| `line` | string | yes | Business code of the Production line. |
+| `product` | string | yes | Business code of the Product. |
+| `recipe` | string or null | no | Business code of the Recipe used. |
+| `shift` | string or null | no | Business code of the Shift. |
+| `crew` | string or null | no | Business code of the Crew. |
+| `fromLots` | array of strings or null | no | Business codes of Lots consumed by the Run. |
+| `plannedQuantity` | number or null | no | Planned output quantity in the Product's unit. |
+| `start` | string | yes | Date and time when the Run started. |
+| `end` | string or null | no | Date and time when the Run ended. |
+| `status` | string or null | no | Declared outcome: `completed` or `cancelled`. |
 
 ### Update a run
 
 `PUT /services/pulse/food-beverage/runs/update`
 
-Updates an existing production run.
+Updates an existing production Run.
+
+The complete Run payload is submitted. Referenced resources and the original planned output are synchronized with the supplied values.
 
 #### Request
 
@@ -217,14 +221,15 @@ Content-Type: application/json
 }
 ```
 
-
 ### Patch a run
 
 `PATCH /services/pulse/food-beverage/runs/patch`
 
-Partially updates an existing run.
+Partially updates an existing Run.
 
-The fields to update are supplied in the `properties` object. The run is identified by its business `code`.
+The Run is identified by `properties.code`. Fields omitted from `properties` keep their current values.
+
+Optional fields can be explicitly cleared where applicable.
 
 #### Request
 
@@ -243,12 +248,28 @@ Content-Type: application/json
 }
 ```
 
+#### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `properties` | object | yes | Fields included in the partial update. |
+| `properties.code` | string | yes | Business code of the Run to update. |
+| `properties.line` | string | no | New Production line business code. |
+| `properties.product` | string | no | New Product business code. |
+| `properties.recipe` | string or null | no | New Recipe business code, or `null` to clear it. |
+| `properties.shift` | string or null | no | New Shift business code, or `null` to clear it. |
+| `properties.crew` | string or null | no | New Crew business code, or `null` to clear it. |
+| `properties.fromLots` | array of strings or null | no | Replacement set of consumed Lot codes. Use an empty array or `null` to remove all source Lots. |
+| `properties.plannedQuantity` | number or null | no | New planned output quantity, or `null` to remove it. |
+| `properties.start` | string | no | New Run start date and time. |
+| `properties.end` | string or null | no | New Run end date and time, or `null` to clear it. |
+| `properties.status` | string or null | no | New outcome, or `null` to clear the declared outcome. |
 
 ### Retrieve a run
 
 `GET /services/pulse/food-beverage/runs/select`
 
-Returns the run identified by its business code.
+Returns the Run identified by its business code.
 
 #### Request
 
@@ -260,7 +281,7 @@ GET /services/pulse/food-beverage/runs/select?id=L01-260810-002
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | string | yes | Business code of the run to retrieve. |
+| `id` | string | yes | Business code of the Run to retrieve. |
 
 #### Example response
 
@@ -282,38 +303,45 @@ GET /services/pulse/food-beverage/runs/select?id=L01-260810-002
 }
 ```
 
-
 ### List runs
 
 `GET /services/pulse/food-beverage/runs/query`
 
-Returns runs matching the supplied filters.
+Returns Runs matching the supplied filters.
 
 #### Request
 
 ```http
-GET /services/pulse/food-beverage/runs/query?line=LINE001&product=PRD001
+GET /services/pulse/food-beverage/runs/query?lines=LINE001&products=PRD001
 ```
 
 #### Query parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `line` | string | no | Limits results to runs on the specified production line. |
-| `product` | string | no | Limits results to runs producing the specified product. |
-| `shift` | string | no | Limits results to runs associated with the specified shift. |
-| `crew` | string | no | Limits results to runs associated with the specified crew. |
-| `from` | string | no | Limits results to runs starting on or after the specified date or time. |
-| `to` | string | no | Limits results to runs starting on or before the specified date or time. |
+| `codes` | string or array of strings | no | Limits results to the specified Run business codes. |
+| `lines` | string or array of strings | no | Limits results to Runs on the specified Production lines. |
+| `products` | string or array of strings | no | Limits results to Runs producing the specified Products. |
+| `shifts` | string or array of strings | no | Limits results to Runs associated with the specified Shifts. |
+| `crews` | string or array of strings | no | Limits results to Runs associated with the specified Crews. |
+| `from` | string | no | Limits results to Runs starting at or after the specified date and time. |
+| `to` | string | no | Limits results to Runs starting at or before the specified date and time. |
 
+Multiple values can be supplied by repeating the query parameter:
+
+```http
+GET /services/pulse/food-beverage/runs/query?lines=LINE001&lines=LINE002
+```
 
 ### Delete a run
 
 `DELETE /services/pulse/food-beverage/runs/delete`
 
-Deletes the run identified by its business code.
+Deletes the Run identified by its business code.
 
-Use this only when the run record should not exist. A run that actually started but stopped early should use `status: "cancelled"` instead.
+Use this only when the Run record should not exist. A Run that actually started but stopped early should use `status: "cancelled"` instead.
+
+Deleting the Run also removes its associated original output plan and Run references.
 
 #### Request
 
@@ -325,4 +353,4 @@ DELETE /services/pulse/food-beverage/runs/delete?id=L01-260810-002
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | string | yes | Business code of the run to delete. |
+| `id` | string | yes | Business code of the Run to delete. |
