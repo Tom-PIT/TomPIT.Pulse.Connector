@@ -49,7 +49,7 @@ See [Types and attributes](types-and-attributes.md) for guidance on extensible m
 
 Materials that require traceability should use `lotTracked: true`.
 
-When `lotTracked` is `true`, consumption records for the material must reference a [lot](lot.md).
+When `lotTracked` is `true`, consumption records for the material must reference a [lot](../production-activities/lot.md).
 
 Materials that are not normally lot-tracked, such as water, steam, electricity, or similar utilities, can use `lotTracked: false`.
 

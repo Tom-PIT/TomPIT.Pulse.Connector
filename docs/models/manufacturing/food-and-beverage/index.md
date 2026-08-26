@@ -28,17 +28,22 @@ Related records are connected through business codes so users can prepare the re
 ## Integration flow
 
 ```mermaid
-flowchart LR
-    A["Source systems"]
-    B["Food & Beverage mapping"]
-    C["Master data"]
-    D["Definitions and rules"]
-    E["Production activities"]
-    F["Operational data"]
-    G["Maintenance and quality"]
-    H["Pulse"]
+flowchart TD
+    A["Master data"]
+    B["Definitions and rules"]
+    C["Production activities"]
+    D["Operational data"]
+    E["Maintenance and quality"]
 
-    A --> B --> C --> D --> E --> F --> G --> H
+    A --> B
+    A --> C
+    B --> C
+    A --> D
+    B --> D
+    C --> D
+    A --> E
+    B --> E
+    C --> E
 ```
 
 The exact submission order depends on the source system and the records being integrated. Referenced records must exist before records that depend on them.
@@ -112,7 +117,7 @@ Submit what actually happened during production:
 - [Consumption](operational-data/consumption.md)
 - [Output](operational-data/output.md)
 - [Readings](operational-data/reading.md)
-- [Settings](operational-data/settings.md)
+- [Settings](operational-data/setting.md)
 - [Line time](operational-data/line-time.md)
 - [Events](operational-data/event.md)
 
@@ -123,7 +128,7 @@ See [Operational data](operational-data/index.md).
 Submit maintenance and customer-quality records:
 
 - [Work orders](maintenance-and-quality/work-order.md)
-- [Parts and Labor](maintenance-and-quality/parts-and-labour.md)
+- [Parts and Labor](maintenance-and-quality/parts-and-labor.md)
 - [Complaints](maintenance-and-quality/complaint.md)
 
 See [Maintenance and quality](maintenance-and-quality/index.md).
@@ -155,8 +160,6 @@ For example:
 ```text
 2026-08-10T22:00:00+02:00
 ```
-
-Some resources also accept date-only values where explicitly documented.
 
 ## Validate the integration
 

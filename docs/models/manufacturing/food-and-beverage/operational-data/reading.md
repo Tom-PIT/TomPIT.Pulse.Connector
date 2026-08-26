@@ -25,7 +25,7 @@ Readings can describe production resources and activities such as lines, machine
 | `subject` | string | Business code of the resource or production activity being measured. | `"EQ003"` |
 | [`measure`](../definitions-and-rules/measurement.md) | string | Business code of the Measurement being captured. | `"product-temp-holding"` |
 | `value` | number, string, or boolean | Measured value. Its interpretation is determined by the Measurement definition. | `74.2` |
-| `sensor` | string or null | Optional registered sensor, probe, filling-head, or other measurement-source code. | `"EQ003-TT-HOLD"` |
+| `sensor` | string or null | Optional business code of the Machine, sensor, probe, or measurement point that produced the Reading. | `"EQ010-H06"` |
 | `at` | string | Date and time when the value was captured, in ISO 8601 format. | `"2026-08-10T22:11:00+02:00"` |
 
 </div>
@@ -115,6 +115,22 @@ represent two different Readings because `sensor` is part of the composite key.
 
 If no sensor needs to be distinguished, `sensor` can be omitted.
 
+### Individual pack weights
+
+For individual pack weights, `sensor` can identify the filling head or measurement point that produced each Reading:
+
+```json
+{
+  "subject": "L01-260810-002",
+  "measure": "fill-weight",
+  "value": 128.4,
+  "sensor": "EQ010-H06",
+  "at": "2026-08-10T22:11:02+02:00"
+}
+```
+
+Keeping the individual values and their sensor codes preserves the variation needed to compare filling heads and detect systematic overfill, underfill, or instability.
+
 ## Value type
 
 The Measurement definition determines how `value` is interpreted.
@@ -147,26 +163,6 @@ for a categorical Measurement.
 
 Values must be compatible with the Measurement's declared value type.
 
-## Individual pack weights
-
-Individual pack weights can be submitted as Readings.
-
-For example:
-
-```json
-{
-  "subject": "L01-260810-002",
-  "measure": "fill-weight",
-  "value": 128.4,
-  "sensor": "EQ010-H06",
-  "at": "2026-08-10T22:11:02+02:00"
-}
-```
-
-The `sensor` can identify the filling head or measurement point that produced the value.
-
-Submitting individual weighments rather than only averages preserves the variation needed to compare filling heads and identify systematic overfill, underfill, or instability.
-
 ## Plausibility
 
 Numeric Measurements can define plausible bounds through `minValue` and `maxValue`.
@@ -185,26 +181,6 @@ Commanded or configured values are submitted separately through [Setting](settin
 Measured value  → Reading
 Commanded value → Setting
 ```
-
-## Corrections
-
-A Reading is identified by:
-
-```text
-subject + measure + sensor + at
-```
-
-When no sensor was supplied, the sensor component is null.
-
-Use `update` or `patch` to correct the measured value while keeping the same composite key.
-
-For example, to correct:
-
-```text
-EQ003 / product-temp-holding / EQ003-TT-HOLD / 2026-08-10T22:11:00+02:00
-```
-
-submit the same key and a new `value`.
 
 ## Reference protection
 

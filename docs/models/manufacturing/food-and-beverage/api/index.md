@@ -6,7 +6,7 @@ This page provides an index of the public API resource groups. Use Scalar for th
 
 <div class="grid cards" markdown>
 
-- [**Open the complete API reference in Scalar**](#)
+<!-- - [**Open the complete API reference in Scalar**](https://scalar.com/) -->
 
 </div>
 
@@ -62,6 +62,22 @@ For example:
 
 References to related records also use their business codes.
 
+### Resource identity
+
+Some resources are identified by a single business `code`. Others use a documented combination of business fields.
+
+For example:
+
+- Site: `code`
+- Stage: `run + stage`
+- Output: `run + kind + at`
+- Reading: `subject + measure + sensor + at`
+- Line time: `line + condition + from`
+
+For composite keys, optional key fields are included when present. For example, `sensor` is part of the Reading key when a sensor is supplied.
+
+Select, update, patch, and delete operations use the business key documented for that resource.
+
 ### Operations
 
 Resources implemented through the current Food & Beverage service pattern use operation-specific paths such as:
@@ -75,7 +91,7 @@ GET    /{resource}/query
 DELETE /{resource}/delete
 ```
 
-The operations available for individual resources may differ. See the resource documentation and Scalar for the exact contract.
+The operations available for individual resources may differ. See the resource documentation for the exact contract.
 
 ### Timestamps
 
@@ -86,10 +102,6 @@ For example:
 ```text
 2026-08-10T22:00:00+02:00
 ```
-
-Some fields may also accept a date where the resource explicitly defines one.
-
----
 
 ## Master data
 
@@ -114,8 +126,6 @@ See [Master data](../master-data/index.md).
 
 See [Types and attributes](../master-data/types-and-attributes.md) for guidance on controlled classifications and extensible master-data properties.
 
----
-
 ## Definitions and rules
 
 Definitions and rules describe measurements, limits, classifications, and operational rules used by other Food & Beverage resources.
@@ -131,8 +141,6 @@ See [Definitions and rules](../definitions-and-rules/index.md).
 | [**Cleaning rules**](../definitions-and-rules/cleaning-rule.md) | Defines the cleaning required between two products. | `/services/pulse/food-beverage/cleaning-rules` |
 | [**Reasons**](../definitions-and-rules/reason.md) | Defines hierarchical reason codes used across operational records. | `/services/pulse/food-beverage/reasons` |
 | [**Types**](../definitions-and-rules/type.md) | Defines controlled classifications and their allowed values. | `/services/pulse/food-beverage/types` |
-
----
 
 ## Production activities
 
@@ -150,8 +158,6 @@ See [Production activities](../production-activities/index.md).
 | [**Clean**](../production-activities/clean.md) | Records cleaning work between two products. | `/services/pulse/food-beverage/cleans` |
 | [**Hold**](../production-activities/hold.md) | Records a quality hold placed on finished stock. | `/services/pulse/food-beverage/holds` |
 
----
-
 ## Operational data
 
 Operational data records what actually happened during production.
@@ -163,11 +169,9 @@ See [Operational data](../operational-data/index.md).
 | [**Consumption**](../operational-data/consumption.md) | Records resources actually used by a run, batch, or clean. | `/services/pulse/food-beverage/consumption` |
 | [**Output**](../operational-data/output.md) | Records good output, waste, downgrade, and reject quantities. | `/services/pulse/food-beverage/output` |
 | [**Readings**](../operational-data/reading.md) | Records measured values captured during production. | `/services/pulse/food-beverage/readings` |
-| [**Settings**](../operational-data/settings.md) | Records commanded or configured machine values. | `/services/pulse/food-beverage/settings` |
+| [**Settings**](../operational-data/setting.md) | Records commanded or configured machine values. | `/services/pulse/food-beverage/settings` |
 | [**Line time**](../operational-data/line-time.md) | Records non-running or constrained production-line intervals. | `/services/pulse/food-beverage/line-time` |
 | [**Events**](../operational-data/event.md) | Records discrete operational occurrences. | `/services/pulse/food-beverage/events` |
-
----
 
 ## Maintenance and quality
 
@@ -178,5 +182,5 @@ See [Maintenance and quality](../maintenance-and-quality/index.md).
 | Resource | Description | Base path |
 | --- | --- | --- |
 | [**Work orders**](../maintenance-and-quality/work-order.md) | Records preventive or corrective maintenance work. | `/services/pulse/food-beverage/work-orders` |
-| [**Parts and Labor**](../maintenance-and-quality/parts-and-labour.md) | Records planned and actual maintenance resource use. | `/services/pulse/food-beverage/parts-and-labour` |
+| [**Parts and Labor**](../maintenance-and-quality/parts-and-labor.md) | Records planned and actual maintenance resource use. | `/services/pulse/food-beverage/parts-and-labour` |
 | [**Complaints**](../maintenance-and-quality/complaint.md) | Records customer complaints linked to products and traceable finished lots. | `/services/pulse/food-beverage/complaints` |

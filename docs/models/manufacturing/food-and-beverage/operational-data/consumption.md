@@ -79,6 +79,37 @@ Each category is associated with a corresponding cost Measurement:
 
 The category determines both the cost Measurement and the resource type that `item` must reference.
 
+### Examples
+
+Labor consumption uses `category: "labour"` and a Crew as the `item`:
+
+```json
+{
+  "usedBy": "L01-260810-002",
+  "category": "labour",
+  "item": "CREW-C",
+  "quantity": 32,
+  "unit": "h",
+  "unitValue": 24.5,
+  "at": "2026-08-11T05:50:00+02:00"
+}
+```
+
+The public API category value remains `labour`.
+
+A Clean can record its own resource use in the same way:
+
+```json
+{
+  "usedBy": "CIP-260811-014",
+  "category": "chemical",
+  "item": "CAUSTIC-01",
+  "quantity": 18,
+  "unit": "kg",
+  "at": "2026-08-11T06:20:00+02:00"
+}
+```
+
 ## Lot traceability
 
 For lot-tracked Materials, include the specific Lot that was consumed:
@@ -131,41 +162,6 @@ MAT0042 — 318 kg
 ```
 
 Keeping planned and actual records separate allows Pulse to compare expected and actual resource use for the same item.
-
-## Labor consumption
-
-Labor is recorded at Crew level rather than for individual people.
-
-```json
-{
-  "usedBy": "L01-260810-002",
-  "category": "labour",
-  "item": "CREW-C",
-  "quantity": 32,
-  "unit": "h",
-  "unitValue": 24.5,
-  "at": "2026-08-11T05:50:00+02:00"
-}
-```
-
-The public API category value remains `labour`.
-
-## Cleaning consumption
-
-A Clean can have its own Consumption records.
-
-```json
-{
-  "usedBy": "CIP-260811-014",
-  "category": "chemical",
-  "item": "CAUSTIC-01",
-  "quantity": 18,
-  "unit": "kg",
-  "at": "2026-08-11T06:20:00+02:00"
-}
-```
-
-This allows actual cleaning resource use to be compared with the cleaning activity that required it.
 
 ## Reference protection
 

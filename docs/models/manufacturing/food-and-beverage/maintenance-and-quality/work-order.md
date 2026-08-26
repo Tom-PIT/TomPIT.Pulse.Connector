@@ -29,7 +29,7 @@ A Work order records what equipment was maintained, whether the work addressed a
 | `code` | string | Unique business code used to identify the Work order. | `"WO-8842"` |
 | [`equipment`](../master-data/machine.md) | string | Business code of the Machine or equipment component being maintained. | `"EQ010"` |
 | `fixingFailure` | boolean | `true` for corrective work that addresses an existing or imminent failure; otherwise `false`. | `true` |
-| [`reason`](../definitions-and-rules/reason.md) | string or null | Optional registered Reason code or free-text explanation. | `"MNT-SEAL-WEAR"` |
+| [`reason`](../definitions-and-rules/reason.md) | string or null | Optional registered Reason code or free-text explanation. When the value matches a registered Reason, Pulse keeps the reference to that Reason. Otherwise, the value is stored as free-text maintenance context. | `"MNT-SEAL-WEAR"` |
 | `plannedStart` | string or null | Optional planned start of the maintenance window. | `"2026-08-23T06:00:00+02:00"` |
 | `plannedEnd` | string or null | Optional planned end of the maintenance window. | `"2026-08-23T09:00:00+02:00"` |
 | `start` | string | Date and time when maintenance actually started, in ISO 8601 format. | `"2026-08-23T06:05:00+02:00"` |
@@ -44,6 +44,8 @@ A Work order records what equipment was maintained, whether the work addressed a
 > `equipment` must reference an existing Machine or equipment component.
 >
 > Once created, a Work order cannot be changed from corrective to preventive or vice versa.
+>
+> A Work order without `end` remains open. When `end` is supplied, the Work order is completed.
 
 ## Corrective and preventive work
 
@@ -116,17 +118,6 @@ Filler
 
 Using the most specific available equipment code makes maintenance history more closely reflect the asset that was actually worked on.
 
-## Work order status
-
-A Work order without `end` remains open.
-
-When `end` is supplied, the Work order is completed.
-
-```text
-end = null    → running
-end supplied  → completed
-```
-
 ## Work order and line time
 
 A Work order describes the maintenance activity itself.
@@ -178,34 +169,6 @@ If `lineState`, `equipment`, or `start` changes, Pulse removes the previously ge
 Clearing `lineState` removes the Line time interval created for the Work order.
 
 Deleting the Work order also removes that generated Line time interval.
-
-## Reasons
-
-`reason` can contain either a registered [Reason](../definitions-and-rules/reason.md) code or free text.
-
-For example, a registered code:
-
-```json
-{
-  "reason": "MNT-SEAL-WEAR"
-}
-```
-
-or a free-text explanation:
-
-```json
-{
-  "reason": "Worn filler seal, deferred to shutdown"
-}
-```
-
-When the value matches a registered Reason, Pulse preserves the registered reference. Otherwise, it remains available as free-text maintenance context.
-
-## Reference protection
-
-A Machine referenced by an existing Work order cannot be deleted while the Work order still references it.
-
-A registered Reason referenced by a Work order is also protected from deletion.
 
 ## API resource
 
@@ -397,6 +360,11 @@ GET /services/pulse/food-beverage/work-orders/query?equipment=EQ010&equipment=EQ
 Deletes the Work order identified by its business code.
 
 Deleting a Work order also removes its associated maintenance plan and any Line time interval generated through `lineState`.
+
+> [!IMPORTANT]
+> A Machine referenced by an existing Work order cannot be deleted while the Work order still references it.
+>
+> A registered Reason referenced by a Work order is also protected from deletion.
 
 #### Request
 

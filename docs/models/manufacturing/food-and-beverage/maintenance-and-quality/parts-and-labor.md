@@ -78,7 +78,13 @@ Each category is associated with a corresponding cost Measurement:
 
 ## Planned and actual quantities
 
-A single Parts and Labor record can contain both the planned and actual quantity:
+A Parts and Labor record can contain a planned quantity, an actual quantity, or both.
+
+`plannedQuantity` describes what was expected.
+
+`actualQuantity` describes what was actually used.
+
+For example:
 
 ```json
 {
@@ -100,47 +106,7 @@ Actual:  3.4 h
 Variance: +0.4 h
 ```
 
-`plannedQuantity` describes what was expected.
-
-`actualQuantity` describes what was actually used.
-
-Either value can exist without the other.
-
-## Unplanned work
-
-For unplanned maintenance, there may be no planned quantity.
-
-For example:
-
-```json
-{
-  "workOrder": "WO-8891",
-  "category": "ingredient",
-  "item": "MAT-GASKET-P3",
-  "actualQuantity": 2,
-  "unit": "pcs",
-  "unitValue": 4.2
-}
-```
-
-Omitting `plannedQuantity` can simply mean that no resource quantity was planned before the work was performed.
-
-## Planned-only resources
-
-A resource can also be planned before any actual use has been reported:
-
-```json
-{
-  "workOrder": "WO-8830",
-  "category": "ingredient",
-  "item": "MAT-GASKET-P3",
-  "plannedQuantity": 8,
-  "unit": "pcs",
-  "unitValue": 4.2
-}
-```
-
-`actualQuantity` can be added later when the work is completed or the resource is consumed.
+Either value can exist without the other. An unplanned resource may contain only `actualQuantity`, while a resource planned in advance may contain only `plannedQuantity` until actual use is reported later.
 
 ## Parts and lot traceability
 
@@ -179,24 +145,6 @@ The facade still returns:
 ```
 
 when no actual-use timestamp was explicitly submitted.
-
-## Labor
-
-Labor is recorded at Crew level.
-
-```json
-{
-  "workOrder": "WO-8830",
-  "category": "labour",
-  "item": "CREW-MAINT",
-  "plannedQuantity": 3,
-  "actualQuantity": 3.4,
-  "unit": "h",
-  "unitValue": 31
-}
-```
-
-The `item` identifies a registered Crew rather than an individual person.
 
 ## Relationship to production resource use
 

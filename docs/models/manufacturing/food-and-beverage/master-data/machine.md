@@ -1,6 +1,6 @@
 # Machine
 
-Represents a machine, equipment asset, or component in Pulse.
+Represents a machine, equipment asset, component, sensor, or probe in Pulse.
 
 Machines can be organised hierarchically. A machine can belong to another machine, a production line, or a site.
 
@@ -24,7 +24,7 @@ Machines can be organised hierarchically. A machine can belong to another machin
 | `code` | string | Unique business code used to identify the machine in external systems and integrations. | `"EQ010-H06"` |
 | `name` | string | Human-readable name of the machine. | `"Filler 1 head 6"` |
 | `parent` | string | Business code of the machine, production line, or site that contains this machine. | `"EQ010"` |
-| [`measures`](measurement.md) | string or null | Metric code produced by the machine when it represents a sensor or probe. | `"fill-weight"` |
+| [`measures`](../definitions-and-rules/measurement.md) | string or null | Measurement code produced by the machine when it represents a sensor or probe. | `"fill-weight"` |
 
 </div>
 
@@ -33,7 +33,7 @@ Machines can be organised hierarchically. A machine can belong to another machin
 >
 > The entity referenced by `parent` must already exist before the machine is submitted. `parent` can reference another machine, a production line, or a site.
 >
-> When `measures` is provided, the referenced metric must already exist.
+> When `measures` is provided, the referenced measurement must already exist.
 
 See [Types and attributes](types-and-attributes.md) for guidance on extensible master-data properties.
 
@@ -58,7 +58,7 @@ A machine can also belong directly to a site. For example, a cold room does not 
 
 A machine can also represent a sensor or probe.
 
-When the machine produces a measurement, `measures` identifies the metric it reads:
+When the machine produces a measurement, `measures` identifies the measurement it reads:
 
 ```json
 {
@@ -108,7 +108,7 @@ Content-Type: application/json
 | `code` | string | yes | Unique business code of the machine. |
 | `name` | string | yes | Human-readable name of the machine. |
 | `parent` | string | yes | Business code of the machine, production line, or site that contains the machine. |
-| `measures` | string or null | no | Metric code produced by the machine when it represents a sensor or probe. |
+| `measures` | string or null | no | measurement code produced by the machine when it represents a sensor or probe. |
 
 
 ### Update a machine
@@ -142,7 +142,7 @@ Changing `parent` moves the machine within the equipment hierarchy.
 | `code` | string | yes | Unique business code of the machine to update. |
 | `name` | string | yes | Human-readable name of the machine. |
 | `parent` | string | yes | Business code of the machine, production line, or site that contains the machine. |
-| `measures` | string or null | no | Metric code produced by the machine when it represents a sensor or probe. |
+| `measures` | string or null | no | measurement code produced by the machine when it represents a sensor or probe. |
 
 
 ### Patch a machine
@@ -179,7 +179,7 @@ Content-Type: application/json
 | `properties.code` | string | yes | Unique business code of the machine to update. |
 | `properties.name` | string | no | New human-readable name of the machine. |
 | `properties.parent` | string | no | New parent machine, production line, or site code. |
-| `properties.measures` | string or null | no | New metric code produced by the machine. |
+| `properties.measures` | string or null | no | New measurement code produced by the machine. |
 
 
 ### Retrieve a machine

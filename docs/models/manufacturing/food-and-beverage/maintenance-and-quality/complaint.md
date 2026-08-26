@@ -84,26 +84,16 @@ For example, the customer may report a sealing problem while the investigation l
 
 Keeping the two fields separate preserves the distinction between the reported symptom and the cause established during investigation.
 
-## Complaint timing
+## Complaint timing and lifecycle
 
-A Complaint has two required timestamps describing different moments.
+A Complaint records two required timestamps:
 
-`noticedAt` records when the customer noticed the issue.
+- `noticedAt` — when the customer noticed the issue;
+- `heardAt` — when the producer learned about it.
 
-`heardAt` records when the producer learned about it.
+The difference between them preserves the delay between the customer's observation and receipt of the Complaint.
 
-```text
-Customer notices issue        Producer receives complaint
-        19 Aug                        24 Aug
-          │                             │
-          └──────── 5 days ─────────────┘
-```
-
-The difference between these timestamps preserves the delay between the customer's observation and receipt of the Complaint.
-
-## Complaint lifecycle
-
-A Complaint can be recorded before the investigation is complete:
+A Complaint can be created before the investigation is complete:
 
 ```json
 {

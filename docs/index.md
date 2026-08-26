@@ -24,7 +24,7 @@ A single legal company may therefore use multiple Pulse tenants when different p
 
 For example:
 
-- A company that manufactures both motorbikes and musical instruments may use a separate tenant for each business area, even though both belong to the same company.
+- A company that operates multiple distinct business units, such as a retail business and a manufacturing business, may use a separate tenant for each business unit, even though both belong to the same company.
 - A company with operations in two countries may use a separate tenant for each country when those operations are managed or integrated separately.
 
 Choose the model that matches the operational context represented by the tenant.

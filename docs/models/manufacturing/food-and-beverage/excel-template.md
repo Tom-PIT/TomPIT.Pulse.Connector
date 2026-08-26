@@ -25,7 +25,7 @@ The workbook also contains a **Start here** sheet with instructions for completi
 - Required and optional columns are visually distinguished.
 - Column headings contain comments explaining the expected value.
 - Related codes are selected through dropdowns where possible.
-- Dates and times are entered in the plant's local time.
+- Dates and times are entered in the site's local time.
 - Each sheet represents one type of business record.
 - `Delete?` can be used to explicitly retract an existing record.
 - Blank optional values mean that no value is being provided.
