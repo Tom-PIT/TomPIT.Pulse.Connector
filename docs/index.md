@@ -48,3 +48,4 @@ Available models:
 ## Reference
 
 - [Troubleshooting](troubleshooting.md)
+- [Validation](validation.md)
