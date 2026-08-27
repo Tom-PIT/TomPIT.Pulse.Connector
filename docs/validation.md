@@ -27,7 +27,7 @@ Use the documented camelCase field names.
 
 ## Business codes and references
 
-Models may use stable business codes to identify records and relationships.
+Resources use documented business identifiers to identify records and relationships.
 
 For example:
 
@@ -40,7 +40,7 @@ For example:
 
 Referenced records must exist before they are used by another request.
 
-Do not substitute internal Pulse identifiers for model-specific business-code references unless the API explicitly requires them.
+Use the documented business codes for resource references.
 
 ## Enum values
 
@@ -49,9 +49,9 @@ Fields with a defined set of values accept only the supported values.
 For example, a resource may define allowed values for:
 
 - status;
-- maintenance kind;
+- maintenance work order;
 - output kind;
-- line state;
+- line time;
 - event type;
 - disposition.
 
@@ -94,10 +94,10 @@ Some resources depend on records that must already exist.
 
 For example, in the Food & Beverage model:
 
-- a production line references a plant;
+- a production line references a site;
 - a run references a production line and product;
 - a batch references a vessel and recipe;
-- a reading references a metric and exactly one subject.
+- a reading references a measurement and exactly one subject..
 
 Resource pages document their specific dependencies.
 
