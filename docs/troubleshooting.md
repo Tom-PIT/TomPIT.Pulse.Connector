@@ -48,7 +48,7 @@ See [Validation](validation.md) for general validation guidance.
 
 Many resources reference records that must already exist.
 
-For example, a production line may require an existing plant, and a production run may reference an existing line, product, recipe, shift, or crew.
+For example, a production line may require an existing site, and a production run may reference an existing line, product, recipe, shift, or crew.
 
 If the API reports a missing dependency:
 

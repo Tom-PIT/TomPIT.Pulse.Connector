@@ -135,7 +135,7 @@ See [Maintenance and quality](maintenance-and-quality/index.md).
 
 ## Business codes
 
-Food & Beverage API requests and references use business codes rather than Pulse internal numeric identifiers.
+Food & Beverage API requests and references use business codes rather than numeric identifiers.
 
 For example:
 
