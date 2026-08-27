@@ -75,9 +75,16 @@
     color: var(--md-default-fg-color);
 }
 
-.md-nav--primary > .md-nav__list > .md-nav__item:first-child > .md-nav__link--active {
-    font-weight: 700;
+/* Bold font for selected nav intem */
+.md-nav__link--active {
+    font-weight: 600;
 }
+
+/* Hide the secundary title in the nav */
+.md-nav--primary > .md-nav__title {
+    display: none;
+}
+
 
 /* Header logo alignment */
 .md-header__button.md-logo {

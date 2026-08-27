@@ -1,5 +1,7 @@
 site_name: Pulse Integration Documentation
 site_description: Technical documentation for integrating organizational systems with Pulse.
+copyright: Copyright &copy; 2026 Tom PIT
+
 
 docs_dir: docs
 site_dir: site
@@ -21,6 +23,7 @@ theme:
     - content.code.copy
     - search.suggest
     - search.highlight
+    - navigation.footer
 
   palette:
     - scheme: pulse
@@ -63,12 +66,28 @@ plugins:
 extra_css:
   - stylesheets/extra.css
 
+extra:
+  social:
+    - icon: fontawesome/solid/globe
+      link: https://tompit.si/
+      name: Tom PIT
+
+    - icon: fontawesome/brands/github
+      link: https://github.com/Tom-PIT
+      name: GitHub
+
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/tom-pit-d.o.o.
+      name: LinkedIn
+
 nav:
   - Home: index.md
 
   - Getting started:
       - Overview: getting-started/index.md
       - Authentication: getting-started/authentication.md
+      - Validation: validation.md
+      - Troubleshooting: troubleshooting.md
 
   - Models:
     - Overview: models/index.md
@@ -77,6 +96,7 @@ nav:
             - Overview: models/manufacturing/food-and-beverage/index.md
             - First API request: models/manufacturing/food-and-beverage/first-api-request.md
             - Data model: models/manufacturing/food-and-beverage/data-model.md
+            - End-to-end integration example: models/manufacturing/food-and-beverage/end-to-end-integration.md
             - Excel integration template: models/manufacturing/food-and-beverage/excel-template.md
 
             - Master data:
@@ -126,11 +146,7 @@ nav:
                 - Parts and Labor: models/manufacturing/food-and-beverage/maintenance-and-quality/parts-and-labor.md
                 - Complaint: models/manufacturing/food-and-beverage/maintenance-and-quality/complaint.md
 
-            - End-to-end integration example: models/manufacturing/food-and-beverage/end-to-end-integration.md
             - API reference: models/manufacturing/food-and-beverage/api/index.md
 
         - Metal and Machining:
             - Overview: models/manufacturing/metal-and-machining/index.md
-
-  - Validation: validation.md
-  - Troubleshooting: troubleshooting.md
